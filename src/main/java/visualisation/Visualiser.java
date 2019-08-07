@@ -1,11 +1,15 @@
 package visualisation;
 
+import files.DotParser;
+import graph.Graph;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import visualisation.controllers.GUIController;
+
+import java.io.File;
 
 public class Visualiser extends Application{
 
@@ -22,7 +26,7 @@ public class Visualiser extends Application{
     }
 
     // Just to test if the application opens without running all of the code
-    // TODO: Delete later and call startVisual instead
+    // TODO: Delete later and call startVisual instead when the arg is inputted
     public static void main(String[] args) {
         launch(args);
     }
@@ -39,7 +43,7 @@ public class Visualiser extends Application{
         Parent root=loader.load();
         Scene scene = new Scene(root);
 
-        //controller = loader.getController();
+        controller = loader.getController();
 
         stage.setHeight(SCENE_HEIGHT);
         stage.setWidth(SCENE_WIDTH);

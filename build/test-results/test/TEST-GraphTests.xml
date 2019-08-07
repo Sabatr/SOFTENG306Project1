@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="GraphTests" tests="4" skipped="0" failures="0" errors="0" timestamp="2019-08-05T08:00:21" hostname="DESKTOP-JKBLMS8" time="0.089">
+  <properties/>
+  <testcase name="testCalculationOfBottomLevelForSecondary" classname="GraphTests" time="0.069"/>
+  <testcase name="testCalculationOfBottomLevelForLinearGraph" classname="GraphTests" time="0.005"/>
+  <testcase name="testCalculationOfBottomLevel" classname="GraphTests" time="0.011"/>
+  <testcase name="testCalculationOfBottomLevelForSingleNode" classname="GraphTests" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

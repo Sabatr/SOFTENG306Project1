@@ -12,9 +12,8 @@ import java.io.FileNotFoundException;
 import graph.Vertex;
 import graph.Edge;
 
-/**
- * Class to help deal with file input, and generating a corresponding graph from this input
- */
+//TODO: Should probably make this a single ton. We're creating a graph each time this is called,
+// when we should just run it once- Brian
 public class DotParser {
     File f;
 
@@ -52,6 +51,7 @@ public class DotParser {
             Edge toAdd = new Edge(from, to, weightInt);
             from.addOutgoingEdge(toAdd);
             g.addEdge(toAdd.getId(),toAdd);
+
         }
 
         return g;

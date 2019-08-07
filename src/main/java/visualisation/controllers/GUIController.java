@@ -1,26 +1,15 @@
 package visualisation.controllers;
 
-import files.DotParser;
-import graph.Edge;
-import graph.Graph;
-import graph.Vertex;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.ui.graphicGraph.GraphicGraph;
+import org.graphstream.graph.Graph;
 import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.Viewer;
+import visualisation.controllers.helpers.InputGraphHelper;
 
-import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class GUIController {
 
@@ -28,46 +17,21 @@ public class GUIController {
     private Button button;
     @FXML
     private Pane graphPane;
+    @FXML
+    private Pane processPane;
 
     @FXML
     private void initialize() {
-        createInputGraph();
+       createInputGraphVisual();
     }
 
     /**
-     * Creates the graph for the input.
-     * TODO: Move location? Make this look prettier/refactor
+     * This method allows for the creation of the input graph visualisation.
+     * It uses the InputGraphHelper class to add vertices/edges and also add styling.
+     * This method puts the graphic created onto a pane.
      */
-    private void createInputGraph() {
-        SingleGraph graph = new SingleGraph("test");
-        graph.addAttribute("ui.stylesheet","url('visualisation/graphassets/inputGraph.css')");
-        Graph inputGraph = retrieveInputGraph("input.dot");
-        HashMap<String, Edge> edges = inputGraph.getEdgeHashMap();
-        HashMap<String, Vertex> vertices = inputGraph.getVertexHashMap();
-
-        Iterator vertexIt = vertices.entrySet().iterator();
-        while (vertexIt.hasNext()) {
-            Map.Entry<String,Vertex> pair = (Map.Entry)vertexIt.next();
-            String key = pair.getKey();
-            Vertex vertex = pair.getValue();
-            graph.addNode(key);
-            Node n = graph.getNode(key);
-            n.setAttribute("ui.label",key);
-            n.setAttribute("weight",vertex.getCost());
-        }
-
-        Iterator edgeIt = edges.entrySet().iterator();
-        while (edgeIt.hasNext()) {
-            Map.Entry<String,Edge> pair = (Map.Entry) edgeIt.next();
-            String key = pair.getKey();
-            Edge edge = pair.getValue();
-            graph.addEdge(key,edge.getFromVertex().getId(),edge.getToVertex().getId(),true);
-            org.graphstream.graph.Edge e = graph.getEdge(key); //Can't just use import because there's two diff edges
-            e.setAttribute("ui.label",edge.getSwitchCost());
-        }
-
-
-
+    private void createInputGraphVisual() {
+        Graph graph = new InputGraphHelper().createInputGraph();
         Viewer viewer = new Viewer(graph,Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
         viewer.enableAutoLayout();
         // Creates the panel on a section of the application
@@ -79,19 +43,17 @@ public class GUIController {
         graphPane.getChildren().add(node);
     }
 
-
     /**
-     * Retrieving the input graph.
-     * @return
+     * This method creates a visual for the process table.s
      */
-    private Graph retrieveInputGraph(String path) {
-        Graph inputGraph = null;
-        try {
-            inputGraph = new DotParser(new File("data/"+path)).parseGraph();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return inputGraph;
+    private void createProcessVisual() {
+        /**
+         * The basis:
+         *  Create a table - Columns depend on the number of processors
+         *  Rows will be added dynamically as more tasks are iterated through OR possibly just set the maximum possible as the rows
+         *  Change colours and stuff
+         *  Watch out for large inputs. Might screw over some layout.
+         */
     }
 
 

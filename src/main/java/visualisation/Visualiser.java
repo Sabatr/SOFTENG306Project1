@@ -14,8 +14,8 @@ import java.io.File;
 public class Visualiser extends Application{
 
     private GUIController controller;
-    private static final int SCENE_HEIGHT = 800;
-    private static final int SCENE_WIDTH = 1000;
+    private static final int SCENE_HEIGHT = 1000;
+    private static final int SCENE_WIDTH = 1400;
     private int coreNum;
     /**
      * This method is called to start the visualisation

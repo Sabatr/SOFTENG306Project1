@@ -4,6 +4,8 @@ import files.DotParser;
 import graph.Edge;
 import graph.Graph;
 import graph.Vertex;
+import org.graphstream.algorithm.generator.Generator;
+import org.graphstream.algorithm.generator.GridGenerator;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 
@@ -21,10 +23,11 @@ public class InputGraphHelper {
     public SingleGraph createInputGraph() {
         System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
         SingleGraph graph = new SingleGraph("input");
-        graph.setStrict(true);
-        graph.setAutoCreate(false);
+
+//        graph.setStrict(true);
+//        graph.setAutoCreate(false);
         graph.addAttribute("ui.stylesheet","url('visualisation/graphassets/inputGraph.css')");
-        Graph inputGraph = retrieveInputGraph("input2.dot");
+        Graph inputGraph = retrieveInputGraph("Nodes_9_SeriesParallel.dot");
         HashMap<String, Edge> edges = inputGraph.getEdgeHashMap();
         HashMap<String, Vertex> vertices = inputGraph.getVertexHashMap();
 

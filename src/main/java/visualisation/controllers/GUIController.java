@@ -7,7 +7,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import org.graphstream.graph.Graph;
+import org.graphstream.ui.fx_viewer.FxDefaultView;
+import org.graphstream.ui.fx_viewer.FxViewPanel;
+import org.graphstream.ui.fx_viewer.FxViewer;
+import org.graphstream.ui.graphicGraph.GraphicGraph;
+import org.graphstream.ui.javafx.FxGraphRenderer;
 import org.graphstream.ui.swingViewer.ViewPanel;
+import org.graphstream.ui.view.GraphRenderer;
 import org.graphstream.ui.view.Viewer;
 import visualisation.controllers.helpers.InputGraphHelper;
 
@@ -34,17 +40,15 @@ public class GUIController {
      * This method puts the graphic created onto a pane.
      */
     private void createInputGraphVisual() {
-        Graph graph = new InputGraphHelper().createInputGraph();
-        Viewer viewer = new Viewer(graph,Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+        GraphicGraph graph = new InputGraphHelper().createInputGraph();
+        graph.setAttribute("ui.antialias");
+        graph.setAttribute("ui.quality");
+        FxViewer viewer = new FxViewer(graph);
         viewer.enableAutoLayout();
-        // Creates the panel on a section of the application
-        ViewPanel view = viewer.addDefaultView(false);
-        graphPane.setPrefSize(500,500);
-        view.setPreferredSize(new Dimension(500,500));
-        SwingNode node = new SwingNode();
-        node.setContent(view);
-
-        graphPane.getChildren().add(node);
+        FxViewPanel view = (FxViewPanel)viewer.addDefaultView(false, new FxGraphRenderer());
+        //Base the view size on the graph pane.
+        view.setPrefSize((int)graphPane.getPrefWidth(),(int)graphPane.getPrefHeight());
+        graphPane.getChildren().add(view);
     }
 
     /**
@@ -59,11 +63,11 @@ public class GUIController {
          *  How am I gonna get the number of processors? A listener maybe?
          *  Watch out for large inputs. Might screw over some layout.
          */
-        processPane.setPrefSize(500,500);
-        TableView table = new TableView();
-        table.setPrefSize(500,500);
-        table.getColumns().add(new TableColumn("Test"));
-        processPane.getChildren().add(table);
+//        processPane.setPrefSize(500,500);
+//        TableView table = new TableView();
+//        table.setPrefSize(500,500);
+//        table.getColumns().add(new TableColumn("Test"));
+//        processPane.getChildren().add(table);
     }
 
 

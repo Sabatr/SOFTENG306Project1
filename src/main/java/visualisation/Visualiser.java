@@ -14,8 +14,8 @@ import java.io.File;
 public class Visualiser extends Application{
 
     private GUIController controller;
-    private static final int SCENE_HEIGHT = 1000;
-    private static final int SCENE_WIDTH = 1400;
+    private static final int SCENE_HEIGHT = 800;
+    private static final int SCENE_WIDTH = 1200;
     private int coreNum;
     /**
      * This method is called to start the visualisation
@@ -50,7 +50,6 @@ public class Visualiser extends Application{
         stage.setResizable(false);
         stage.setTitle("INSERT TITLE HERE");
         stage.centerOnScreen();
-
         stage.setScene(scene);
         stage.show();
     }

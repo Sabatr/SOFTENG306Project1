@@ -1,4 +1,4 @@
-package visualisation.controllers;
+package visualisation.processor;
 
 import javafx.beans.NamedArg;
 import javafx.collections.FXCollections;
@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
-import visualisation.controllers.helpers.process.ChartData;
+import visualisation.processor.helpers.ChartData;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,10 +19,6 @@ import java.util.List;
  */
 public class ProcessChart<X,Y> extends XYChart<X,Y> {
     private double processorHeight = 10;
-    private ChartData data;
-    private void setChartInfo(ChartData data) {
-        this.data = data;
-    }
 
     public ProcessChart(@NamedArg("xAxis") Axis<X> xAxis, @NamedArg("yAxis") Axis<Y> yAxis) {
         super(xAxis,yAxis);

@@ -1,4 +1,4 @@
-package visualisation.controllers.helpers.process;
+package visualisation.processor.helpers;
 
 /**
  * This class acts as extra data to give to the process chart.

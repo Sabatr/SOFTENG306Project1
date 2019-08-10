@@ -1,30 +1,22 @@
 package visualisation.controllers;
 
-import javafx.embed.swing.SwingNode;
+import application.Application;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
-import org.graphstream.graph.Graph;
-import org.graphstream.ui.fx_viewer.FxDefaultView;
 import org.graphstream.ui.fx_viewer.FxViewPanel;
 import org.graphstream.ui.fx_viewer.FxViewer;
 import org.graphstream.ui.graphicGraph.GraphicGraph;
 import org.graphstream.ui.javafx.FxGraphRenderer;
-import org.graphstream.ui.swingViewer.ViewPanel;
-import org.graphstream.ui.view.GraphRenderer;
-import org.graphstream.ui.view.Viewer;
 import visualisation.controllers.helpers.InputGraphHelper;
-import visualisation.controllers.helpers.ProcessChartHelper;
-
-import java.awt.*;
+import visualisation.processor.helpers.ProcessChartHelper;
+import visualisation.processor.listeners.SchedulerListener;
 
 public class GUIController {
     @FXML
     private Pane graphPane;
     @FXML
     private Pane processPane;
+    private SchedulerListener listener;
 
     /**
      * When the application starts, run this.
@@ -64,7 +56,13 @@ public class GUIController {
          *  How am I gonna get the number of processors? A listener maybe?
          *  Watch out for large inputs. Might screw over some layout.
          */
-         processPane.getChildren().add(new ProcessChartHelper(processPane).getProcessChart());
+        ProcessChartHelper helper = new ProcessChartHelper(processPane,listener);
+       // Application.getInstance().addListener(helper);
+         processPane.getChildren().add(helper.getProcessChart());
+    }
+
+    public void setListener(SchedulerListener listener) {
+        this.listener = listener;
     }
 
 }

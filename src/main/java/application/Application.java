@@ -1,16 +1,28 @@
-import files.DotParser;
+package application;
+
 import algorhithm.AStar;
-import graph.Graph;
+import files.DotParser;
 import files.OutputCreator;
+import graph.Graph;
 import org.apache.commons.cli.*;
 import scheduler.State;
 import visualisation.Visualiser;
+import visualisation.processor.helpers.ProcessChartListener;
 import visualisation.processor.listeners.SchedulerListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
-public class Main {
+public class Application {
+    private static Application application;
+    private SchedulerListener listener;
+    private static AStar astar;
+    public static Application getInstance() {
+        if (application == null) {
+            application = new Application();
+        }
+        return application;
+    }
     public static boolean isStringIsNumericAndPositive(String str) {
         try {
             if (Integer.parseInt(str) > 0) return true;
@@ -63,10 +75,10 @@ public class Main {
             if(cmd.hasOption("p")) {
                 if (isStringIsNumericAndPositive(cmd.getOptionValue("P"))) { result[3] = cmd.getOptionValue("P"); } // handles -p (number of cores) option
             } else { System.out.println("Option -p not present or invalid, default value \"" + defaultCores + "\" chosen"); }
-          
+
             if(cmd.hasOption("o")) { result[2] =  cmd.getOptionValue("o"); } // handles -o (output file name) option
             else { System.out.println("Option -o not present, default \"" + defaultOutput + "\" chosen"); }
-            
+
             //This approach can be followed for Options without values (flags)
             if(cmd.hasOption("v")) { result[4] = "true"; } // handles -v flag (visualization) option
             else { System.out.println("Option -v not present, default value \"" + defaultVisulize + "\" chosen"); }
@@ -85,10 +97,10 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-      //  System.out.println(g);
+        //  System.out.println(g);
 
         String[] result = cliParser(args); // result[0]: file path, result[1]: num. processors, result[2]: output, result[3]: num. cores, result[4]: visualise
-                                           // result[] vil be an array of Strings, remember to parse value to correct type
+        // result[] vil be an array of Strings, remember to parse value to correct type
 
         DotParser dp = new DotParser(new File(result[0]));
 
@@ -99,7 +111,12 @@ public class Main {
             e.printStackTrace();
         }
 
-        State solution = new AStar(Integer.parseInt(result[1]),g1).runAlgorithm();
+        astar = new AStar(Integer.parseInt(result[1]),g1);
+        ProcessChartListener listener = new ProcessChartListener();
+        astar.addListener(listener);
+        State solution = astar.runAlgorithm();
+        new Visualiser(listener).startVisual(args);
+
 
         //State solution = new DFS(2,g1).runDFS();
 
@@ -109,6 +126,7 @@ public class Main {
         out.displayOutputOnConsole();
     }
 
-
+    public static void addListener(SchedulerListener listener ) {
+        astar.addListener(listener);
+    }
 }
-

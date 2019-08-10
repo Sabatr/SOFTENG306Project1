@@ -27,7 +27,7 @@ public class InputGraphHelper {
 
 //        graph.setStrict(true);
 //        graph.setAutoCreate(false);
-        graph.setAttribute("ui.stylesheet","url('visualisation/graphassets/inputGraph.css')");
+        graph.setAttribute("ui.stylesheet","url('visualisation/visualisationassets/InputGraph.css')");
         Graph inputGraph = retrieveInputGraph("Nodes_9_SeriesParallel.dot");
         HashMap<String, Edge> edges = inputGraph.getEdgeHashMap();
         HashMap<String, Vertex> vertices = inputGraph.getVertexHashMap();

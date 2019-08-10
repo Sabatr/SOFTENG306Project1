@@ -18,6 +18,14 @@ public class Main {
         return false;
     }
 
+    private static String getFileName(String path){
+        File f= new File(path);
+
+        String fileNameWithOutExt = f.getName().replaceFirst("[.][^.]+$", "");
+
+        return fileNameWithOutExt;
+    }
+
     private static String[] cliParser(String[] args) {
 
         String[] result = new String[5];
@@ -45,16 +53,17 @@ public class Main {
         // Mandatory options
         if (args.length > 1) { // If both file path and number of processors are entered
             result[0] = args[0]; // File path
+            result[2] = getFileName(args[0]) + "-" + defaultOutput;
             if (isStringIsNumericAndPositive(args[1])) result[1] = args[1]; // Number of processors
             else { System.err.println("Invalid value for number of processors, default value \"" + defaultProcessors + "\" chosen");}
 
         } else if (args.length == 1) { // If only file path is entered
             result[0] = args[0]; // File path
+            result[2] = getFileName(args[0])  + "-" + defaultOutput;
             System.out.println("Options for number of processors missing. Default value \"" + defaultProcessors + "\" chosen");
         } else { // If no arguments are provided
             throw new IllegalArgumentException("Missing mandatory argument: file path");
         }
-
         // Optional options
         try {
             CommandLine cmd = parser.parse(options, args);

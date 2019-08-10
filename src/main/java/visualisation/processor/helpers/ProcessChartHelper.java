@@ -6,8 +6,10 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.Pane;
+import scheduler.ProcessorBlock;
+import scheduler.State;
 import visualisation.processor.ProcessChart;
-import visualisation.processor.AlgorithmDataStorage;
+import visualisation.AlgorithmDataStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,10 +39,13 @@ public class ProcessChartHelper {
     }
 
     private void test() {
+        State finalState = AlgorithmDataStorage.getInstance().getState();
         XYChart.Series series1 = new XYChart.Series();
         for (int i : seriesMap.keySet()) {
-            series1.getData().add(new XYChart.Data(0,"Processor 1",new ChartData(10,"status-red")));
-            series1.getData().add(new XYChart.Data(10,"Processor 1",new ChartData(10,"status-blue")));
+            List<ProcessorBlock> processBlocks = finalState.getProcessors().get(i).getProcessorBlockList();
+            for (ProcessorBlock block : processBlocks) {
+                series1.getData().add(new XYChart.Data(block.getStartTime(),"Processor "+(i+1),new ChartData(block.getEndTime() - block.getStartTime(),"status-blue")));
+            }
         }
         chart.getData().add(series1);
     }

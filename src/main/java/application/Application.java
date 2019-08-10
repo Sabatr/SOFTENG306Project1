@@ -7,7 +7,7 @@ import graph.Graph;
 import org.apache.commons.cli.*;
 import scheduler.State;
 import visualisation.Visualiser;
-import visualisation.processor.helpers.ProcessChartListener;
+import visualisation.AlgorithmListener;
 import visualisation.processor.listeners.SchedulerListener;
 
 import java.io.File;
@@ -112,7 +112,9 @@ public class Application {
         }
 
         astar = new AStar(Integer.parseInt(result[1]),g1);
-        ProcessChartListener listener = new ProcessChartListener();
+        AlgorithmListener listener = new AlgorithmListener();
+        listener.setFileName(result[0]);
+        listener.setNumberOfProcessors(Integer.parseInt(result[1]));
         astar.addListener(listener);
         State solution = astar.runAlgorithm();
         new Visualiser(listener).startVisual(args);

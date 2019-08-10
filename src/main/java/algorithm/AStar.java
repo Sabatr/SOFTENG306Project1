@@ -58,7 +58,6 @@ public class AStar implements  Algorithm,ObservableAlgorithm {
                 }
             }
         }
-        fireEvent(AlgorithmEvents.GET_NUMBER_OF_PROCESSORS);
         fireEvent(AlgorithmEvents.ALGORITHM_FINISHED);
         return finalState;
     }
@@ -76,12 +75,6 @@ public class AStar implements  Algorithm,ObservableAlgorithm {
     @Override
     public void fireEvent(AlgorithmEvents event) {
         switch (event) {
-            case GET_NUMBER_OF_PROCESSORS:
-                for (SchedulerListener listener : listeners) {
-                    System.out.println("first!!!!");
-                    listener.setNumberOfProcessors(numberOfProcessors);
-                }
-                return;
             case ALGORITHM_FINISHED:
                 for (SchedulerListener listener : listeners) {
                     listener.setState(finalState);

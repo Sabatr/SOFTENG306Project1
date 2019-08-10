@@ -56,8 +56,6 @@ public class GUIController {
          *  Watch out for large inputs. Might screw over some layout.
          */
         ProcessChartHelper helper = new ProcessChartHelper(processPane);
-       // Application.getInstance().addListener(helper);
-
          processPane.getChildren().add(helper.getProcessChart());
     }
 

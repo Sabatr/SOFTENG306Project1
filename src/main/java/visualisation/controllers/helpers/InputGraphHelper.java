@@ -9,6 +9,7 @@ import org.graphstream.algorithm.generator.GridGenerator;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.graphicGraph.GraphicGraph;
+import visualisation.AlgorithmDataStorage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,18 +29,13 @@ public class InputGraphHelper {
 //        graph.setStrict(true);
 //        graph.setAutoCreate(false);
         graph.setAttribute("ui.stylesheet","url('visualisation/visualisationassets/InputGraph.css')");
-        Graph inputGraph = retrieveInputGraph("Nodes_9_SeriesParallel.dot");
+        Graph inputGraph = retrieveInputGraph(AlgorithmDataStorage.getInstance().getInputFileName());
         HashMap<String, Edge> edges = inputGraph.getEdgeHashMap();
         HashMap<String, Vertex> vertices = inputGraph.getVertexHashMap();
         //TODO: Add listeners to allow for dynamic colouring. Well that's how I think you do it.
         //TODO: Also currently, it shows it in a weird order? Trying to fix this.
         addNodes(vertices);
         addEdges(edges);
-
-
-
-
-
         return graph;
     }
 
@@ -75,7 +71,7 @@ public class InputGraphHelper {
     private Graph retrieveInputGraph(String path) {
         Graph inputGraph = null;
         try {
-            inputGraph = new DotParser(new File("data/"+path)).parseGraph();
+            inputGraph = new DotParser(new File(path)).parseGraph();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

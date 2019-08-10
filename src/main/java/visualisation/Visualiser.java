@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import visualisation.controllers.GUIController;
-import visualisation.processor.AlgorithmDataStorage;
 import visualisation.processor.listeners.SchedulerListener;
 
 public class Visualiser extends Application {

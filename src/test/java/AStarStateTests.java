@@ -1,8 +1,7 @@
-import algorhithm.AStar;
+import algorithm.AStar;
 import files.DotParser;
 import graph.Graph;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import scheduler.State;
 

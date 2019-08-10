@@ -1,0 +1,9 @@
+digraph "example3" {
+	a	[Weight=2,Start=0,Processor=0];
+	b	[Weight=2,Start=0,Processor=0];
+	c	[Weight=3,Start=0,Processor=0];
+	d	[Weight=3,Start=0,Processor=0];
+	a->b	[Weight=1];
+	b->c	[Weight=1];
+	c->d	[Weight=1];
+}

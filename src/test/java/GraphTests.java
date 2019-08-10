@@ -1,4 +1,4 @@
-import algorhithm.AStar;
+import algorithm.AStar;
 import files.DotParser;
 import graph.Graph;
 import org.junit.Assert;

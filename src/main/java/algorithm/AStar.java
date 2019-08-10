@@ -1,4 +1,4 @@
-package algorhithm;
+package algorithm;
 
 import graph.Graph;
 import scheduler.AStarComparator;

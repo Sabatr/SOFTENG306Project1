@@ -29,7 +29,7 @@ Interfaces
     Algorhithms
 
 Visualisation
-    Add statistics retrievers to algorhithm interface
+    Add statistics retrievers to algorithm interface
     Decide on statistics
     Decide on look and feel
 

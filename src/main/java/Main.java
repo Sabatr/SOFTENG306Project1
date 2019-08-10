@@ -1,9 +1,8 @@
 import files.DotParser;
-import algorhithm.AStar;
+import algorithm.AStar;
 import graph.Graph;
 import files.OutputCreator;
 import org.apache.commons.cli.*;
-import scheduler.State;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,26 +31,28 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
 
         // Default values for parser
-        String defaultFile = "data/input.dot";
+        String defaultFile = "null";
         String defaultProcessors = "2";
         String defaultOutput = "output.dot";
         String defaultCores = "1";
-        String defaultVisulize = "false";
+        String defaultVisualize = "false";
         result[0] = defaultFile;
         result[1] = defaultProcessors;
         result[2] = defaultOutput;
         result[3] = defaultCores;
-        result[4] = defaultVisulize;
+        result[4] = defaultVisualize;
 
         // Mandatory options
-        if (args.length > 1) {
+        if (args.length > 1) { // If both file path and number of processors are entered
             result[0] = args[0]; // File path
             if (isStringIsNumericAndPositive(args[1])) result[1] = args[1]; // Number of processors
             else { System.err.println("Invalid value for number of processors, default value \"" + defaultProcessors + "\" chosen");}
 
-        } else {
-            System.out.println("Options for file path and number of processors missing. Default values (File path: \"" + defaultFile + "\", Num. processors: \"" +
-                    defaultProcessors + ") chosen");
+        } else if (args.length == 1) { // If only file path is entered
+            result[0] = args[0]; // File path
+            System.out.println("Options for number of processors missing. Default value \"" + defaultProcessors + "\" chosen");
+        } else { // If no arguments are provided
+            throw new IllegalArgumentException("Missing mandatory argument: file path");
         }
 
         // Optional options
@@ -68,47 +69,31 @@ public class Main {
             
             //This approach can be followed for Options without values (flags)
             if(cmd.hasOption("v")) { result[4] = "true"; } // handles -v flag (visualization) option
-            else { System.out.println("Option -v not present, default value \"" + defaultVisulize + "\" chosen"); }
+            else { System.out.println("Option -v not present, default value \"" + defaultVisualize + "\" chosen"); }
 
         } catch (ParseException e) { //Will be thrown if no value is provided
             System.err.println(e);
             System.out.println("Default values (Num. cores: \"" + defaultCores + "\", visualise: \"" +
-                    defaultVisulize + ", output file: \"" + defaultOutput + "\") chosen");
+                    defaultVisualize + ", output file: \"" + defaultOutput + "\") chosen");
         }
 
         return result;
     }
 
     /**
-     * TODO: Refactor all of these statements in the main. We want main to be quite short.
      * @param args
      */
     public static void main(String[] args) {
-      //  System.out.println(g);
-
         String[] result = cliParser(args); // result[0]: file path, result[1]: num. processors, result[2]: output, result[3]: num. cores, result[4]: visualise
                                            // result[] vil be an array of Strings, remember to parse value to correct type
-
-        DotParser dp = new DotParser(new File(result[0]));
-
-        Graph g1 = null;
         try {
-            g1 = dp.parseGraph();
+            Graph g1 = new DotParser(new File(result[0])).parseGraph();
+            OutputCreator out = new OutputCreator(new AStar(Integer.parseInt(result[1]),g1).runAlgorithm());
+            out.createOutputFile(result[2]);
+            if (Boolean.parseBoolean(result[4])) out.displayOutputOnConsole();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        State solution = new AStar(Integer.parseInt(result[1]),g1).runAlgorithm();
-
-       //State solution = new DFS(2,g1).runDFS();
-
-
-        System.out.println(solution);
-        OutputCreator out = new OutputCreator(solution);
-        out.displayOutputOnConsole();
-
-
     }
-
 }
 

@@ -44,7 +44,11 @@ public class State {
     int lastProcessorVertexAddedTo;
     private int prevProcessNum = -1;
 
-
+    /**
+     * Sets up the State by assigning initial values to the fields
+     * @param numProcessors
+     * @param g
+     */
     public State(int numProcessors, Graph g) {
         traversed = new ArrayList<>();
         processors = new ArrayList<>();
@@ -133,6 +137,10 @@ public class State {
         return toTraverse.isEmpty();
     }
 
+    /**
+     * Generates all of the possible states
+     * @return
+     */
     public HashSet<State> generatePossibilities() {
         //Generates a list of possible states to visit
         HashSet<State> possibleStates = new HashSet<>();

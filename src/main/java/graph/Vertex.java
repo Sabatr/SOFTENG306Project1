@@ -3,6 +3,9 @@ package graph;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class representing the vertices
+ */
 public class Vertex {
     private String id;
     private int cost;

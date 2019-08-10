@@ -5,6 +5,7 @@ import graph.Graph;
 import graph.Vertex;
 import scheduler.State;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class OutputCreator {
         this.state = state;
         state.outputFormat();
         graph = state.getG();
+        createOutputDirectory();
     }
 
     /**
@@ -32,6 +34,14 @@ public class OutputCreator {
         System.out.println(constructOutputLine());
     }
 
+    private void createOutputDirectory(){
+        String path = "data/";
+
+        File newFolder = new File(path);
+        if (!newFolder.exists()) {
+            newFolder.mkdir();
+        }
+    }
 
     /**
      * Creates a file within the /data/ directory for output

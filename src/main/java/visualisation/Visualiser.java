@@ -1,28 +1,22 @@
 package visualisation;
 
-import files.DotParser;
-import graph.Graph;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import scheduler.State;
 import visualisation.controllers.GUIController;
+import visualisation.processor.AlgorithmDataStorage;
 import visualisation.processor.listeners.SchedulerListener;
-
-import java.io.File;
 
 public class Visualiser extends Application {
 
     private GUIController controller;
     private static final int SCENE_HEIGHT = 800;
     private static final int SCENE_WIDTH = 1200;
-    private int coreNum;
-    private SchedulerListener listener;
     public Visualiser(SchedulerListener listener) {
         super();
-        this.listener = listener;
+        AlgorithmDataStorage.getInstance().setListener(listener);
     }
 
     public Visualiser(){
@@ -52,9 +46,7 @@ public class Visualiser extends Application {
         loader.setLocation(Visualiser.class.getResource("views/GUI.fxml"));
         Parent root=loader.load();
         Scene scene = new Scene(root);
-
         controller = loader.getController();
-        controller.setListener(listener);
 
         stage.setHeight(SCENE_HEIGHT);
         stage.setWidth(SCENE_WIDTH);

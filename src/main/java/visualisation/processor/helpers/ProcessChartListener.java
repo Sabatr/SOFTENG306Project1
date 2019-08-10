@@ -4,13 +4,19 @@ import scheduler.State;
 import visualisation.processor.listeners.SchedulerListener;
 
 public class ProcessChartListener implements SchedulerListener {
+    private int numberOfProcessors;
+    private State state;
     @Override
-    public void getNumberOfProcessors(int numberOfProcessors) {
-        System.out.println(numberOfProcessors);
+    public void setNumberOfProcessors(int numberOfProcessors) {
+        this.numberOfProcessors = numberOfProcessors;
+    }
+
+    public int getNumberOfProcessors(){
+        return numberOfProcessors;
     }
 
     @Override
-    public void getState(State state) {
-        System.out.println(state);
+    public void setState(State state) {
+        this.state = state;
     }
 }

@@ -6,9 +6,8 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.Pane;
-import scheduler.State;
 import visualisation.processor.ProcessChart;
-import visualisation.processor.listeners.SchedulerListener;
+import visualisation.processor.AlgorithmDataStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,12 +23,11 @@ public class ProcessChartHelper {
     private final ProcessChart<Number,String> chart = new ProcessChart<>(xAxis,yAxis);
     private HashMap<Integer,XYChart.Series> seriesMap = new HashMap();
     private Pane processPane;
-    private SchedulerListener listener;
     //TODO: Make this apply to whatever the user inputs
-    private int numberOfProcessors = 2;
-    public ProcessChartHelper(Pane processPane,SchedulerListener listener) {
+    private int numberOfProcessors;
+    public ProcessChartHelper(Pane processPane) {
+        numberOfProcessors = AlgorithmDataStorage.getInstance().getNumberOfProcessors();
         this.processPane = processPane;
-        this.listener = listener;
         initialiseXAxis();
         initialiseYAxis();
         initialiseSettings();

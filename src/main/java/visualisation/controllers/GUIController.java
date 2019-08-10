@@ -16,7 +16,6 @@ public class GUIController {
     private Pane graphPane;
     @FXML
     private Pane processPane;
-    private SchedulerListener listener;
 
     /**
      * When the application starts, run this.
@@ -56,13 +55,10 @@ public class GUIController {
          *  How am I gonna get the number of processors? A listener maybe?
          *  Watch out for large inputs. Might screw over some layout.
          */
-        ProcessChartHelper helper = new ProcessChartHelper(processPane,listener);
+        ProcessChartHelper helper = new ProcessChartHelper(processPane);
        // Application.getInstance().addListener(helper);
-         processPane.getChildren().add(helper.getProcessChart());
-    }
 
-    public void setListener(SchedulerListener listener) {
-        this.listener = listener;
+         processPane.getChildren().add(helper.getProcessChart());
     }
 
 }

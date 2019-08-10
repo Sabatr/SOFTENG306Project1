@@ -1,7 +1,6 @@
 package algorhithm;
 
 import graph.Graph;
-import javafx.event.EventType;
 import scheduler.AStarComparator;
 import scheduler.State;
 import visualisation.processor.listeners.ObservableAlgorithm;
@@ -79,12 +78,13 @@ public class AStar implements  Algorithm,ObservableAlgorithm {
         switch (event) {
             case GET_NUMBER_OF_PROCESSORS:
                 for (SchedulerListener listener : listeners) {
-                    listener.getNumberOfProcessors(numberOfProcessors);
+                    System.out.println("first!!!!");
+                    listener.setNumberOfProcessors(numberOfProcessors);
                 }
                 return;
             case ALGORITHM_FINISHED:
                 for (SchedulerListener listener : listeners) {
-                    listener.getState(finalState);
+                    listener.setState(finalState);
                 }
                 return;
         }

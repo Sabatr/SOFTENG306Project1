@@ -16,18 +16,19 @@ import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.GraphRenderer;
 import org.graphstream.ui.view.Viewer;
 import visualisation.controllers.helpers.InputGraphHelper;
+import visualisation.controllers.helpers.ProcessChartHelper;
 
 import java.awt.*;
 
 public class GUIController {
-
-    @FXML
-    private Button button;
     @FXML
     private Pane graphPane;
     @FXML
     private Pane processPane;
 
+    /**
+     * When the application starts, run this.
+     */
     @FXML
     private void initialize() {
        createInputGraphVisual();
@@ -63,19 +64,7 @@ public class GUIController {
          *  How am I gonna get the number of processors? A listener maybe?
          *  Watch out for large inputs. Might screw over some layout.
          */
-//        processPane.setPrefSize(500,500);
-//        TableView table = new TableView();
-//        table.setPrefSize(500,500);
-//        table.getColumns().add(new TableColumn("Test"));
-//        processPane.getChildren().add(table);
+         processPane.getChildren().add(new ProcessChartHelper(processPane).getProcessChart());
     }
 
-
-    /**
-     * Dummy method to test javafx XD
-     */
-    @FXML
-    private void onClick() {
-        System.out.println("clicked");
-    }
 }

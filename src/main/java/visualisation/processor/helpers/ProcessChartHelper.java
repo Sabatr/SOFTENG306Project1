@@ -37,17 +37,20 @@ public class ProcessChartHelper {
     public ProcessChartHelper(Pane processPane) {
         numberOfProcessors = AlgorithmDataStorage.getInstance().getNumberOfProcessors();
         this.processPane = processPane;
-//        initialiseXAxis();
-//        initialiseYAxis();
-//        initialiseSettings();
-//        setData();
         setUpInitialData();
     }
 
+    private void clear(){
+        chart.getData().forEach(series->{
+            series.getData().clear();
+        });
+    }
     /**
      * Retrieves the data set by the algorithm and adds it to the chart
+     * TODO: Make it so that theres a loading screen before the algo finishes
      */
     private void setData() {
+        clear();
         State finalState = AlgorithmDataStorage.getInstance().getState();
         XYChart.Series series1 = new XYChart.Series();
         for (int i : seriesMap.keySet()) {
@@ -59,13 +62,15 @@ public class ProcessChartHelper {
             }
         }
 
-        chart.getData().add(series1);
+       // seriesMap.keySet().forEach(key-> chart.getData().up(seriesMap.get(key)));
+       chart.getData().add(series1);
     }
 
     public void updateChart() {
         initialiseXAxis();
+        setData();
         chart.updateAxisRange();
-       // setData();
+
     }
 
     private void setUpInitialData() {

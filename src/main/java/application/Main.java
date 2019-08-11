@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 
 public class Main {
     private static Algorithm algorithm;
+    private static String outputName;
     public static boolean isStringIsNumericAndPositive(String str) {
         try {
             if (Integer.parseInt(str) > 0) return true;
@@ -49,7 +50,7 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
 
         // Default values for parser
-        String defaultFile = "data/input2.dot";
+        String defaultFile = "data/Nodes_11_OutTree.dot";
         String defaultProcessors = "4";
         String defaultOutput = "output.dot";
         String defaultCores = "1";
@@ -108,6 +109,8 @@ public class Main {
         try {
             Graph g1 = new DotParser(new File(result[0])).parseGraph();
             algorithm = new AlgorithmFactory().createAlgorithm(AlgorithmChoice.ASTAR,result,g1);
+           // outputName = args[2];
+            outputName = "Test.dot";
             if (Boolean.parseBoolean(result[4]))  {
                 //TODO: Currently, it creates the visual AFTER the algorithm is finished.
                 //TODO: A better method would be to update the visual DURING the algorithm.
@@ -115,7 +118,8 @@ public class Main {
                 // Once the application loads, all of the proceeding commands don't occur
                 new Visualiser().startVisual(args);
             } else {
-                createSolution(args[2]);
+
+                createSolution();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -124,13 +128,13 @@ public class Main {
         }
     }
 
-    public static void createSolution(String name) {
+    public static void createSolution() {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() {
                 scheduler.State solution = algorithm.runAlgorithm();
                 OutputCreator out = new OutputCreator(solution);
-                out.createOutputFile(name);
+                out.createOutputFile(outputName);
                 return null;
             }
         };

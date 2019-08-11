@@ -11,12 +11,14 @@ import scheduler.State;
 public class AlgorithmDataStorage {
     private static AlgorithmDataStorage storage;
     private SchedulerListener listener;
+    private String outputName;
     private AlgorithmDataStorage() {
     }
 
     public int getNumberOfProcessors() {
         return listener.getNumberOfProcessors();
     }
+
 
     /**
      * @return The single instance of this class

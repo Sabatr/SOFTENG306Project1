@@ -97,7 +97,8 @@ public class GUIController {
     }
 
     public void updateChart() {
-        helper.updateChart();
+        Platform.runLater(() -> helper.updateChart());
+
     }
 
 }

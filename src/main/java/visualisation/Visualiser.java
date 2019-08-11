@@ -51,7 +51,7 @@ public class Visualiser extends Application {
         stage.setScene(scene);
         stage.show();
         // TODO: CHANGE THIS LATER
-        Main.createSolution("TEST.dot");
+        Main.createSolution();
     }
 
     /**

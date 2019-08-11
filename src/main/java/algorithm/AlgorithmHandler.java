@@ -13,7 +13,8 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
     private List<SchedulerListener> listeners = new ArrayList<>();
     private State state;
     private AlgorithmEvents eventType;
-
+    private long startTime;
+    private long endTime;
     @Override
     public void addListener(SchedulerListener listener) {
         listeners.add(listener);
@@ -38,14 +39,37 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
 
     }
 
+    protected void startTimer() {
+        startTime = System.currentTimeMillis();
+    }
+
+    protected void endTimer() {
+        endTime = System.currentTimeMillis() - startTime;
+        eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
+        fire();
+    }
+
     /**
      * Updates the listeners whenever an event occurs
      */
     private void fire() {
         switch(eventType) {
             case ALGORITHM_FINISHED:
+                endTimer();
                 for (SchedulerListener listener : listeners) {
                     listener.setState(state);
+                }
+                return;
+            case UPDATE_TIME_ELAPSED:
+                System.out.println("Time taken is: " + endTime);
+                for (SchedulerListener listener: listeners) {
+                    listener.updateTimeElapsed(endTime);
+                }
+                return;
+            case UPDATE_BRANCH_COUNTER:
+                //TODO: Not sure if this is accurate
+                for (SchedulerListener listener: listeners) {
+                    listener.updateBranchCounter();
                 }
                 return;
         }

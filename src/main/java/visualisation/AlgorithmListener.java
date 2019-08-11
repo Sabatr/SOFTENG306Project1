@@ -10,6 +10,8 @@ public class AlgorithmListener implements SchedulerListener {
     private int numberOfProcessors;
     private State state;
     private String path;
+    private long timeElapsed;
+    private int branchCounter;
 
     @Override
     public void setNumberOfProcessors(int numberOfProcessors) {
@@ -41,5 +43,23 @@ public class AlgorithmListener implements SchedulerListener {
         return path;
     }
 
+    @Override
+    public void updateTimeElapsed(long time) {
+        timeElapsed = time;
+    }
 
+    @Override
+    public long getTimeElapsed() {
+        return timeElapsed;
+    }
+
+    @Override
+    public void updateBranchCounter() {
+        branchCounter++;
+    }
+
+    @Override
+    public int getBranchCounter(){
+        return branchCounter;
+    }
 }

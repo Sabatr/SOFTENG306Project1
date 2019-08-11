@@ -42,4 +42,11 @@ public interface SchedulerListener {
      * @return
      */
     String getFileName();
+
+    void updateTimeElapsed(long time);
+
+    long getTimeElapsed();
+
+    void updateBranchCounter();
+    int getBranchCounter();
 }

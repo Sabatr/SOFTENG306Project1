@@ -40,4 +40,7 @@ public class AlgorithmDataStorage {
         return listener.getFileName();
     }
 
+    public long getTimeElapsed() { return listener.getTimeElapsed();}
+
+    public int getBranchesVisited() { return listener.getBranchCounter();}
 }

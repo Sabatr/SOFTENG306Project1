@@ -1,3 +1,6 @@
+import algorithm.Algorithm;
+import algorithm.AlgorithmChoice;
+import algorithm.AlgorithmFactory;
 import files.DotParser;
 import algorithm.AStar;
 import graph.Graph;
@@ -12,7 +15,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class Main {
-    private static AStar astar;
     public static boolean isStringIsNumericAndPositive(String str) {
         try {
             if (Integer.parseInt(str) > 0) return true;
@@ -43,11 +45,11 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
 
         // Default values for parser
-        String defaultFile = "data/input2.dot";
-        String defaultProcessors = "4";
+        String defaultFile = "data/input.dot";
+        String defaultProcessors = "2";
         String defaultOutput = "output.dot";
         String defaultCores = "1";
-        String defaultVisualize = "false";
+        String defaultVisualize = "true";
         result[0] = defaultFile;
         result[1] = defaultProcessors;
         result[2] = defaultOutput;
@@ -101,18 +103,16 @@ public class Main {
         // result[] vil be an array of Strings, remember to parse value to correct type
         try {
             Graph g1 = new DotParser(new File(result[0])).parseGraph();
-            astar = new AStar(Integer.parseInt(result[1]),g1);
-            AlgorithmListener listener = new AlgorithmListener();
-            listener.setFileName(result[0]);
-            listener.setNumberOfProcessors(Integer.parseInt(result[1]));
-            astar.addListener(listener);
-            State solution = astar.runAlgorithm();
+            Algorithm algorithm = new AlgorithmFactory().createAlgorithm(AlgorithmChoice.ASTAR,result,g1);
+            State solution = algorithm.runAlgorithm();
             OutputCreator out = new OutputCreator(solution);
             out.createOutputFile(result[2]);
             if (Boolean.parseBoolean(result[4]))  {
-                new Visualiser(listener).startVisual(args);
+                new Visualiser().startVisual(args);
             }
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

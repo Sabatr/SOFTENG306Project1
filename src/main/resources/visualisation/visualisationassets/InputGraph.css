@@ -12,8 +12,5 @@ node {
     size: 40px;
     shape:circle;
     fill-color: rgb(255,255,255);
-    /*stroke-width: 2px;*/
-    /*stroke-mode: plain;*/
-    /*stroke-color: black;*/
     text-alignment: center;
 }

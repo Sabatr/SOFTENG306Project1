@@ -2,11 +2,13 @@ package visualisation.controllers;
 
 import application.Application;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import org.graphstream.ui.fx_viewer.FxViewPanel;
 import org.graphstream.ui.fx_viewer.FxViewer;
 import org.graphstream.ui.graphicGraph.GraphicGraph;
 import org.graphstream.ui.javafx.FxGraphRenderer;
+import visualisation.AlgorithmDataStorage;
 import visualisation.controllers.helpers.InputGraphHelper;
 import visualisation.processor.helpers.ProcessChartHelper;
 
@@ -15,6 +17,10 @@ public class GUIController {
     private Pane graphPane;
     @FXML
     private Pane processPane;
+    @FXML
+    private Label timeElapsed;
+    @FXML
+    private Label branchesVisited;
 
     /**
      * When the application starts, run this.
@@ -23,8 +29,17 @@ public class GUIController {
     private void initialize() {
        createInputGraphVisual();
        createProcessVisual();
+       setTimeLabel();
+       setBranchesLabel();
     }
 
+    private void setTimeLabel() {
+        timeElapsed.setText(AlgorithmDataStorage.getInstance().getTimeElapsed() + "ms");
+    }
+
+    private void setBranchesLabel() {
+        branchesVisited.setText(AlgorithmDataStorage.getInstance().getBranchesVisited()+" branches visited.");
+    }
     /**
      * This method allows for the creation of the input graph visualisation.
      * It uses the InputGraphHelper class to add vertices/edges and also add styling.

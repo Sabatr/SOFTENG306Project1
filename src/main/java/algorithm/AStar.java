@@ -22,7 +22,6 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
     private PriorityQueue<State> candidate;
     private HashSet<State> visited;
     private Graph graph;
-
     private State finalState;
     private int numberOfProcessors;
 
@@ -40,8 +39,11 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
      * @return
      */
     public State runAlgorithm() {
+        startTimer();
+
         finalState = null;
         while (!candidate.isEmpty() && candidate.peek().getCostToBottomLevel() <= minFullPath) {
+            fireEvent(AlgorithmEvents.UPDATE_BRANCH_COUNTER);
             State s = candidate.poll();
             for (State s1 : s.generatePossibilities()) {
                 if (!visited.contains(s1)) {
@@ -56,6 +58,7 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
                 }
             }
         }
+
         fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,finalState);
         return finalState;
     }

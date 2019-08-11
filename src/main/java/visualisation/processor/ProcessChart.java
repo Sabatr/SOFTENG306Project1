@@ -13,12 +13,16 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * https://stackoverflow.com/questions/27975898/gantt-chart-from-scratch
+ * A class which represents the chart that is being displayed
+ * A lot of code has been inspired from: https://stackoverflow.com/questions/27975898/gantt-chart-from-scratch
  * @param <X>
  * @param <Y>
  */
 public class ProcessChart<X,Y> extends XYChart<X,Y> {
     private double processorHeight = 10;
+    private final int DEFAULT_Y_SCALING = 1;
+    private final int DEFAULT_X_SCALING = 1;
+    private final double Y_BLOCK_SCALING  = 2.0;
 
     public ProcessChart(@NamedArg("xAxis") Axis<X> xAxis, @NamedArg("yAxis") Axis<Y> yAxis) {
         super(xAxis,yAxis);
@@ -45,9 +49,9 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
                 Node block = item.getNode();
                 Rectangle taskVisual = new Rectangle( getLength( item.getExtraValue()), getProcessorHeight());;
                 StackPane region = (StackPane)item.getNode();
-                taskVisual.setWidth( getLength( item.getExtraValue()) * ((getXAxis() instanceof NumberAxis) ? Math.abs(((NumberAxis)getXAxis()).getScale()) : 1));
-                taskVisual.setHeight(getProcessorHeight() * ((getYAxis() instanceof NumberAxis) ? Math.abs(((NumberAxis)getYAxis()).getScale()) : 1));
-                y -= getProcessorHeight() / 2.0;
+                taskVisual.setWidth( getLength( item.getExtraValue()) * ((getXAxis() instanceof NumberAxis) ? Math.abs(((NumberAxis)getXAxis()).getScale()) : DEFAULT_X_SCALING));
+                taskVisual.setHeight(getProcessorHeight() * ((getYAxis() instanceof NumberAxis) ? Math.abs(((NumberAxis)getYAxis()).getScale()) : DEFAULT_Y_SCALING));
+                y -= getProcessorHeight() / Y_BLOCK_SCALING;
                 setRegionInfo(region,taskVisual);
 
                 block.setLayoutX(x);
@@ -94,7 +98,6 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
         }
     }
 
-
     /**
      * Creates a container for the data items to sit in
      * @param item
@@ -112,10 +115,10 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
         return container;
     }
 
-    @Override
     /**
      * Updates the axis range, which depends on the values given for the task
      */
+    @Override
     protected void updateAxisRange() {
         Axis<X> xAxis = getXAxis();
         Axis<Y> yAxis = getYAxis();
@@ -151,7 +154,7 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
     }
 
     /**
-     * Retrieves the style class from a chartdata object
+     * Retrieves the style class from a chart data object
      * @param obj
      * @return
      */
@@ -160,7 +163,7 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
     }
 
     /**
-     * Retrieves length of a task from a chartdata object
+     * Retrieves length of a task from a chart data object
      * @param obj
      * @return
      */

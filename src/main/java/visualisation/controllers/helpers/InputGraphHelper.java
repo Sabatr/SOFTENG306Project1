@@ -23,17 +23,22 @@ import java.util.Map;
  */
 public class InputGraphHelper {
     private GraphicGraph graph;
+    private final String GRAPH_ID = "input";
+    private final String STYLESHEET_ATTRIBUTE = "ui.stylesheet";
+    private final String STYLESHEET_PATH = "url('visualisation/visualisationassets/InputGraph.css')";
+    private final boolean IS_DIRECTED = true;
+    /**
+     * Creates the graph which is going to be used for the input
+     * TODO: Right now it just creates a new one, but this could be too slow. Possibly find a way to use the one
+     * TODO: that has been already generated.
+     * @return
+     */
     public GraphicGraph createInputGraph() {
-        graph = new GraphicGraph("input");
-
-//        graph.setStrict(true);
-//        graph.setAutoCreate(false);
-        graph.setAttribute("ui.stylesheet","url('visualisation/visualisationassets/InputGraph.css')");
+        graph = new GraphicGraph(GRAPH_ID);
+        graph.setAttribute(STYLESHEET_ATTRIBUTE,STYLESHEET_PATH);
         Graph inputGraph = retrieveInputGraph(AlgorithmDataStorage.getInstance().getInputFileName());
         HashMap<String, Edge> edges = inputGraph.getEdgeHashMap();
         HashMap<String, Vertex> vertices = inputGraph.getVertexHashMap();
-        //TODO: Add listeners to allow for dynamic colouring. Well that's how I think you do it.
-        //TODO: Also currently, it shows it in a weird order? Trying to fix this.
         addNodes(vertices);
         addEdges(edges);
         return graph;
@@ -45,11 +50,15 @@ public class InputGraphHelper {
             Map.Entry<String,Edge> pair = (Map.Entry) edgeIt.next();
             String key = pair.getKey();
             Edge edge = pair.getValue();
-            graph.addEdge(key,edge.getFromVertex().getId(),edge.getToVertex().getId(),true);
+            graph.addEdge(key,edge.getFromVertex().getId(),edge.getToVertex().getId(),IS_DIRECTED);
             org.graphstream.graph.Edge e = graph.getEdge(key); //Can't just use import because there's two diff edges
-           // e.setAttribute("ui.label",edge.getSwitchCost());
         }
     }
+
+    /**
+     * Adds a node to the graph that is to be displayed
+     * @param vertices
+     */
     private void addNodes(HashMap<String, Vertex> vertices) {
         Iterator vertexIt = vertices.entrySet().iterator();
         while (vertexIt.hasNext()) {
@@ -59,10 +68,8 @@ public class InputGraphHelper {
             graph.addNode(key);
             Node n = graph.getNode(key);
             n.setAttribute("ui.label",key);
-            // n.setAttribute("weight",vertex.getCost());
         }
     }
-
 
     /**
      * Retrieving the input graph.

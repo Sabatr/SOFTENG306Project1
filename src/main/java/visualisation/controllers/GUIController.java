@@ -9,7 +9,6 @@ import org.graphstream.ui.graphicGraph.GraphicGraph;
 import org.graphstream.ui.javafx.FxGraphRenderer;
 import visualisation.controllers.helpers.InputGraphHelper;
 import visualisation.processor.helpers.ProcessChartHelper;
-import visualisation.processor.listeners.SchedulerListener;
 
 public class GUIController {
     @FXML
@@ -49,10 +48,10 @@ public class GUIController {
     private void createProcessVisual() {
         /**
          * The basis:
-         *  Create a table - Columns depend on the number of processors
+         *  Create a table - Columns depend on the number of processors - done
          *  Rows will be added dynamically as more tasks are iterated through OR possibly just set the maximum possible as the rows
          *  Change colours when a task is on that processor
-         *  How am I gonna get the number of processors? A listener maybe?
+         *  How am I gonna get the number of processors? A listener maybe? - done
          *  Watch out for large inputs. Might screw over some layout.
          */
         ProcessChartHelper helper = new ProcessChartHelper(processPane);

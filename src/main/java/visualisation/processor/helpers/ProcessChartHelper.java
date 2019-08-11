@@ -16,35 +16,45 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Singleton class for creating a process chart.
- * TODO: Remove magic numbers :)
+ * This is a helper class to help build and extract the data needed for the process chart
  */
 public class ProcessChartHelper {
-    private final NumberAxis xAxis = new NumberAxis();
-    private final CategoryAxis yAxis = new CategoryAxis();
-    private final ProcessChart<Number,String> chart = new ProcessChart<>(xAxis,yAxis);
+    private final NumberAxis X_AXIS = new NumberAxis();
+    private final CategoryAxis Y_AXIS = new CategoryAxis();
+    private final String Y_AXIS_NAME = "Processor ";
+    private final String X_AXIS_LABEL = "Time";
+    private final String CHART_NAME = "Process Chart";
+    private final String PROCESS_CHART_STYLESHEET = "visualisation/visualisationassets/ProcessChart.css";
+    private final int X_AXIS_MINOR_TICK_COUNT = 5;
+    private final int Y_AXIS_LABEL_GAP = 20;
+    private final int Y_AXIS_BLOCK_HEIGHT = 200;
+    private final ProcessChart<Number,String> chart = new ProcessChart<>(X_AXIS, Y_AXIS);
     private HashMap<Integer,XYChart.Series> seriesMap = new HashMap();
     private Pane processPane;
-    //TODO: Make this apply to whatever the user inputs
     private int numberOfProcessors;
+
     public ProcessChartHelper(Pane processPane) {
         numberOfProcessors = AlgorithmDataStorage.getInstance().getNumberOfProcessors();
         this.processPane = processPane;
         initialiseXAxis();
         initialiseYAxis();
         initialiseSettings();
-
-        test();
-       // seriesMap.keySet().forEach(key-> chart.getData().add(seriesMap.get(key)));
+        setData();
     }
 
-    private void test() {
+    /**
+     * Retrieves the data set by the algorithm and adds it to the chart
+     */
+    private void setData() {
         State finalState = AlgorithmDataStorage.getInstance().getState();
         XYChart.Series series1 = new XYChart.Series();
         for (int i : seriesMap.keySet()) {
             List<ProcessorBlock> processBlocks = finalState.getProcessors().get(i).getProcessorBlockList();
             for (ProcessorBlock block : processBlocks) {
-                series1.getData().add(new XYChart.Data(block.getStartTime(),"Processor "+(i+1),new ChartData(block.getEndTime() - block.getStartTime(),"status-blue")));
+                //TODO: Change the colours of task dynamically
+                series1.getData().add(new XYChart.Data(block.getStartTime(),
+                        Y_AXIS_NAME +(i+1),
+                        new ChartData(block.getEndTime() - block.getStartTime(),"status-blue")));
             }
         }
         chart.getData().add(series1);
@@ -62,8 +72,8 @@ public class ProcessChartHelper {
      * Sets the labels for the xaxis
      */
     private void initialiseXAxis() {
-        xAxis.setLabel("Time");
-        xAxis.setMinorTickCount(4);
+        X_AXIS.setLabel(X_AXIS_LABEL);
+        X_AXIS.setMinorTickCount(X_AXIS_MINOR_TICK_COUNT);
     }
 
     /**
@@ -71,17 +81,17 @@ public class ProcessChartHelper {
      * Also sets the height each processor uses
      */
     private void initialiseYAxis() {
-        yAxis.setTickLabelGap(20);
+        Y_AXIS.setTickLabelGap(Y_AXIS_LABEL_GAP);
         // The y category will just be the number of processors
         List<String> processors = new ArrayList<>();
 
         for(int processorNo = 0; processorNo < numberOfProcessors; processorNo++){
-            processors.add("Processor " + (processorNo+1));
+            processors.add(Y_AXIS_NAME + (processorNo+1));
             //Maps the processor to possible series
             seriesMap.put(processorNo,new XYChart.Series());
         }
-        chart.setProcessorHeight((processPane.getPrefHeight()-200)/numberOfProcessors);
-        yAxis.setCategories(FXCollections.observableArrayList(processors));
+        chart.setProcessorHeight((processPane.getPrefHeight()-Y_AXIS_BLOCK_HEIGHT)/numberOfProcessors);
+        Y_AXIS.setCategories(FXCollections.observableArrayList(processors));
 
     }
 
@@ -89,11 +99,11 @@ public class ProcessChartHelper {
      * Initialises the basic settings for the process chart
      */
     private void initialiseSettings() {
-        chart.setTitle("Process Table");
+        chart.setTitle(CHART_NAME);
         chart.setLegendVisible(false);
         chart.setPrefHeight(processPane.getPrefHeight());
         chart.setPrefWidth(processPane.getPrefWidth());
-        chart.getStylesheets().add("visualisation/visualisationassets/ProcessChart.css");
+        chart.getStylesheets().add(PROCESS_CHART_STYLESHEET);
     }
 
 }

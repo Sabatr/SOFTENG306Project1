@@ -119,7 +119,7 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
      * Updates the axis range, which depends on the values given for the task
      */
     @Override
-    protected void updateAxisRange() {
+    public void updateAxisRange() {
         Axis<X> xAxis = getXAxis();
         Axis<Y> yAxis = getYAxis();
         List<X> xData = null;
@@ -128,7 +128,7 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
             xData = new ArrayList<X>();
         }
         if(yAxis.isAutoRanging()) {
-            yData = new ArrayList<Y>();
+            yData = new ArrayList<>();
         }
 
         if(xData != null || yData != null) {

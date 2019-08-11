@@ -29,6 +29,7 @@ public class AlgorithmListener implements SchedulerListener {
     @Override
     public void setState(State state) {
         this.state = state;
+        GUIUpdater.getInstance().updateProcessChart();
     }
 
     @Override

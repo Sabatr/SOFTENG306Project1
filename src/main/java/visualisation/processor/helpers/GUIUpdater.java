@@ -28,4 +28,8 @@ public class GUIUpdater {
     public void updateTimeLabel(String time) {
         controller.updateTimer(time);
     }
+
+    public void updateProcessChart() {
+        controller.updateChart();
+    }
 }

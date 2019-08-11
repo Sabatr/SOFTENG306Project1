@@ -1,6 +1,7 @@
 package visualisation.processor.helpers;
 
 
+import algorithm.Algorithm;
 import javafx.collections.FXCollections;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -28,7 +29,7 @@ public class ProcessChartHelper {
     private final int X_AXIS_MINOR_TICK_COUNT = 5;
     private final int Y_AXIS_LABEL_GAP = 20;
     private final int Y_AXIS_BLOCK_HEIGHT = 200;
-    private final ProcessChart<Number,String> chart = new ProcessChart<>(X_AXIS, Y_AXIS);
+    private ProcessChart<Number,String> chart = new ProcessChart<>(X_AXIS, Y_AXIS);
     private HashMap<Integer,XYChart.Series> seriesMap = new HashMap();
     private Pane processPane;
     private int numberOfProcessors;
@@ -36,10 +37,11 @@ public class ProcessChartHelper {
     public ProcessChartHelper(Pane processPane) {
         numberOfProcessors = AlgorithmDataStorage.getInstance().getNumberOfProcessors();
         this.processPane = processPane;
-        initialiseXAxis();
-        initialiseYAxis();
-        initialiseSettings();
-        setData();
+//        initialiseXAxis();
+//        initialiseYAxis();
+//        initialiseSettings();
+//        setData();
+        setUpInitialData();
     }
 
     /**
@@ -51,15 +53,27 @@ public class ProcessChartHelper {
         for (int i : seriesMap.keySet()) {
             List<ProcessorBlock> processBlocks = finalState.getProcessors().get(i).getProcessorBlockList();
             for (ProcessorBlock block : processBlocks) {
-                //TODO: Change the colours of task dynamically
                 series1.getData().add(new XYChart.Data(block.getStartTime(),
                         Y_AXIS_NAME +(i+1),
                         new ChartData(block.getEndTime() - block.getStartTime(),"status-blue")));
             }
         }
+
         chart.getData().add(series1);
     }
 
+    public void updateChart() {
+        initialiseXAxis();
+        chart.updateAxisRange();
+       // setData();
+    }
+
+    private void setUpInitialData() {
+        seriesMap.keySet().forEach(key-> chart.getData().add(seriesMap.get(key)));
+        initialiseXAxis();
+        initialiseYAxis();
+        initialiseSettings();
+    }
     /**
      * Retrieves the process chart that has been created by the helper
      * @return
@@ -94,7 +108,6 @@ public class ProcessChartHelper {
         Y_AXIS.setCategories(FXCollections.observableArrayList(processors));
 
     }
-
     /**
      * Initialises the basic settings for the process chart
      */
@@ -105,5 +118,6 @@ public class ProcessChartHelper {
         chart.setPrefWidth(processPane.getPrefWidth());
         chart.getStylesheets().add(PROCESS_CHART_STYLESHEET);
     }
+
 
 }

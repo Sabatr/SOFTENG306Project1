@@ -49,7 +49,7 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
 
         // Default values for parser
-        String defaultFile = "data/Nodes_11_OutTree.dot";
+        String defaultFile = "data/input2.dot";
         String defaultProcessors = "4";
         String defaultOutput = "output.dot";
         String defaultCores = "1";

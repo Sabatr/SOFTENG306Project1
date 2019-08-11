@@ -27,6 +27,7 @@ public class GUIController {
     @FXML
     private Button button;
 
+    private ProcessChartHelper helper;
     @FXML
     private void onClick() {
         System.out.println("clicked");
@@ -38,21 +39,13 @@ public class GUIController {
     private void initialize() {
        createInputGraphVisual();
 
-     //  createProcessVisual();
+       createProcessVisual();
        setTimeLabel();
        setBranchesLabel();
     }
 
     public void updateBranchCount(String label) {
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() {
-                Platform.runLater(() -> branchesVisited.setText(label));
-                return null;
-            }
-        };
-        new Thread(task).start();
-
+        Platform.runLater(() -> branchesVisited.setText(label));
     }
 
     public void updateTimer(String time){
@@ -88,7 +81,7 @@ public class GUIController {
     /**
      * This method creates a visual for the process table.s
      */
-    private void createProcessVisual() {
+    public void createProcessVisual() {
         /**
          * The basis:
          *  Create a table - Columns depend on the number of processors - done
@@ -97,8 +90,14 @@ public class GUIController {
          *  How am I gonna get the number of processors? A listener maybe? - done
          *  Watch out for large inputs. Might screw over some layout.
          */
-        ProcessChartHelper helper = new ProcessChartHelper(processPane);
+        if (helper == null) {
+            helper = new ProcessChartHelper(processPane);
+        }
          processPane.getChildren().add(helper.getProcessChart());
+    }
+
+    public void updateChart() {
+        helper.updateChart();
     }
 
 }

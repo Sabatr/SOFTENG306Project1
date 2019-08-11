@@ -1,4 +1,4 @@
-# SOFTENG306Project1
+# SOFTENG306Project1 - Team 6
 Using AI and parallel processing power to solve difficult scheduling problems
   
 saddboys = Chuyang Chen (cche381)  

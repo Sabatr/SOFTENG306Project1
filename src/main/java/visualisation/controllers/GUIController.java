@@ -1,7 +1,10 @@
 package visualisation.controllers;
 
-import application.Application;
+import files.OutputCreator;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import org.graphstream.ui.fx_viewer.FxViewPanel;
@@ -21,24 +24,49 @@ public class GUIController {
     private Label timeElapsed;
     @FXML
     private Label branchesVisited;
+    @FXML
+    private Button button;
 
+    @FXML
+    private void onClick() {
+        System.out.println("clicked");
+    }
     /**
      * When the application starts, run this.
      */
     @FXML
     private void initialize() {
        createInputGraphVisual();
-       createProcessVisual();
+
+     //  createProcessVisual();
        setTimeLabel();
        setBranchesLabel();
     }
 
+    public void updateBranchCount(String label) {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() {
+                Platform.runLater(() -> branchesVisited.setText(label));
+                return null;
+            }
+        };
+        new Thread(task).start();
+
+    }
+
+    public void updateTimer(String time){
+        Platform.runLater(() -> timeElapsed.setText(time));
+    }
+
     private void setTimeLabel() {
-        timeElapsed.setText(AlgorithmDataStorage.getInstance().getTimeElapsed() + "ms");
+        timeElapsed.setText("0ms");
+     //   timeElapsed.setText(AlgorithmDataStorage.getInstance().getTimeElapsed() + "ms");
     }
 
     private void setBranchesLabel() {
-        branchesVisited.setText(AlgorithmDataStorage.getInstance().getBranchesVisited()+" branches visited.");
+        branchesVisited.setText("0");
+     //   branchesVisited.setText(AlgorithmDataStorage.getInstance().getBranchesVisited()+" branches visited.");
     }
     /**
      * This method allows for the creation of the input graph visualisation.

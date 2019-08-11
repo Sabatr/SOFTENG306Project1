@@ -22,7 +22,7 @@ public class DotParser {
     }
 
     /**
-     * Main method in charge of parsing the graph
+     * application.Main method in charge of parsing the graph
      * @return
      * @throws FileNotFoundException
      */

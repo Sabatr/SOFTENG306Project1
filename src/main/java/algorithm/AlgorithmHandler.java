@@ -1,4 +1,8 @@
 package algorithm;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
 import scheduler.State;
 import visualisation.processor.listeners.ObservableAlgorithm;
 import visualisation.processor.listeners.SchedulerListener;
@@ -13,8 +17,8 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
     private List<SchedulerListener> listeners = new ArrayList<>();
     private State state;
     private AlgorithmEvents eventType;
-    private long startTime;
-    private long endTime;
+    private long timeTaken;
+    private Timeline timeline;
     @Override
     public void addListener(SchedulerListener listener) {
         listeners.add(listener);
@@ -40,13 +44,20 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
     }
 
     protected void startTimer() {
-        startTime = System.currentTimeMillis();
+
+        timeline = new Timeline();
+        long time = System.currentTimeMillis();
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100), (ActionEvent e) -> {
+            this.eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
+            timeTaken = System.currentTimeMillis() - time;
+            fire();
+        } ));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
     protected void endTimer() {
-        endTime = System.currentTimeMillis() - startTime;
-        eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
-        fire();
+        timeline.stop();
     }
 
     /**
@@ -61,9 +72,8 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
                 }
                 return;
             case UPDATE_TIME_ELAPSED:
-                System.out.println("Time taken is: " + endTime);
                 for (SchedulerListener listener: listeners) {
-                    listener.updateTimeElapsed(endTime);
+                    listener.updateTimeElapsed(timeTaken);
                 }
                 return;
             case UPDATE_BRANCH_COUNTER:

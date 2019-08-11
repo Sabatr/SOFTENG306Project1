@@ -1,11 +1,14 @@
 package visualisation;
 
+import algorithm.Algorithm;
+import application.Main;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import visualisation.controllers.GUIController;
+import visualisation.processor.helpers.GUIUpdater;
 
 /**
  * This class generates the GUI to visualise our algorithm.
@@ -16,8 +19,7 @@ public class Visualiser extends Application {
     private final int SCENE_WIDTH = 1200;
     private final String VISUALISATION_TITLE = "Visualisation";
     private final String SCENE_PATH = "views/GUI.fxml";
-
-    public Visualiser(){
+    public Visualiser() {
         super();
     }
     /**
@@ -40,7 +42,7 @@ public class Visualiser extends Application {
         Parent root=loader.load();
         Scene scene = new Scene(root);
         controller = loader.getController();
-
+        GUIUpdater.getInstance().setController(controller);
         stage.setHeight(SCENE_HEIGHT);
         stage.setWidth(SCENE_WIDTH);
         stage.setResizable(false);
@@ -48,6 +50,8 @@ public class Visualiser extends Application {
         stage.centerOnScreen();
         stage.setScene(scene);
         stage.show();
+        // TODO: CHANGE THIS LATER
+        Main.createSolution("TEST.dot");
     }
 
     /**

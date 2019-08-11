@@ -1,6 +1,9 @@
 package visualisation;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import scheduler.State;
+import visualisation.processor.helpers.GUIUpdater;
 import visualisation.processor.listeners.SchedulerListener;
 
 /**
@@ -46,6 +49,8 @@ public class AlgorithmListener implements SchedulerListener {
     @Override
     public void updateTimeElapsed(long time) {
         timeElapsed = time;
+        String timeFormatted = timeElapsed + "ms";
+        GUIUpdater.getInstance().updateTimeLabel(timeFormatted);
     }
 
     @Override
@@ -55,7 +60,16 @@ public class AlgorithmListener implements SchedulerListener {
 
     @Override
     public void updateBranchCounter() {
-        branchCounter++;
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() {
+                branchCounter++;
+                GUIUpdater.getInstance().updateBranchLabel(branchCounter);
+                return null;
+            }
+        };
+        new Thread(task).start();
+
     }
 
     @Override

@@ -1,8 +1,6 @@
 package visualisation.controllers;
 
-import files.OutputCreator;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,7 +9,6 @@ import org.graphstream.ui.fx_viewer.FxViewPanel;
 import org.graphstream.ui.fx_viewer.FxViewer;
 import org.graphstream.ui.graphicGraph.GraphicGraph;
 import org.graphstream.ui.javafx.FxGraphRenderer;
-import visualisation.AlgorithmDataStorage;
 import visualisation.controllers.helpers.InputGraphHelper;
 import visualisation.processor.helpers.ProcessChartHelper;
 
@@ -28,38 +25,54 @@ public class GUIController {
     private Button button;
 
     private ProcessChartHelper helper;
+
+    /**
+     * Dummy method to check for GUI responsiveness
+     */
     @FXML
     private void onClick() {
         System.out.println("clicked");
     }
+
     /**
      * When the application starts, run this.
      */
     @FXML
     private void initialize() {
        createInputGraphVisual();
-
        createProcessVisual();
        setTimeLabel();
        setBranchesLabel();
     }
 
+    /**
+     * Updates the branch counter
+     * @param label
+     */
     public void updateBranchCount(String label) {
         Platform.runLater(() -> branchesVisited.setText(label));
     }
 
+    /**
+     * Updates the time elapsed
+     * @param time
+     */
     public void updateTimer(String time){
         Platform.runLater(() -> timeElapsed.setText(time));
     }
 
+    /**
+     * The initial time label
+     */
     private void setTimeLabel() {
         timeElapsed.setText("0ms");
-     //   timeElapsed.setText(AlgorithmDataStorage.getInstance().getTimeElapsed() + "ms");
     }
 
+    /**
+     * The initial label for the branches
+     */
     private void setBranchesLabel() {
         branchesVisited.setText("0");
-     //   branchesVisited.setText(AlgorithmDataStorage.getInstance().getBranchesVisited()+" branches visited.");
     }
     /**
      * This method allows for the creation of the input graph visualisation.
@@ -96,9 +109,11 @@ public class GUIController {
          processPane.getChildren().add(helper.getProcessChart());
     }
 
+    /**
+     * Update the ProcessChart when the algorithm has been complete
+     */
     public void updateChart() {
         Platform.runLater(() -> helper.updateChart());
-
     }
 
 }

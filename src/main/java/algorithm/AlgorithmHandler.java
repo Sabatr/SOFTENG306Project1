@@ -1,6 +1,7 @@
 package algorithm;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
 import scheduler.State;
@@ -29,12 +30,21 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
         listeners.remove(listener);
     }
 
+    /**
+     * Fires an event
+     * @param event
+     */
     @Override
     public void fireEvent(AlgorithmEvents event) {
         this.eventType = event;
         fire();
     }
 
+    /**
+     * Fires of an event, but also takes in a state
+     * @param event
+     * @param state
+     */
     @Override
     public void fireEvent(AlgorithmEvents event, State state) {
         this.eventType = event;
@@ -43,17 +53,27 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
 
     }
 
+    /**
+     * Begins the timer which is used to record the time taken until the algorithm is complete
+     */
     protected void startTimer() {
-
         timeline = new Timeline();
-        long time = System.currentTimeMillis();
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100), (ActionEvent e) -> {
-            this.eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
-            timeTaken = System.currentTimeMillis() - time;
-            fire();
-        } ));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        Task task = new Task<Void>() {
+            @Override
+            protected Void call() {
+                long time = System.currentTimeMillis();
+                timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10), (ActionEvent e) -> {
+                    eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
+                    timeTaken = System.currentTimeMillis() - time;
+                    fire();
+                } ));
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.play();
+                return null;
+            }
+        };
+        new Thread(task).start();
+
     }
 
     protected void endTimer() {

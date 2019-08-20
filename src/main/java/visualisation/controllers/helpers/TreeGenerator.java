@@ -15,7 +15,7 @@ public class TreeGenerator {
     private Pane graphPane;
     private Graph inputGraph;
     private HashMap<Integer,List<Vertex>> layerNode;
-    private List<Node> nodeList;
+    private HashMap<Vertex,VisualNode> vertexToNode = new HashMap<>();
     public TreeGenerator(Pane parentPane) {
         this.graphPane = parentPane;
         this.inputGraph = retrieveInputGraph(AlgorithmDataStorage.getInstance().getInputFileName());
@@ -30,14 +30,32 @@ public class TreeGenerator {
         for (Vertex vertex : vertices) {
            // int x = (int) Math.ceil(paneWidth /vertices.size()/2 + current * paneWidth /vertices.size());
             int x = (int) Math.ceil(paneWidth/vertices.size()/2 + (2 *current * paneWidth/vertices.size()/2));
-            System.out.println(x);
+          //  System.out.println(x);
            // int y = (int) Math.ceil(currentLayer * ((paneHeight * 0.9)/ 3));
             int y = (int) Math.ceil( paneHeight / (layerNode.size()+1) * currentLayer);
             //int y = 50;
             //System.out.println(inputGraph.calculateBottomLevel());
-            visualisation.controllers.helpers.Node node = new visualisation.controllers.helpers.Node(x,y,10);
+            VisualNode node = new VisualNode(x,y,10);
+            //nodeList.add(node);
+            vertexToNode.put(vertex,node);
             graphPane.getChildren().add(node);
             current++;
+        }
+    }
+
+    private void createEdge(List<Vertex> vertices) {
+        System.out.println(vertices);
+        for (Vertex vertex : vertices) {
+            List<Vertex> incomingVertices = vertex.getIncomingVerticies();
+           // System.out.println(incomingVertices);
+            VisualNode toNode = vertexToNode.get(vertex);
+            for (Vertex fromVertex : incomingVertices) {
+                VisualNode fromNode = vertexToNode.get(fromVertex);
+              //  System.out.println("Child: " + toNode + ", from: " + fromNode);
+             //   VisualEdge edge = new VisualEdge(toNode.getX(),toNode.getY(),fromNode.getX(),fromNode.getX());
+                VisualEdge edge = new VisualEdge(fromNode.getX(),fromNode.getY(),toNode.getX(),toNode.getY());
+                graphPane.getChildren().add(edge);
+            }
         }
     }
 
@@ -49,7 +67,6 @@ public class TreeGenerator {
         int currentLayer = 1;
 
         // Gets the root node
-
         List<Vertex> layeredVertices = new ArrayList<>();
         Vertex root = new Vertex("",1);
         while (vertexIt.hasNext()) {
@@ -98,12 +115,20 @@ public class TreeGenerator {
             int currentLayer = pair.getKey();
             List<Vertex> vertices = pair.getValue();
             createNode(vertices,currentLayer);
+            createEdge(vertices);
+
         }
+    }
+
+    private void generateEdgePositions() {
+        HashMap<String,Vertex> vertices = inputGraph.getVertexHashMap();
+        Iterator vertexIt = vertices.entrySet().iterator();
     }
     public void generate() {
       //  graphPane.getChildren().add(new Node(20,20,20));
        // System.out.println(inputGraph.getVertexHashMap());
         generateNodePositions();
+       // generateEdgePositions();
 
     }
 

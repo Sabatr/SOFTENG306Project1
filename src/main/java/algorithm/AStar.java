@@ -18,6 +18,9 @@ public class AStar  implements  Algorithm{
     private PriorityQueue<State> candidate;
     private HashSet<State> visited;
     private Graph graph;
+    private State result;
+    private final int MAX_THREADS = 8;
+    private int currentThreads;
 
     public AStar(int numProcessors, Graph graph) {
         candidate = new PriorityQueue<>(new AStarComparator());
@@ -25,6 +28,11 @@ public class AStar  implements  Algorithm{
         this.graph = graph;
         traversed = false;
         candidate.add(new State(numProcessors, graph));
+        currentThreads = 1;
+    }
+
+    private synchronized void changeCurrentThreads(int i){
+        currentThreads = currentThreads + i;
     }
 
     /**
@@ -32,25 +40,43 @@ public class AStar  implements  Algorithm{
      * @return
      */
     public State runAlgorithm() {
-        State result = null;
         while (!candidate.isEmpty() && candidate.peek().getCostToBottomLevel() <= minFullPath) {
-            State s = candidate.poll();
-            for (State s1 : s.generatePossibilities()) {
-                if (!visited.contains(s1)) {
-                    if (s1.getCostToBottomLevel() < minFullPath) {
-                        candidate.add(s1);
-                        if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
-                            minFullPath = s1.getCostToBottomLevel();
-                            result = s1;
-                        }
-                    }
-                    visited.add(s1);
-                }
+            if (currentThreads < MAX_THREADS) {
+                changeCurrentThreads(1);
+                new AStarThread().run();
+                iterate();
+            } else {
+                iterate();
             }
 
         }
         return result;
     }
+
+    private void iterate(){
+        scheduler.State s = candidate.poll();
+        for (scheduler.State s1 : s.generatePossibilities()) {
+            if (!visited.contains(s1)) {
+                if (s1.getCostToBottomLevel() < minFullPath) {
+                    candidate.add(s1);
+                    if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
+                        minFullPath = s1.getCostToBottomLevel();
+                        result = s1;
+                    }
+                }
+                visited.add(s1);
+            }
+        }
+    }
+
+    private class AStarThread extends Thread{
+
+        @Override
+        public void run() {
+            runAlgorithm();
+        }
+    }
+
 
     //Todo implement this class.
     /*

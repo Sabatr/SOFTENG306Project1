@@ -67,7 +67,15 @@ public class Main {
                 try { // This is where the calculation is done
                     System.out.println("Calculating, please wait…\n");
                     Graph g1 = new DotParser(new File(result[0])).parseGraph();
+
+                    long start = System.nanoTime();
+
                     OutputCreator out = new OutputCreator(new AStar(Integer.parseInt(result[1]),g1).runAlgorithm());
+
+                    long end = System.nanoTime();
+                    System.out.println(end-start);
+
+
                     out.createOutputFile(result[2]);
                     if (Boolean.parseBoolean(result[4])) out.displayOutputOnConsole();
                 } catch (FileNotFoundException e) { // If the file is not found, the error will be caught here

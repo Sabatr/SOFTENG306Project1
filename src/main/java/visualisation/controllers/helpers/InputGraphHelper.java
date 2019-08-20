@@ -21,6 +21,8 @@ import java.util.Map;
  * This class creates the initial input graph.
  * Currently, it does not follow the same layout as the shown graph in the example.
  */
+
+@Deprecated
 public class InputGraphHelper {
     private GraphicGraph graph;
     private final String GRAPH_ID = "input";

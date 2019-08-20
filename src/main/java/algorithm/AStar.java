@@ -56,6 +56,7 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
                     }
                     visited.add(s1);
                 }
+
             }
         }
 

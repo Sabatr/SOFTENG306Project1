@@ -47,7 +47,7 @@ public class Main {
 
         //TODO: Delete later
         args = new String[3];
-        args[0] = "data/input.dot";
+        args[0] = "data/input2.dot";
         args[1] = "2";
         args[2] = "-v";
         if (args.length == 0) {
@@ -129,10 +129,10 @@ public class Main {
 
             try { // This is where the calculation is done
                 Graph g1 = new DotParser(new File(args[0])).parseGraph();
-                algorithm = new AlgorithmFactory().createAlgorithm(AlgorithmChoice.DFS,args,g1);
+                algorithm = new AlgorithmFactory().createAlgorithm(AlgorithmChoice.ASTAR,args,g1);
                 outputName = defaultOutput;
                 if (defaultVisualize) {
-                    new Visualiser().startVisual(args);
+                    startVisualisation(args);
                 } else {
                     createSolution();
                 }
@@ -155,36 +155,6 @@ public class Main {
         return fileNameWithOutExt;
     }
 
-    /**
-     * Checks if a value has been provided for a parameter
-     */
-//    public static void main(String[] args) {
-//        String[] result = cliParser(args); // result[0]: file path, result[1]: num. processors, result[2]: output, result[3]: num. cores, result[4]: visualise
-//        // result[] vil be an array of Strings, remember to parse value to correct type
-//        try {
-//            Graph g1 = new DotParser(new File(result[0])).parseGraph();
-//            algorithm = new AlgorithmFactory().createAlgorithm(AlgorithmChoice.ASTAR,result,g1);
-//           // outputName = args[2];
-//            outputName = "Test.dot";
-//            if (Boolean.parseBoolean(result[4]))  {
-//                //TODO: Currently, it creates the visual AFTER the algorithm is finished.
-//                //TODO: A better method would be to update the visual DURING the algorithm.
-//
-//                // Once the application loads, all of the proceeding commands don't occur
-//                new Visualiser().startVisual(args);
-//            } else {
-//
-//                createSolution();
-//            }
-//
-//           // out.displayOutputOnConsole();
-//
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
     public static String checkForValue(int i, String[] args, String cmd) {
         if (i + 1 < args.length) {
             return args[i + 1];
@@ -201,6 +171,7 @@ public class Main {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() {
+                System.out.println("goes here");
                 scheduler.State solution = algorithm.runAlgorithm();
                 OutputCreator out = new OutputCreator(solution);
                 out.createOutputFile(outputName);
@@ -208,7 +179,10 @@ public class Main {
             }
         };
         new Thread(task).start();
+    }
 
+    public static void startVisualisation(String[] args) {
+        new Thread(() -> new Visualiser().startVisual(args)).start();
     }
 }
 

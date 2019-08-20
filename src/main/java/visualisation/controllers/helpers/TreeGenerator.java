@@ -62,30 +62,39 @@ public class TreeGenerator {
 
         // Gets the root node
         List<Vertex> layeredVertices = new ArrayList<>();
-        Vertex root = new Vertex("",1);
+        //List<Vertex> possibleRoots = new ArrayList<>();
+        //Vertex root = new Vertex("",1);
         while (vertexIt.hasNext()) {
             Map.Entry<String,Vertex> pair = (Map.Entry)vertexIt.next();
             String key = pair.getKey();
             Vertex vertex = pair.getValue();
             if (vertex.isRoot()) {
-                root = vertex;
-                break;
+                layeredVertices.add(vertex);
             }
         }
-        layeredVertices.add(root);
+        //layeredVertices.add(root);
         layerNode.put(currentLayer,layeredVertices);
         currentLayer++;
-        addNodesToMap(root,currentLayer);
+        for (Vertex vertex : layeredVertices) {
+            addNodesToMap(vertex,currentLayer);
+        }
+
         while (layerNode.containsKey(currentLayer)) {
-            for (Vertex v : layerNode.get(currentLayer)) {
+            List<Vertex> test = layerNode.get(currentLayer);
+            for (int i = 0; i < test.size() ; i++) {
+                Vertex v = test.get(i);
                 addNodesToMap(v,currentLayer+1);
             }
+//            for (Vertex v : layerNode.get(currentLayer)) {
+//                addNodesToMap(v,currentLayer+1);
+//            }
             currentLayer++;
         }
     }
 
     private void addNodesToMap(Vertex vertex, int currentLayer) {
         for (Vertex outGoing : vertex.getOutgoingVerticies()) {
+            checkIfSeenBefore(outGoing);
             if (!layerNode.containsKey(currentLayer)) {
                 List<Vertex> layeredVertices = new ArrayList<>();
                 layeredVertices.add(outGoing);
@@ -96,6 +105,16 @@ public class TreeGenerator {
                     layeredVertices.add(outGoing);
                     layerNode.put(currentLayer,layeredVertices);
                 }
+            }
+        }
+    }
+
+    private void checkIfSeenBefore(Vertex v) {
+        for (int layer : layerNode.keySet()) {
+            List<Vertex> vertices = layerNode.get(layer);
+            if (vertices.contains(v)) {
+                vertices.remove(v);
+                layerNode.put(layer,vertices);
             }
         }
     }

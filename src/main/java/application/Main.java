@@ -47,7 +47,7 @@ public class Main {
 
         //TODO: Delete later
         args = new String[3];
-        args[0] = "data/input2.dot";
+        args[0] = "data/input.dot";
         args[1] = "2";
         args[2] = "-v";
         if (args.length == 0) {
@@ -129,7 +129,7 @@ public class Main {
 
             try { // This is where the calculation is done
                 Graph g1 = new DotParser(new File(args[0])).parseGraph();
-                algorithm = new AlgorithmFactory().createAlgorithm(AlgorithmChoice.ASTAR,args,g1);
+                algorithm = new AlgorithmFactory().createAlgorithm(AlgorithmChoice.DFS,args,g1);
                 outputName = defaultOutput;
                 if (defaultVisualize) {
                     new Visualiser().startVisual(args);

@@ -118,8 +118,9 @@ public class State {
             }
         }
 
+        //TODO fix this
         // Required to check for duplicates later.
-        Collections.sort(processors);
+        //Collections.sort(processors);
         prevVertexEndTimeHashMap.putIfAbsent(v,currentCost);
         prevVertexEndTimeHashMap.put(v,Math.max(prevVertexEndTimeHashMap.get(v),currentCost));
 
@@ -174,17 +175,12 @@ public class State {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
-        return currentCost == state.currentCost &&
-                currentLevel == state.currentLevel &&
-                processors.equals(state.processors) &&
-                g.equals(state.g) &&
-                traversed.equals(state.traversed) &&
-                toTraverse.equals(state.toTraverse);
+        return Objects.equals(processors, state.processors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(processors, currentCost, currentLevel, g, traversed, toTraverse);
+        return Objects.hash(processors);
     }
 
     //TODO return a copy of State, fpr a;; addVertex here.

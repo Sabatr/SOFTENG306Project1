@@ -4,8 +4,6 @@ import files.DotParser;
 import graph.Graph;
 import graph.Vertex;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
-import org.graphstream.graph.Node;
 import visualisation.AlgorithmDataStorage;
 
 import java.io.File;
@@ -18,11 +16,12 @@ public class TreeGenerator {
     private HashMap<Integer,List<Vertex>> layerNode;
     private HashMap<Vertex,VisualNode> vertexToNode = new HashMap<>();
     private int size;
+    private final int DEFAULT_NODE_SIZE = 200;
     public TreeGenerator(Pane parentPane) {
         this.graphPane = parentPane;
         this.inputGraph = retrieveInputGraph(AlgorithmDataStorage.getInstance().getInputFileName());
         layerNode = new HashMap<>();
-        size = 300 / inputGraph.getVertexHashMap().size();
+        size = DEFAULT_NODE_SIZE / inputGraph.getVertexHashMap().size();
     }
 
     private void createNode(List<Vertex> vertices,int currentLayer) {
@@ -49,6 +48,7 @@ public class TreeGenerator {
                 VisualNode fromNode = vertexToNode.get(fromVertex);
                 VisualEdge edge = new VisualEdge(fromNode.getX(),fromNode.getY(),toNode.getX(),toNode.getY());
                 graphPane.getChildren().add(edge);
+                graphPane.getChildren().add(edge.getEdgeText(fromVertex,vertex, size));
             }
         }
     }
@@ -112,17 +112,8 @@ public class TreeGenerator {
 
         }
     }
-
-    private void generateEdgePositions() {
-        HashMap<String,Vertex> vertices = inputGraph.getVertexHashMap();
-        Iterator vertexIt = vertices.entrySet().iterator();
-    }
     public void generate() {
-      //  graphPane.getChildren().add(new Node(20,20,20));
-       // System.out.println(inputGraph.getVertexHashMap());
         generateNodePositions();
-       // generateEdgePositions();
-
     }
 
     /**

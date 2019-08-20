@@ -1,6 +1,9 @@
 package visualisation.controllers.helpers;
 
+import graph.Vertex;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class VisualEdge extends Line {
     private int startingX;
@@ -13,5 +16,15 @@ public class VisualEdge extends Line {
         this.startingY = startingY;
         this.endingX = endingX;
         this.endingY = endingY;
+    }
+
+    public Text getEdgeText(Vertex fromVertex, Vertex toVertex, int size) {
+        Text text = new Text(""+toVertex.getEdgeWeightFrom(fromVertex));
+        text.setFont(new Font(size/2));
+        int x = (this.startingX + this.endingX) / 2;
+        int y = (this.startingY + this.endingY) / 2;
+        text.setX(x);
+        text.setY(y);
+        return text;
     }
 }

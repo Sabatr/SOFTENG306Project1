@@ -24,10 +24,8 @@ public class VisualNode extends Circle{
     private Text buildText(String inputText, int fontSize) {
         Text text = new Text(inputText);
         text.setFont(new Font(fontSize));
-       // text.getLayoutBounds().getWidth();
         text.setX(this.x - text.getLayoutBounds().getWidth()/2);
         text.setY(this.y);
-        //System.out.println(text);
         return text;
     }
 

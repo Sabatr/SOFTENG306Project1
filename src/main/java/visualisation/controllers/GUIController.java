@@ -10,6 +10,7 @@ import org.graphstream.ui.fx_viewer.FxViewer;
 import org.graphstream.ui.graphicGraph.GraphicGraph;
 import org.graphstream.ui.javafx.FxGraphRenderer;
 import visualisation.controllers.helpers.InputGraphHelper;
+import visualisation.controllers.helpers.TreeGenerator;
 import visualisation.processor.helpers.ProcessChartHelper;
 
 public class GUIController {
@@ -79,16 +80,21 @@ public class GUIController {
      * It uses the InputGraphHelper class to add vertices/edges and also add styling.
      * This method puts the graphic created onto a pane.
      */
+//    private void createInputGraphVisual() {
+//        GraphicGraph graph = new InputGraphHelper().createInputGraph();
+//        graph.setAttribute("ui.antialias");
+//        graph.setAttribute("ui.quality");
+//        FxViewer viewer = new FxViewer(graph);
+//        viewer.enableAutoLayout();
+//        FxViewPanel view = (FxViewPanel)viewer.addDefaultView(false, new FxGraphRenderer());
+//        //Base the view size on the graph pane.
+//        view.setPrefSize((int)graphPane.getPrefWidth(),(int)graphPane.getPrefHeight());
+//        graphPane.getChildren().add(view);
+//    }
+
     private void createInputGraphVisual() {
-        GraphicGraph graph = new InputGraphHelper().createInputGraph();
-        graph.setAttribute("ui.antialias");
-        graph.setAttribute("ui.quality");
-        FxViewer viewer = new FxViewer(graph);
-        viewer.enableAutoLayout();
-        FxViewPanel view = (FxViewPanel)viewer.addDefaultView(false, new FxGraphRenderer());
-        //Base the view size on the graph pane.
-        view.setPrefSize((int)graphPane.getPrefWidth(),(int)graphPane.getPrefHeight());
-        graphPane.getChildren().add(view);
+        TreeGenerator generator = new TreeGenerator(graphPane);
+        generator.generate();
     }
 
     /**

@@ -1,6 +1,5 @@
 package visualisation;
 
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import scheduler.State;
 import visualisation.processor.helpers.GUIUpdater;

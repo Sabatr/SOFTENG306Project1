@@ -18,7 +18,9 @@ public class Edge {
         this.toVertex = toVertex;
         this.switchCost = switchCost;
         id = fromVertex.getId() + "->" + toVertex.getId();
-        fromVertex.addOutgoingEdge(this);
+
+        //TODO: Changed cos it was causing repeats
+       // fromVertex.addOutgoingEdge(this);
         toVertex.addIncomingEdge(this);
 
     }

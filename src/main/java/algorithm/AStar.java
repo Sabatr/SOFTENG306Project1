@@ -55,16 +55,18 @@ public class AStar  implements  Algorithm{
 
     private void iterate(){
         scheduler.State s = candidate.poll();
-        for (scheduler.State s1 : s.generatePossibilities()) {
-            if (!visited.contains(s1)) {
-                if (s1.getCostToBottomLevel() < minFullPath) {
-                    candidate.add(s1);
-                    if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
-                        minFullPath = s1.getCostToBottomLevel();
-                        result = s1;
+        if (s!=null) {
+            for (scheduler.State s1 : s.generatePossibilities()) {
+                if (!visited.contains(s1)) {
+                    if (s1.getCostToBottomLevel() < minFullPath) {
+                        candidate.add(s1);
+                        if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
+                            minFullPath = s1.getCostToBottomLevel();
+                            result = s1;
+                        }
                     }
+                    visited.add(s1);
                 }
-                visited.add(s1);
             }
         }
     }

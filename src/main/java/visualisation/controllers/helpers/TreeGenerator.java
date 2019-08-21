@@ -60,8 +60,29 @@ public class TreeGenerator {
             VisualNode toNode = vertexToNode.get(vertex);
             for (Vertex fromVertex : incomingVertices) {
                 VisualNode fromNode = vertexToNode.get(fromVertex);
-                VisualEdge edge = new VisualEdge(fromNode.getX(),fromNode.getY(),toNode.getX(),toNode.getY());
-                graphPane.getChildren().add(edge);
+                int getFromX;
+                int getFromY;
+                int getToX;
+                int getToY ;
+                if (fromNode.getX() < toNode.getX()) {
+                    getFromX = fromNode.getX() + size;
+                    getFromY = fromNode.getY();
+
+
+                } else if (fromNode.getX() > toNode.getX()){
+                    getFromX = fromNode.getX() - size;
+                    getFromY = fromNode.getY();
+                } else {
+                    getFromX = fromNode.getX();
+                    getFromY = fromNode.getY() + size;
+                }
+
+                getToX = toNode.getX();
+                getToY = toNode.getY() - size;
+
+
+                VisualEdge edge = new VisualEdge(getFromX,getFromY,getToX,getToY);
+                graphPane.getChildren().add(new DirectedArrow(edge,size));
                 graphPane.getChildren().add(edge.getEdgeText(fromVertex,vertex, size));
             }
         }

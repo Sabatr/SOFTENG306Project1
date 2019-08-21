@@ -15,8 +15,8 @@ import visualisation.processor.helpers.GUIUpdater;
  */
 public class Visualiser extends Application {
     private GUIController controller;
-    private final int SCENE_HEIGHT = 800;
-    private final int SCENE_WIDTH = 1200;
+    //private final int SCENE_HEIGHT = 900;
+    //private final int SCENE_WIDTH = 1200;
     private final String VISUALISATION_TITLE = "Visualisation";
     private final String SCENE_PATH = "views/GUI.fxml";
     public Visualiser() {
@@ -43,8 +43,8 @@ public class Visualiser extends Application {
         Scene scene = new Scene(root);
         controller = loader.getController();
         GUIUpdater.getInstance().setController(controller);
-        stage.setHeight(SCENE_HEIGHT);
-        stage.setWidth(SCENE_WIDTH);
+        //stage.setHeight(SCENE_HEIGHT);
+        //stage.setWidth(SCENE_WIDTH);
         stage.setResizable(false);
         stage.setTitle(VISUALISATION_TITLE);
         stage.centerOnScreen();

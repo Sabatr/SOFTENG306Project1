@@ -51,10 +51,9 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
                     continue;
                 }
                 Node block = item.getNode();
-                Rectangle taskVisual = new Rectangle( getLength( item.getExtraValue()), getProcessorHeight());;
+                Rectangle taskVisual = new Rectangle( getLength( item.getExtraValue()), getProcessorHeight());
                 StackPane region = (StackPane)item.getNode();
                 taskVisual.setWidth( getLength( item.getExtraValue()) * ((getXAxis() instanceof NumberAxis) ? Math.abs(((NumberAxis)getXAxis()).getScale()) : DEFAULT_X_SCALING));
-                taskVisual.setHeight(getProcessorHeight() * ((getYAxis() instanceof NumberAxis) ? Math.abs(((NumberAxis)getYAxis()).getScale()) : DEFAULT_Y_SCALING));
                 y -= getProcessorHeight() / Y_BLOCK_SCALING;
 
                 setRegionInfo(region,taskVisual);
@@ -71,7 +70,6 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
         Text text = new Text(textToBeInputted);
         text.setFill(Color.WHITE);
         Group group = new Group(text);
-       // System.out.println(group);
         group.setTranslateY(rectangle.getHeight()/2);
         group.setTranslateX(rectangle.getWidth()/2);
         pane.getChildren().add(group);

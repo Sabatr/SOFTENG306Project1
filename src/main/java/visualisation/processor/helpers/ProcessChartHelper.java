@@ -85,18 +85,6 @@ public class ProcessChartHelper {
                 return "status-yellow";
         }
     }
-
-    public void updateChart() {
-        initialiseXAxis();
-        //chart.updateAxisRange();
-        setData();
-       //
-    }
-
-    private void test() {
-
-    }
-
     private void setUpInitialData() {
         seriesMap.keySet().forEach(key-> chart.getData().add(seriesMap.get(key)));
         initialiseXAxis();

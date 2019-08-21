@@ -17,6 +17,9 @@ public class TreeGenerator {
     private HashMap<Vertex,VisualNode> vertexToNode = new HashMap<>();
     private int size;
     private final int DEFAULT_NODE_SIZE = 200;
+    private final int PANE_CENTER_DIVIDER = 2;
+    private final int INCREASED_AMOUNT_MULTIPLIER = 2;
+    private final int Y_POSITION_INCREASE = 1;
     public TreeGenerator(Pane parentPane) {
         this.graphPane = parentPane;
         this.inputGraph = retrieveInputGraph(AlgorithmDataStorage.getInstance().getInputFileName());
@@ -24,13 +27,20 @@ public class TreeGenerator {
         size = DEFAULT_NODE_SIZE / inputGraph.getVertexHashMap().size();
     }
 
+    /**
+     * Creates a node and places it on the pane
+     * @param vertices
+     * @param currentLayer
+     */
     private void createNode(List<Vertex> vertices,int currentLayer) {
         int current = 0;
         double paneWidth = graphPane.getPrefWidth();
         double paneHeight = graphPane.getPrefHeight();
         for (Vertex vertex : vertices) {
-            int x = (int) Math.ceil(paneWidth/vertices.size()/2 + (2 *current * paneWidth/vertices.size()/2));
-            int y = (int) Math.ceil( paneHeight / (layerNode.size()+1) * currentLayer);
+            // Guarantees the positioning of the nodes
+            int x = (int) Math.ceil(paneWidth/vertices.size()/PANE_CENTER_DIVIDER +
+                    (INCREASED_AMOUNT_MULTIPLIER * current * paneWidth/vertices.size()/PANE_CENTER_DIVIDER));
+            int y = (int) Math.ceil( paneHeight / (layerNode.size()+Y_POSITION_INCREASE) * currentLayer);
             VisualNode node = new VisualNode(x,y,size,vertex);
             vertexToNode.put(vertex,node);
             graphPane.getChildren().add(node);
@@ -40,6 +50,10 @@ public class TreeGenerator {
         }
     }
 
+    /**
+     * Creates an edge and places it in place on the pane
+     * @param vertices
+     */
     private void createEdge(List<Vertex> vertices) {
         for (Vertex vertex : vertices) {
             List<Vertex> incomingVertices = vertex.getIncomingVerticies();
@@ -54,16 +68,17 @@ public class TreeGenerator {
     }
 
 
-    //TODO: Make this work if given a graph with no edges
+    /**
+     * This method separates the tasks onto different layers
+     * These are stored in a hashmap.
+     */
     private void mapLayerToTasks() {
         HashMap<String,Vertex> vertices = inputGraph.getVertexHashMap();
         Iterator vertexIt = vertices.entrySet().iterator();
         int currentLayer = 1;
-
-        // Gets the root node
         List<Vertex> layeredVertices = new ArrayList<>();
-        //List<Vertex> possibleRoots = new ArrayList<>();
-        //Vertex root = new Vertex("",1);
+        // Loops through all of the vertices and checks if it is a root.
+        // This is done to handle multiple roots.
         while (vertexIt.hasNext()) {
             Map.Entry<String,Vertex> pair = (Map.Entry)vertexIt.next();
             String key = pair.getKey();
@@ -72,7 +87,6 @@ public class TreeGenerator {
                 layeredVertices.add(vertex);
             }
         }
-        //layeredVertices.add(root);
         layerNode.put(currentLayer,layeredVertices);
         currentLayer++;
         for (Vertex vertex : layeredVertices) {
@@ -85,13 +99,16 @@ public class TreeGenerator {
                 Vertex v = test.get(i);
                 addNodesToMap(v,currentLayer+1);
             }
-//            for (Vertex v : layerNode.get(currentLayer)) {
-//                addNodesToMap(v,currentLayer+1);
-//            }
             currentLayer++;
         }
     }
 
+    /**
+     * Maps the vertex to visual node.
+     * This is done so it is easier and faster to access the visual node.
+     * @param vertex
+     * @param currentLayer
+     */
     private void addNodesToMap(Vertex vertex, int currentLayer) {
         for (Vertex outGoing : vertex.getOutgoingVerticies()) {
             checkIfSeenBefore(outGoing);
@@ -109,6 +126,10 @@ public class TreeGenerator {
         }
     }
 
+    /**
+     * This method prevents duplicate vertices to be added
+     * @param v
+     */
     private void checkIfSeenBefore(Vertex v) {
         for (int layer : layerNode.keySet()) {
             List<Vertex> vertices = layerNode.get(layer);
@@ -119,6 +140,9 @@ public class TreeGenerator {
         }
     }
 
+    /**
+     * Generates nodes and edges for the graph
+     */
     private void generateNodePositions() {
         mapLayerToTasks();
         Iterator nodeIterator = layerNode.entrySet().iterator();

@@ -5,6 +5,9 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * A class which represents the visualisation of the edge between the nodes
+ */
 public class VisualEdge extends Line {
     private int startingX;
     private int startingY;
@@ -18,6 +21,14 @@ public class VisualEdge extends Line {
         this.endingY = endingY;
     }
 
+
+    /**
+     * Retrieves the text edge between the nodes.
+     * @param fromVertex
+     * @param toVertex
+     * @param size
+     * @return
+     */
     public Text getEdgeText(Vertex fromVertex, Vertex toVertex, int size) {
         Text text = new Text(""+toVertex.getEdgeWeightFrom(fromVertex));
         text.setFont(new Font(size/2));

@@ -77,14 +77,13 @@ public class GUIController {
      * It uses the InputGraphHelper class to add vertices/edges and also add styling.
      * This method puts the graphic created onto a pane.
      */
-
     private void createInputGraphVisual() {
         TreeGenerator generator = new TreeGenerator(graphPane);
         generator.generate();
     }
 
     /**
-     * This method creates a visual for the process table.s
+     * This method creates a loader while the solution is running
      */
     public void createGraphLoader() {
 

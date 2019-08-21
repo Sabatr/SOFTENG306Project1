@@ -38,4 +38,20 @@ public class VisualEdge extends Line {
         text.setY(y);
         return text;
     }
+
+    public int getStartingX() {
+        return startingX;
+    }
+
+    public int getStartingY() {
+        return startingY;
+    }
+
+    public int getEndingX() {
+        return endingX;
+    }
+
+    public int getEndingY() {
+        return endingY;
+    }
 }

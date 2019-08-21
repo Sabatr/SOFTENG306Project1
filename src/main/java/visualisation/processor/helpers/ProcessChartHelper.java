@@ -1,7 +1,5 @@
 package visualisation.processor.helpers;
 
-
-import algorithm.Algorithm;
 import javafx.collections.FXCollections;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -28,7 +26,7 @@ public class ProcessChartHelper {
     private final String PROCESS_CHART_STYLESHEET = "visualisation/visualisationassets/ProcessChart.css";
     private final int X_AXIS_MINOR_TICK_COUNT = 5;
     private final int Y_AXIS_LABEL_GAP = 20;
-    private final int Y_AXIS_BLOCK_HEIGHT = 200;
+    private final int Y_AXIS_BLOCK_HEIGHT = 350; //Larger the value the smaller the block heights
     private ProcessChart<Number,String> chart;
     private HashMap<Integer,XYChart.Series> seriesMap;
     private Pane processPane;
@@ -135,6 +133,4 @@ public class ProcessChartHelper {
         chart.setPrefWidth(processPane.getPrefWidth());
         chart.getStylesheets().add(PROCESS_CHART_STYLESHEET);
     }
-
-
 }

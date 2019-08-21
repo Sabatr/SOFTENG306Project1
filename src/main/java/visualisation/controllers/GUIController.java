@@ -1,10 +1,12 @@
 package visualisation.controllers;
 
+import eu.hansolo.tilesfx.Tile;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.shape.Circle;
 import visualisation.controllers.helpers.TreeGenerator;
 import visualisation.processor.helpers.ProcessChartHelper;
@@ -19,8 +21,13 @@ public class GUIController {
     @FXML
     private Label branchesVisited;
     @FXML
-    private Button button;
+    private TilePane timeTile;
+    @FXML
+    private TilePane branchTile;
+    @FXML
+    private TilePane CPUTile;
 
+    //TODO: Make a loading screen somehow
     private Circle placeHolder;
     private ProcessChartHelper helper;
 
@@ -41,8 +48,31 @@ public class GUIController {
        createGraphLoader();
        setTimeLabel();
        setBranchesLabel();
+       createTimeTile();
+       createBranchTile();
+        createCPUTile();
     }
 
+    private void createTimeTile() {
+        createTile(timeTile);
+    }
+
+    private void createBranchTile() {
+        createTile(branchTile);
+    }
+
+    private void createCPUTile() {
+        createTile(CPUTile);
+    }
+
+    private void createTile(Pane pane) {
+        Tile tile = new Tile();
+        tile.setPrefHeight(pane.getPrefHeight());
+        tile.setPrefWidth(pane.getPrefWidth());
+        tile.setLayoutX(pane.getLayoutX());
+        tile.setLayoutY(pane.getLayoutY());
+        pane.getChildren().add(tile);
+    }
     /**
      * Updates the branch counter
      * @param label
@@ -86,7 +116,6 @@ public class GUIController {
      * This method creates a loader while the solution is running
      */
     public void createGraphLoader() {
-
         // Loading should go here
         Platform.runLater(() -> {
             placeHolder = new Circle(processPane.getLayoutX(),processPane.getLayoutY(),100);
@@ -99,6 +128,7 @@ public class GUIController {
      * Create the ProcessChart when the algorithm has been complete
      */
     public void createChart() {
+        System.out.println("gets usfbifb");
         Platform.runLater(()-> {
             processPane.getChildren().remove(placeHolder);
 

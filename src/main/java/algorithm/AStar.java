@@ -19,7 +19,7 @@ public class AStar  implements  Algorithm{
     private HashSet<State> visited;
     private Graph graph;
     private State result;
-    private final int MAX_THREADS = 8;
+    private final int MAX_THREADS = 4;
     private int currentThreads;
 
     public AStar(int numProcessors, Graph graph) {

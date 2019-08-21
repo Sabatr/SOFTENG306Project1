@@ -6,9 +6,11 @@ package visualisation.processor.helpers;
 public class ChartData {
     private long length;
     private String styleClass;
-    public ChartData(long lengthMs, String styleClass) {
+    private String text;
+    public ChartData(long lengthMs, String styleClass, String text) {
         this.length = lengthMs;
         this.styleClass = styleClass;
+        this.text = text;
     }
     public long getLength() {
         return length;
@@ -16,4 +18,5 @@ public class ChartData {
     public String getStyleClass() {
         return styleClass;
     }
+    public String getText() {return text; }
 }

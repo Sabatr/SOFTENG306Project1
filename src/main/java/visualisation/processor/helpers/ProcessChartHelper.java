@@ -29,21 +29,26 @@ public class ProcessChartHelper {
     private final int X_AXIS_MINOR_TICK_COUNT = 5;
     private final int Y_AXIS_LABEL_GAP = 20;
     private final int Y_AXIS_BLOCK_HEIGHT = 200;
-    private ProcessChart<Number,String> chart = new ProcessChart<>(X_AXIS, Y_AXIS);
-    private HashMap<Integer,XYChart.Series> seriesMap = new HashMap();
+    private ProcessChart<Number,String> chart;
+    private HashMap<Integer,XYChart.Series> seriesMap;
     private Pane processPane;
     private int numberOfProcessors;
 
     public ProcessChartHelper(Pane processPane) {
+        seriesMap =  new HashMap();
+        chart = new ProcessChart<>(X_AXIS, Y_AXIS);
         numberOfProcessors = AlgorithmDataStorage.getInstance().getNumberOfProcessors();
         this.processPane = processPane;
         setUpInitialData();
     }
 
     private void clear(){
+        System.out.println(chart.getData());
         chart.getData().forEach(series->{
             series.getData().clear();
         });
+
+        chart.getData().clear();
     }
     /**
      * Retrieves the data set by the algorithm and adds it to the chart
@@ -51,6 +56,7 @@ public class ProcessChartHelper {
      */
     private void setData() {
         clear();
+        System.out.println("once");
         State finalState = AlgorithmDataStorage.getInstance().getState();
         XYChart.Series series1 = new XYChart.Series();
         for (int i : seriesMap.keySet()) {
@@ -58,18 +64,21 @@ public class ProcessChartHelper {
             for (ProcessorBlock block : processBlocks) {
                 series1.getData().add(new XYChart.Data(block.getStartTime(),
                         Y_AXIS_NAME +(i+1),
-                        new ChartData(block.getEndTime() - block.getStartTime(),"status-blue")));
+                        new ChartData(block.getEndTime() - block.getStartTime(),"status-blue",block.getV().getId())
+                ));
             }
         }
-
-       // seriesMap.keySet().forEach(key-> chart.getData().up(seriesMap.get(key)));
-       chart.getData().add(series1);
+        //chart.setRectangleName(block.getV);
+       chart.getData().add(series1);;
     }
 
     public void updateChart() {
         initialiseXAxis();
         setData();
         chart.updateAxisRange();
+    }
+
+    private void test() {
 
     }
 

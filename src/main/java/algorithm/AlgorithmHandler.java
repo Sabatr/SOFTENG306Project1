@@ -1,6 +1,7 @@
 package algorithm;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
@@ -20,6 +21,7 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
     private AlgorithmEvents eventType;
     private long timeTaken;
     private Timeline timeline;
+    private boolean timerStarted = false;
     @Override
     public void addListener(SchedulerListener listener) {
         listeners.add(listener);
@@ -57,15 +59,20 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
      * Begins the timer which is used to record the time taken until the algorithm is complete
      */
     protected void startTimer() {
+        long time = System.currentTimeMillis();
         timeline = new Timeline();
         Task task = new Task<Void>() {
             @Override
             protected Void call() {
-                long time = System.currentTimeMillis();
                 timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10), (ActionEvent e) -> {
                     eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
                     timeTaken = System.currentTimeMillis() - time;
+
                     fire();
+
+                    if (timerStarted) {
+                        timeline.stop();
+                    }
                 } ));
                 timeline.setCycleCount(Timeline.INDEFINITE);
                 timeline.play();
@@ -77,7 +84,7 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
     }
 
     protected void endTimer() {
-        timeline.stop();
+        timerStarted = true;
     }
 
     /**

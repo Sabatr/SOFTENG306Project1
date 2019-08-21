@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import visualisation.controllers.helpers.TreeGenerator;
 import visualisation.processor.helpers.ProcessChartHelper;
 
@@ -20,6 +21,7 @@ public class GUIController {
     @FXML
     private Button button;
 
+    private Circle placeHolder;
     private ProcessChartHelper helper;
 
     /**
@@ -36,7 +38,7 @@ public class GUIController {
     @FXML
     private void initialize() {
        createInputGraphVisual();
-       createProcessVisual();
+       createGraphLoader();
        setTimeLabel();
        setBranchesLabel();
     }
@@ -84,26 +86,28 @@ public class GUIController {
     /**
      * This method creates a visual for the process table.s
      */
-    public void createProcessVisual() {
-        /**
-         * The basis:
-         *  Create a table - Columns depend on the number of processors - done
-         *  Rows will be added dynamically as more tasks are iterated through OR possibly just set the maximum possible as the rows
-         *  Change colours when a task is on that processor
-         *  How am I gonna get the number of processors? A listener maybe? - done
-         *  Watch out for large inputs. Might screw over some layout.
-         */
-        if (helper == null) {
-            helper = new ProcessChartHelper(processPane);
-        }
-         processPane.getChildren().add(helper.getProcessChart());
+    public void createGraphLoader() {
+
+        // Loading should go here
+        Platform.runLater(() -> {
+            placeHolder = new Circle(processPane.getLayoutX(),processPane.getLayoutY(),100);
+            processPane.getChildren().add(placeHolder);
+        });
+
     }
 
     /**
-     * Update the ProcessChart when the algorithm has been complete
+     * Create the ProcessChart when the algorithm has been complete
      */
-    public void updateChart() {
-        Platform.runLater(() -> helper.updateChart());
+    public void createChart() {
+        Platform.runLater(()-> {
+            processPane.getChildren().remove(placeHolder);
+
+            if (helper == null) {
+                helper = new ProcessChartHelper(processPane);
+            }
+            processPane.getChildren().add(helper.getProcessChart());
+        });
     }
 
 }

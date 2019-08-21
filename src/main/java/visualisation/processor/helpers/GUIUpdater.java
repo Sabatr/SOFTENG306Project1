@@ -48,6 +48,6 @@ public class GUIUpdater {
      * Updates the process chart when algorithm is complete
      */
     public void updateProcessChart() {
-        controller.updateChart();
+        controller.createChart();
     }
 }

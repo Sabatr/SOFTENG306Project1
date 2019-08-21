@@ -40,15 +40,16 @@ public class ProcessChartHelper {
         numberOfProcessors = AlgorithmDataStorage.getInstance().getNumberOfProcessors();
         this.processPane = processPane;
         setUpInitialData();
+        setData();
+
     }
 
     private void clear(){
-        System.out.println(chart.getData());
         chart.getData().forEach(series->{
-            series.getData().clear();
+            series.getData().forEach(item-> {
+                chart.dataItemRemoved(item,series);
+            });
         });
-
-        chart.getData().clear();
     }
     /**
      * Retrieves the data set by the algorithm and adds it to the chart
@@ -56,26 +57,40 @@ public class ProcessChartHelper {
      */
     private void setData() {
         clear();
-        System.out.println("once");
         State finalState = AlgorithmDataStorage.getInstance().getState();
         XYChart.Series series1 = new XYChart.Series();
         for (int i : seriesMap.keySet()) {
             List<ProcessorBlock> processBlocks = finalState.getProcessors().get(i).getProcessorBlockList();
             for (ProcessorBlock block : processBlocks) {
+                getRandomColour();
                 series1.getData().add(new XYChart.Data(block.getStartTime(),
                         Y_AXIS_NAME +(i+1),
-                        new ChartData(block.getEndTime() - block.getStartTime(),"status-blue",block.getV().getId())
+                        new ChartData(block.getEndTime() - block.getStartTime(),getRandomColour(),block.getV().getId())
                 ));
             }
         }
-        //chart.setRectangleName(block.getV);
        chart.getData().add(series1);;
+    }
+
+    private String getRandomColour() {
+        int rand = (int)Math.round(Math.random() * 4);
+        switch (rand) {
+            case 0:
+                return "status-blue";
+            case 1:
+                return "status-red";
+            case 2:
+                return "status-green";
+            default:
+                return "status-yellow";
+        }
     }
 
     public void updateChart() {
         initialiseXAxis();
+        //chart.updateAxisRange();
         setData();
-        chart.updateAxisRange();
+       //
     }
 
     private void test() {

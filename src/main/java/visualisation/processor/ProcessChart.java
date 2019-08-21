@@ -26,25 +26,22 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
     private final int DEFAULT_Y_SCALING = 1;
     private final int DEFAULT_X_SCALING = 1;
     private final double Y_BLOCK_SCALING  = 2.0;
+    private boolean beenSeen = false;
 
     public ProcessChart(@NamedArg("xAxis") Axis<X> xAxis, @NamedArg("yAxis") Axis<Y> yAxis) {
         super(xAxis,yAxis);
         setData(FXCollections.observableArrayList());
-        System.out.println("done");
     }
     /**
      * Determines how to plot the tasks.
      */
     @Override
     protected void layoutPlotChildren() {
-       // getData().removeAll();
-        System.out.println("test");
-
         for (int index = 0; index < getData().size(); index++) {
             Series<X,Y> series = getData().get(index);
-
             Iterator<Data<X,Y>> seriesIterator = getDisplayedDataIterator(series);
             while(seriesIterator.hasNext()) {
+
                 Data<X,Y> item = seriesIterator.next();
                 double x = getXAxis().getDisplayPosition(item.getXValue());
                 double y = getYAxis().getDisplayPosition(item.getYValue());
@@ -56,11 +53,6 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
                 Node block = item.getNode();
                 Rectangle taskVisual = new Rectangle( getLength( item.getExtraValue()), getProcessorHeight());;
                 StackPane region = (StackPane)item.getNode();
-              //  Text id = new Text(" " + getId((ExtraData) item.getExtraValue()));
-                Text text = new Text(getNodeName(item.getExtraValue()));
-                region.getChildren().add(text);
-                region.setAlignment(Pos.CENTER);
-
                 taskVisual.setWidth( getLength( item.getExtraValue()) * ((getXAxis() instanceof NumberAxis) ? Math.abs(((NumberAxis)getXAxis()).getScale()) : DEFAULT_X_SCALING));
                 taskVisual.setHeight(getProcessorHeight() * ((getYAxis() instanceof NumberAxis) ? Math.abs(((NumberAxis)getYAxis()).getScale()) : DEFAULT_Y_SCALING));
                 y -= getProcessorHeight() / Y_BLOCK_SCALING;
@@ -69,8 +61,7 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
 
                 block.setLayoutX(x);
                 block.setLayoutY(y);
-              //  System.out.println(this.getData());
-               // createBlockText(taskVisual,getNodeName(item.getExtraValue()),region);
+                createBlockText(taskVisual,getNodeName(item.getExtraValue()),region);
             }
         }
     }
@@ -80,10 +71,10 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
         Text text = new Text(textToBeInputted);
         text.setFill(Color.WHITE);
         Group group = new Group(text);
+       // System.out.println(group);
         group.setTranslateY(rectangle.getHeight()/2);
         group.setTranslateX(rectangle.getWidth()/2);
         pane.getChildren().add(group);
-    //    System.out.println(pane.getChildren());
     }
 
     /**
@@ -147,65 +138,31 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
      */
     @Override
     public void updateAxisRange() {
-        NumberAxis xAxis = (NumberAxis) getXAxis();
-      //  Axis<Y> yAxis = getYAxis();
-        List<Integer> xData = new ArrayList<>();
-        for (Series<X,Y> series: getData()) {
-            for (Data<X,Y> data: series.getData()) {
-                int xValue = Integer.parseInt(data.getXValue().toString());
-                int size = (int)((ChartData)data.getExtraValue()).getLength();
-                xData.add(xValue + size);
+        Axis<X> xAxis = getXAxis();
+        Axis<Y> yAxis = getYAxis();
+        List<X> xData= null;
+        List<Y> yData = null;
+        if(xAxis.isAutoRanging()) {
+            xData = new ArrayList<X>();
+        }
+        if(yAxis.isAutoRanging()) {
+            yData = new ArrayList<>();
+        }
+
+        if(xData != null || yData != null) {
+            for(Series<X,Y> series : getData()) {
+                for(Data<X,Y> data: series.getData()) {
+                    if(xData != null) {
+                        xData.add(data.getXValue());
+                        // Increases the xaxis based on the length of each task
+                        xData.add(xAxis.toRealValue(xAxis.toNumericValue(data.getXValue()) + getLength(data.getExtraValue())));
+                    }
+                }
+            }
+            if(xData != null) {
+                xAxis.invalidateRange(xData);
             }
         }
-        System.out.println(xData);
-        xAxis.setAutoRanging(false);
-        xAxis.setLowerBound(5);
-
-        if (!xData.isEmpty()) {
-            int max = Collections.max(xData);
-            xAxis.setUpperBound(max + max/8);
-        } else {
-            xAxis.setUpperBound(20);
-        }
-
-       // System.out.println(xData);
-//        List<Y> yData = null;
-//        if(xAxis.isAutoRanging()) {
-//            xData = new ArrayList<X>();
-//        }
-//        if(yAxis.isAutoRanging()) {
-//            yData = new ArrayList<>();
-//        }
-//
-//        if(xData != null || yData != null) {
-//            for(Series<X,Y> series : getData()) {
-//                for(Data<X,Y> data: series.getData()) {
-//                    if(xData != null) {
-//                        xData.add(data.getXValue());
-//                        // Increases the xaxis based on the length of each task
-//                        xData.add(xAxis.toRealValue(xAxis.toNumericValue(data.getXValue()) + getLength(data.getExtraValue())));
-//                    }
-//                    if(yData != null){
-//                        yData.add(data.getYValue());
-//                    }
-//                }
-//            }
-//
-//            if(xData != null) {
-////                System.out.println("called once");
-////                System.out.println(xData);
-//               // xAxis.invalidateRange(xData);
-//                List<X> test = new ArrayList<>(xData);
-//                System.out.println(test);
-//           //     xAxis.setAutoRanging(false);
-//                System.out.println(xData.size());
-//                  ((NumberAxis) xAxis).setLowerBound(0);
-//                //  ((NumberAxis) xAxis).setUpperBound();
-//            }
-//            if(yData != null) {
-//                //yAxis.invalidateRange(yData);
-//            }
-        //}
     }
 
     /**
@@ -228,7 +185,12 @@ public class ProcessChart<X,Y> extends XYChart<X,Y> {
 
     private String getNodeName(Object obj) {return ((ChartData) obj).getText();}
     @Override
-    protected  void dataItemRemoved(Data<X,Y> item,Series<X,Y> series) {
+    public  void dataItemRemoved(Data<X,Y> item,Series<X,Y> series) {
+        for (Data<X,Y> d : series.getData()) {
+            final Node container = d.getNode();
+            getPlotChildren().remove(container);
+        }
+        removeSeriesFromDisplay(series);
     }
     @Override
     protected void dataItemChanged(Data<X, Y> item) {

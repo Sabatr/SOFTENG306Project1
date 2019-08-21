@@ -40,7 +40,6 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
      */
     public State runAlgorithm() {
         startTimer();
-
         finalState = null;
         while (!candidate.isEmpty() && candidate.peek().getCostToBottomLevel() <= minFullPath) {
             State s = candidate.poll();

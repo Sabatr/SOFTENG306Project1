@@ -45,7 +45,6 @@ public class GUIController {
         instantiateStatTiles();
         createProcessGraphTile();
         createInputGraphVisual();
-        //createGraphLoader();
     }
 
     private void createProcessGraphTile() {
@@ -126,8 +125,13 @@ public class GUIController {
      * This method puts the graphic created onto a pane.
      */
     private void createInputGraphVisual() {
-        TreeGenerator generator = new TreeGenerator(graphPane);
-        generator.generate();
+        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.INPUT_GRAPH,
+                graphPane.getPrefWidth(),graphPane.getPrefHeight());
+        Pane pane  = new Pane();
+        pane.setPrefSize(graphPane.getPrefWidth(),graphPane.getPrefHeight());
+        TreeGenerator generator = new TreeGenerator(pane);
+        tile.setGraphic(generator.generate());
+        graphPane.getChildren().add(tile);
     }
 
     /**

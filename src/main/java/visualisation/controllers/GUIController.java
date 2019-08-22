@@ -43,8 +43,8 @@ public class GUIController {
     private void initialize() {
         tileBuilder = new CustomTileBuilder();
         instantiateStatTiles();
-        createProcessGraphTile();
-        createInputGraphVisual();
+      //  createProcessGraphTile();
+      //  createInputGraphVisual();
     }
 
     private void createProcessGraphTile() {

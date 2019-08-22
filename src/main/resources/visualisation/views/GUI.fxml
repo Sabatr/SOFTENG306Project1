@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Polyline?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" stylesheets="@../visualisationassets/GUI.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="visualisation.controllers.GUIController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" styleClass="root" stylesheets="@../visualisationassets/GUI.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="visualisation.controllers.GUIController">
    <children>
-      <Pane fx:id="graphPane" layoutX="650.0" layoutY="500.0" prefHeight="400.0" prefWidth="550.0" />
-      <Pane fx:id="processPane" layoutX="350.0" layoutY="20.0" prefHeight="450.0" prefWidth="850.0" />
-      <Pane fx:id="tilesPane" prefHeight="900.0" prefWidth="300.0">
+      <Polyline fill="#ff008f" layoutX="512.0" layoutY="500.0" points="334.0, -203.0, 693.0, 301.0, 228.0, 301.0, -516.0, 301.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="mountain1" />
+      <Polyline fill="#ff0055" layoutX="600.0" layoutY="500.0" points="408.0, -214.0, 600.0, 300.0, 228.0, 301.0, -516.0, 301.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="mountain2" />
+      <Pane fx:id="graphPane" layoutX="719.0" layoutY="436.0" prefHeight="350.0" prefWidth="450.0" />
+      <Pane fx:id="processPane" layoutX="369.0" layoutY="14.0" prefHeight="450.0" prefWidth="800.0" />
+      <Pane fx:id="tilesPane" prefHeight="800.0" prefWidth="325.0" styleClass="stats-bar" stylesheets="@../visualisationassets/GUI.css">
          <children>
-            <VBox fx:id="tilesBox" prefHeight="900.0" prefWidth="300.0" spacing="10.0">
-               <padding>
-                  <Insets top="5.0" />
-               </padding>
-            </VBox>
+            <VBox fx:id="tilesBox" layoutX="25.0" prefHeight="800.0" prefWidth="275.0" spacing="20.0" styleClass="tile-box" stylesheets="@../visualisationassets/GUI.css" />
          </children>
       </Pane>
    </children>

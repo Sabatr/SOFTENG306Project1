@@ -26,7 +26,7 @@ public class CustomTileBuilder {
         this.height = height;
 
         tile = TileBuilder.create().skinType(SkinType.CUSTOM)
-                .prefSize(width, height)
+                .prefSize(width, height - 50)
                 .build();
         //tile.getStylesheets().add(CustomTileBuilder.class.getResource("../../../visualisationassets/Tiles.css").toString());
 

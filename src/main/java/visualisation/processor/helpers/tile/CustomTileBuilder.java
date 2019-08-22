@@ -14,7 +14,7 @@ public class CustomTileBuilder {
     private Tile tile;
 
     public enum MyTileType  {
-            BRANCHES, TIMER, CPU, MEMORY, PROCESS_CHART
+            BRANCHES, TIMER, CPU, MEMORY, PROCESS_CHART, INPUT_GRAPH
     }
     public Tile build(MyTileType tileType, double width, double height) {
         this.width = width;
@@ -28,11 +28,18 @@ public class CustomTileBuilder {
                 return createCPUTile();
             case PROCESS_CHART:
                 return createProcessTile();
+            case INPUT_GRAPH:
+                return createInputGraphTile();
             default:
                 return null;
         }
     }
-
+    private Tile createInputGraphTile() {
+        tile = TileBuilder.create().skinType(SkinType.CUSTOM)
+                .prefSize(width, height)
+                .build();
+        return tile;
+    }
     private Tile createBranchTile() {
         Tile tile = TileBuilder.create().skinType(SkinType.TEXT)
                 .text(DEFAULT_BRANCH_TEXT)

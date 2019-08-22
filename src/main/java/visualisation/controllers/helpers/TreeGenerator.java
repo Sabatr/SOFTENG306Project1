@@ -177,8 +177,9 @@ public class TreeGenerator {
 
         }
     }
-    public void generate() {
+    public Pane generate() {
         generateNodePositions();
+        return graphPane;
     }
 
     /**

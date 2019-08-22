@@ -17,11 +17,11 @@ public class VisualNode extends Circle{
 
     public VisualNode(int x, int y, int size, Vertex vertex) {
         super(x,y,size);
-        this.setFill(Color.RED);
         this.x = x;
         this.y = y;
         this.size =size;
         this.vertex = vertex;
+        this.getStyleClass().add("node");
     }
 
     /**

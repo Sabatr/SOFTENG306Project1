@@ -45,7 +45,7 @@ public class Main {
 
         //TODO: Delete later
         args = new String[3];
-        args[0] = "data/input.dot";
+        args[0] = "data/input4.dot";
         args[1] = "4";
         args[2] = "-v";
         if (args.length == 0) {

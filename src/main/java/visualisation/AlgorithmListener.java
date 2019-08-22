@@ -47,13 +47,20 @@ public class AlgorithmListener implements SchedulerListener {
     }
 
     @Override
-    public void updateTimeElapsed(long time) {
-        timeElapsed = time;
-        String timeFormatted;
-        StringBuilder builder = new StringBuilder();
-        builder.append(timeElapsed);
-        builder.append("ms");
-        GUIUpdater.getInstance().updateTimeLabel(builder.toString());
+    public void updateTimeElapsed(String time) {
+//        timeElapsed = time;
+//        String timeFormatted;
+//        StringBuilder builder = new StringBuilder();
+//        String seconds = "";
+//        String milliSeconds = "";
+//        milliSeconds+=""+(timeElapsed%1000);
+//        if (timeElapsed > 999) {
+//            seconds+=1;
+//
+//        builder.append(seconds);
+//        builder.append(" : ");
+//        builder.append(milliSeconds);
+        GUIUpdater.getInstance().updateTimeLabel(time);
     }
 
     @Override

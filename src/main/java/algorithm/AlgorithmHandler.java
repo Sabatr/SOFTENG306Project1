@@ -10,6 +10,7 @@ import visualisation.processor.listeners.ObservableAlgorithm;
 import visualisation.processor.listeners.SchedulerListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class handles the methods by the ObservableAlgorithm interface.
@@ -22,6 +23,7 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
     private long timeTaken;
     private Timeline timeline;
     private boolean timerStarted = false;
+    private String formattedTime;
     @Override
     public void addListener(SchedulerListener listener) {
         listeners.add(listener);
@@ -67,9 +69,11 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
                 timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10), (ActionEvent e) -> {
                     eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
                     timeTaken = System.currentTimeMillis() - time;
-
+                    formattedTime = String.format("%02d:%02d:%03d",
+                            TimeUnit.MILLISECONDS.toMinutes(timeTaken),
+                            TimeUnit.MILLISECONDS.toSeconds(timeTaken),
+                            timeTaken%1000);
                     fire();
-
                     if (timerStarted) {
                         timeline.stop();
                     }
@@ -100,7 +104,7 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
                 return;
             case UPDATE_TIME_ELAPSED:
                 for (SchedulerListener listener: listeners) {
-                    listener.updateTimeElapsed(timeTaken);
+                    listener.updateTimeElapsed(formattedTime);
                 }
                 return;
             case UPDATE_BRANCH_COUNTER:

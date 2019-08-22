@@ -1,7 +1,11 @@
-package visualisation.processor.helpers.tile;
+package visualisation.controllers.helpers.tile;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -13,12 +17,19 @@ public class CustomTileBuilder {
     private double width;
     private Tile tile;
 
+
     public enum MyTileType  {
             BRANCHES, TIMER, CPU, MEMORY, PROCESS_CHART, INPUT_GRAPH
     }
     public Tile build(MyTileType tileType, double width, double height) {
         this.width = width;
         this.height = height;
+
+        tile = TileBuilder.create().skinType(SkinType.CUSTOM)
+                .prefSize(width, height)
+                .build();
+        //tile.getStylesheets().add(CustomTileBuilder.class.getResource("../../../visualisationassets/Tiles.css").toString());
+
         switch(tileType) {
             case BRANCHES:
                 return createBranchTile();
@@ -35,39 +46,29 @@ public class CustomTileBuilder {
         }
     }
     private Tile createInputGraphTile() {
-        tile = TileBuilder.create().skinType(SkinType.CUSTOM)
-                .prefSize(width, height)
-                .build();
+        System.out.println(tile.getStylesheets());
+        //tile.setBackgroundColor(Color.BLACK);
+        tile.setBackgroundColor(Color.rgb(0,0,128));
         return tile;
     }
     private Tile createBranchTile() {
-        Tile tile = TileBuilder.create().skinType(SkinType.TEXT)
-                .text(DEFAULT_BRANCH_TEXT)
-                .prefSize(width, height)
-                .build();
+        tile.setSkinType(SkinType.TEXT);
+        tile.setText(DEFAULT_BRANCH_TEXT);
         tile.setBackgroundColor(Color.RED);
         return tile;
     }
 
     private Tile createProcessTile() {
-        tile = TileBuilder.create().skinType(SkinType.CUSTOM)
-                .prefSize(width, height)
-                .build();
         return tile;
     }
 
     private Tile createTimerTile() {
-        return TileBuilder.create().skinType(SkinType.TEXT)
-                .text(DEFAULT_BRANCH_TEXT)
-                .prefSize(width, height)
-                .build();
+        tile.setSkinType(SkinType.TEXT);
+        tile.setText(DEFAULT_BRANCH_TEXT);
+        return tile;
     }
 
     private Tile createCPUTile() {
-        Tile tile = TileBuilder.create().skinType(SkinType.TEXT)
-                .text(DEFAULT_BRANCH_TEXT)
-                .prefSize(width, height)
-                .build();
         return tile;
     }
 

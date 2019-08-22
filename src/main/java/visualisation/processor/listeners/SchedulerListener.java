@@ -43,7 +43,7 @@ public interface SchedulerListener {
      */
     String getFileName();
 
-    void updateTimeElapsed(long time);
+    void updateTimeElapsed(String time);
 
     long getTimeElapsed();
 

@@ -7,9 +7,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import visualisation.controllers.helpers.TreeGenerator;
+import visualisation.controllers.helpers.tile.CustomTileBuilder;
 import visualisation.processor.helpers.CustomProgressBar;
 import visualisation.processor.helpers.ProcessChartHelper;
-import visualisation.processor.helpers.tile.CustomTileBuilder;
 
 public class GUIController {
     @FXML
@@ -52,10 +52,8 @@ public class GUIController {
                 processPane.getPrefWidth(),processPane.getPrefHeight());
 
         Platform.runLater(() -> {
-            // placeHolder = new Circle(processPane.getLayoutX(),processPane.getLayoutY(),100);
             progressBar = new CustomProgressBar(processPane);
             tile.setGraphic(progressBar);
-            //processPane.getChildren().add(progressBar);
         });
         processPane.getChildren().add(tile);
     }

@@ -16,7 +16,7 @@ public class TreeGenerator {
     private HashMap<Integer,List<Vertex>> layerNode;
     private HashMap<Vertex,VisualNode> vertexToNode = new HashMap<>();
     private int size;
-    private final int DEFAULT_NODE_SIZE = 200;
+    private final int DEFAULT_NODE_SIZE = 100;
     private final int PANE_CENTER_DIVIDER = 2;
     private final int INCREASED_AMOUNT_MULTIPLIER = 2;
     private final int Y_POSITION_INCREASE = 1;

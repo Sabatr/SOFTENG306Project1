@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import visualisation.controllers.helpers.TreeGenerator;
+import visualisation.controllers.helpers.tile.CustomCounter;
 import visualisation.controllers.helpers.tile.CustomPieChart;
 import visualisation.controllers.helpers.tile.CustomTileBuilder;
 import visualisation.processor.helpers.CustomProgressBar;
@@ -69,7 +70,7 @@ public class GUIController {
 
     private void instantiateStatTiles() {
 
-        tileHeight = tilesBox.getPrefHeight()/3;
+        tileHeight = tilesBox.getPrefHeight()/3 + 10;
         tileWidth = tilesBox.getPrefWidth();
         createTileHeader();
         // Position 1 in the VBox
@@ -88,11 +89,6 @@ public class GUIController {
         text.setFont(new Font(30));
         text.setFill(Color.WHITE);
         tilesBox.getChildren().add(text);
-    }
-
-    private void createTimeTile() {
-        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.TIMER,tileWidth,tileHeight);
-        tilesBox.getChildren().add(tile);
     }
 
     private void createBranchTile() {
@@ -114,18 +110,11 @@ public class GUIController {
         pieChart.setCacheShape(true);
         pieChart.setCacheHint(CacheHint.SPEED);
         pane.getChildren().add(pieChart);
-
-
-      //  System.out.println(pieChart.getHeight());
-
         Text text = new Text("Total Branches: 0");
         text.setY(200);
         text.setFill(Color.WHITE);
 
         pane.getChildren().add(text);
-
-        //group.getChildren().addAll(pieChart,text);
-
 
         tile.setGraphic(pane);
         tilesBox.getChildren().add(tile);
@@ -154,12 +143,25 @@ public class GUIController {
         );
     }
 
+    private void createTimeTile() {
+        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.TIMER,tileWidth,tileHeight);
+        CustomCounter counter = new CustomCounter(tileWidth,tileHeight);
+        tile.setGraphic(counter);
+        tilesBox.getChildren().add(tile);
+    }
+
     /**
      * Updates the time elapsed
      * @param time
      */
     public void updateTimer(String time){
-        Platform.runLater(() ->((Tile)tilesBox.getChildren().get(2)).setText(time));
+        Platform.runLater(() ->{
+           Tile tile =  (Tile)tilesBox.getChildren().get(2);
+           CustomCounter counter = (CustomCounter) tile.getGraphic();
+           Text text = counter.getText();
+           text.setText(time);
+           counter.setText(text);
+        });
     }
 
 

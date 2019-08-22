@@ -51,8 +51,6 @@ public class CustomTileBuilder {
         return tile;
     }
     private Tile createBranchTile() {
-//        tile.setSkinType(SkinType.TEXT);
-//        tile.setText(DEFAULT_BRANCH_TEXT);
         tile.setBackgroundColor(Color.rgb(25, 34, 38));
         return tile;
     }
@@ -63,8 +61,7 @@ public class CustomTileBuilder {
     }
 
     private Tile createTimerTile() {
-        tile.setSkinType(SkinType.TEXT);
-        tile.setText(DEFAULT_BRANCH_TEXT);
+        tile.setSkinType(SkinType.CUSTOM);
         tile.setBackgroundColor(Color.rgb(25, 34, 38));
         return tile;
     }

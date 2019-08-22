@@ -33,7 +33,7 @@ public class GUIUpdater {
      * @param
      */
     public void updateBranchLabel(AlgorithmBranchDetails details) {
-        String label = "Branches searched: " + details.getBranchesSeen();
+        String label = "Total branches: " + details.getBranchesSeen();
         controller.updateBranchCount(label, details);
     }
 

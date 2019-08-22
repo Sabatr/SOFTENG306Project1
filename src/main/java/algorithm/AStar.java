@@ -19,10 +19,8 @@ public class AStar  implements  Algorithm{
     private HashSet<State> visited;
     private Graph graph;
     private State result;
-    private final int MAX_THREADS = 4;
+    private final int MAX_THREADS;
     private int currentThreads;
-
-    private int num;
 
     public AStar(int numProcessors, Graph graph) {
         candidate = new PriorityQueue<>(new AStarComparator());
@@ -31,7 +29,17 @@ public class AStar  implements  Algorithm{
         traversed = false;
         candidate.add(new State(numProcessors, graph));
         currentThreads = 1;
-        num = 0;
+        MAX_THREADS = 1;
+    }
+
+    public AStar(int numProcessors, Graph graph, int maxThreads) {
+        candidate = new PriorityQueue<>(new AStarComparator());
+        visited = new HashSet();
+        this.graph = graph;
+        traversed = false;
+        candidate.add(new State(numProcessors, graph));
+        currentThreads = 1;
+        MAX_THREADS = maxThreads;
     }
 
     private synchronized void changeCurrentThreads(int i){

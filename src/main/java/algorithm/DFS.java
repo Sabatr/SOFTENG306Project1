@@ -47,15 +47,43 @@ public class DFS implements Algorithm {
      * @return
      */
     public State runAlgorithm() {
+
+//             state = state.getNextPossibleState(state);
+//            System.out.println("next state " + state);
+//            State afterState = state.getNextPossibleState(state);
+//            System.out.println("AFTER state " + afterState);
+//        System.out.println("GET count " + state.getCountNextStateCalled());
+//
+//
+//
+//        State state2 = state.getNextPossibleState(state);
+//        System.out.println("next state " + state2);
+//
+//        State state3 = state.getNextPossibleState(state);
+//        System.out.println("next state " + state3);
+//
+//        State state4 = state.getNextPossibleState(state);
+//        System.out.println("next state " + state4);
+
+
+
+//        System.out.println("Here is the count " + state.getCountNextStateCalled());
+//
+//
+
         State bestState = new State(numP, graph);
         bestState.setCurrentCost(Integer.MAX_VALUE);
-            State state = stateStack.peek();
+        State state = stateStack.peek();
+        System.out.println(state);
             while (!stateStack.empty()) {
-                if (state.getCurrentCost() < bestState.getCurrentCost()) {
+                    if (state.getCurrentCost() == 2){
+                        System.out.println(state);
+                    }
+
                     state = state.getNextPossibleState(state);
-                } else {
-                    state = null;
-                }
+//                } else {
+//                    state = null;
+//                }
                 if (state != null ) {
                     stateStack.push(state);
                 } else {
@@ -67,17 +95,21 @@ public class DFS implements Algorithm {
                     if (state.isScheduleEmpty()){
                         break;
                     }
-                    if (state.allVisited() && state.getCurrentCost() < bestState.getCurrentCost()){
+                    if (state.getCurrentCost() < bestState.getCurrentCost()){
                         bestState = state;
                     }
+//
+//                    System.out.println(state);
 
                 }
                 System.out.println(state);
 
         }
 
-        System.out.println("Here is stack " + stateStack);
+        System.out.println(bestState);
 
+//
+//        System.out.println("best state " +  bestState);
 
 //        while (!stateStack.empty()) {
 //            //get latest state

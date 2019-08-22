@@ -20,6 +20,13 @@ public class State {
     Graph g;
     HashMap<Vertex, Integer> lastProcessorAssignedVertex;
     Vertex intAssignedVertex;
+    int usedNextStateNumber = 0;
+    int newAssignmentProcessor = 0;
+    int newAssignmentVertexIndex = 0;
+    Vertex newAssignmentVertex;
+    private int countNextStateCalled = 0;
+    int iterateToTraverse = 0;
+
 
     public List<Processor> getProcessors() {
         return processors;
@@ -51,6 +58,8 @@ public class State {
     PriorityQueue<Vertex> toTraverse;
     int lastProcessorVertexAddedTo;
     private int prevProcessNum = -1;
+    PriorityQueue<Vertex> nextToTraverse;
+    List<Vertex> toTraverseList;
 
     /**
      * Sets up the State by assigning initial values to the fields
@@ -64,8 +73,13 @@ public class State {
         for (int i = 0; i < numProcessors; i++) {
             processors.add(new Processor(i + 1));
         }
+
+        toTraverseList = new ArrayList<>();
         toTraverse = new PriorityQueue<>(new VertexComparator());
         toTraverse.addAll(g.getRoots());
+
+        nextToTraverse = toTraverse;
+
         currentLevel = 0;
         costToBottomLevel = g.calculateBottomLevel();
         currentCost = 0;
@@ -80,6 +94,7 @@ public class State {
     private State(State copyState) {
         traversed = new ArrayList<>();
         traversed.addAll(copyState.traversed);
+
         processors = new ArrayList<>();
         this.g = copyState.g;
         for (int i = 0; i < copyState.processors.size(); i++) {
@@ -87,6 +102,10 @@ public class State {
         }
         toTraverse = new PriorityQueue<>(new VertexComparator());
         toTraverse.addAll(copyState.toTraverse);
+
+        nextToTraverse = toTraverse;
+
+
         currentLevel = copyState.currentLevel;
         costToBottomLevel = copyState.costToBottomLevel;
         prevVertexEndTimeHashMap = new HashMap<>(copyState.prevVertexEndTimeHashMap);
@@ -103,7 +122,6 @@ public class State {
         lastProcessorVertexAddedTo = processorNum;
         traversed.add(v);
         toTraverse.remove(v);
-
         //System.out.println(Arrays.toString(hasBlock.toArray()));
         // Add the vertex to processor x, at the earliest possible time.
         int boundCost = processors.get(processorNum).addVertex(v, traversed, prevVertexEndTimeHashMap);
@@ -156,33 +174,90 @@ public class State {
         return traversed.isEmpty();
     }
 
+    public int getCountNextStateCalled(){ return  countNextStateCalled; }
+//
+//    public Vertex getVertexToAddNext(){
+//        if (countNextStateCalled == 1){
+//
+//        }
+//
+//    }
+
+    public PriorityQueue<Vertex> getNextToTraverse(){return nextToTraverse; }
+    public List<Vertex> getToTraverseList() {return toTraverseList; }
 
     public State getNextPossibleState(State currentState){
+        countNextStateCalled++;
+        //nextToTraverse.remove();
+
         if (!allVisited()) {
-            for (Vertex v : toTraverse) {
+            int possibleNextStatesNumber = processors.size() * toTraverse.size();
+
+            if (usedNextStateNumber < processors.size()) {
+                usedNextStateNumber++;
+            }
+
+            Vertex v = null;
+
+
+            List<Vertex> toTravList = new ArrayList(nextToTraverse);
+            if (iterateToTraverse < toTravList.size()) {
+                v = toTravList.get(iterateToTraverse);
+            }
+            //System.out.println(newV);
+
+            if (countNextStateCalled == processors.size() && iterateToTraverse < toTravList.size()) {
+                iterateToTraverse++;
+                countNextStateCalled = 0;
+            }
+
+
+
+
+//            if (countNextStateCalled == processors.size()){
+//                if (toTravList.size() > 1) {
+//                    v = toTravList.get(1);
+//                }                       countNextStateCalled = 0;
+//            } else {
+//                if (toTravList.size() > 0) {
+//                    v = toTravList.get(0);
+//                }
+//            }
+
+
+            if (newAssignmentProcessor < processors.size()) {
+                newAssignmentProcessor = newAssignmentProcessor + 1;
+            } else {
+                newAssignmentProcessor = 1;
+            }
+
+            System.out.println("next " + nextToTraverse);
+            if (v != null) {
+
                 if (canVisit(v)) {
 
-                    if (!lastProcessorAssignedVertex.containsKey(v)){
-                        lastProcessorAssignedVertex.put(v, 0);
+                    if (!lastProcessorAssignedVertex.containsKey(v)) {
+                        lastProcessorAssignedVertex.put(v, newAssignmentProcessor - 1);
                         currentState = new State(this);
-                        currentState.addVertex(0,v);
+                        currentState.addVertex(newAssignmentProcessor - 1, v);
                         return currentState;
                     }
-                    if (lastProcessorAssignedVertex.get(v) == processors.size()){
-                        toTraverse.remove(v);
+                    if (lastProcessorAssignedVertex.get(v) == processors.size()) {
                         return null;
 
-                    } else if (lastProcessorAssignedVertex.get(v) < processors.size()){
+                    } else if (lastProcessorAssignedVertex.get(v) < processors.size()) {
                         int lastProcessor = lastProcessorAssignedVertex.get(v);
-                        lastProcessor = lastProcessor + 1;
-                            lastProcessorAssignedVertex.put(v, lastProcessor - 1);
-                            currentState.addVertex(lastProcessor, v);
-                            return currentState;
+                        lastProcessor = newAssignmentProcessor;
+                        lastProcessorAssignedVertex.put(v, lastProcessor - 1);
+                        currentState = new State(this);
+                        currentState.addVertex(lastProcessor - 1, v);
+                        return currentState;
 
                     }
                 }
             }
         }
+
 
         return null;
     }

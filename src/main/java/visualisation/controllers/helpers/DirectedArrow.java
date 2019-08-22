@@ -3,6 +3,9 @@ package visualisation.controllers.helpers;
 import javafx.scene.Group;
 import javafx.scene.shape.Polygon;
 
+/**
+ * WORK IN PROGRESS: Adding arrows to graph
+ */
 public class DirectedArrow extends Group{
     private VisualEdge edge;
     private int size;
@@ -29,21 +32,36 @@ public class DirectedArrow extends Group{
         double rightPointX;
         double rightPointY;
 
+        int xWidth = Math.abs(edge.getStartingX() - edge.getEndingX());
+        int yWidth = Math.abs(edge.getStartingY() - edge.getEndingY());
+        double angle = Math.atan(xWidth/yWidth);
+        //System.out.println("Angle is" + angle);
+        if (angle == 0) {
+            angle = 90.0;
+            xWidth = 1;
+        }
+        double xBuffer = (xWidth * Math.tan(angle/2))/2;
+
+        double yBuffer =  (xBuffer / Math.tan(angle/2))/4;
+
+
         if (edge.getStartingX() > edge.getEndingX()) {
-            leftPointX = edge.getEndingX() + (size/4);
-            leftPointY = edge.getEndingY() - (size/2);
-            rightPointX = edge.getEndingX() + (size/2) ;
-            rightPointY = edge.getEndingY() + (size/8);
+            leftPointX = edge.getEndingX() + xBuffer/2;
+            leftPointY = edge.getEndingY() - yBuffer;
+            rightPointX = edge.getEndingX()  + xBuffer/1.5;
+            rightPointY = edge.getEndingY() ;
         } else if (edge.getStartingX() < edge.getEndingX()) {
-            leftPointX = edge.getEndingX() - (size/2);
-            leftPointY = edge.getEndingY();
-            rightPointX = edge.getEndingX();
-            rightPointY = edge.getEndingY() - (size/2);
+            leftPointX = edge.getEndingX() - xBuffer/2;
+            leftPointY = edge.getEndingY() - yBuffer;
+            rightPointX = edge.getEndingX() - xBuffer/1.5;
+            rightPointY = edge.getEndingY();
         } else {
-            leftPointX = edge.getEndingX() - (size/2);
-            leftPointY = edge.getEndingY() - (size/2);
-            rightPointX = edge.getEndingX() + (size/2);
-            rightPointY = edge.getEndingY() - (size/2);
+            leftPointX = edge.getEndingX() - xBuffer/2;
+            leftPointY = edge.getEndingY() - yBuffer/2;
+            rightPointX = edge.getEndingX() + xBuffer/2;
+            rightPointY = edge.getEndingY() - yBuffer/2;
+            System.out.println(yBuffer);
+            System.out.println(leftPointY);
         }
         polygon.getPoints().addAll(
                 new Double[] {

@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.shape.Circle;
 import visualisation.controllers.helpers.TreeGenerator;
+import visualisation.processor.helpers.CustomProgressBar;
 import visualisation.processor.helpers.ProcessChartHelper;
 
 public class GUIController {
@@ -27,8 +28,7 @@ public class GUIController {
     @FXML
     private TilePane CPUTile;
 
-    //TODO: Make a loading screen somehow
-    private Circle placeHolder;
+    private CustomProgressBar progressBar;
     private ProcessChartHelper helper;
 
     /**
@@ -118,8 +118,9 @@ public class GUIController {
     public void createGraphLoader() {
         // Loading should go here
         Platform.runLater(() -> {
-            placeHolder = new Circle(processPane.getLayoutX(),processPane.getLayoutY(),100);
-            processPane.getChildren().add(placeHolder);
+           // placeHolder = new Circle(processPane.getLayoutX(),processPane.getLayoutY(),100);
+            progressBar = new CustomProgressBar(processPane);
+            processPane.getChildren().add(progressBar);
         });
 
     }
@@ -128,9 +129,8 @@ public class GUIController {
      * Create the ProcessChart when the algorithm has been complete
      */
     public void createChart() {
-        System.out.println("gets usfbifb");
         Platform.runLater(()-> {
-            processPane.getChildren().remove(placeHolder);
+            processPane.getChildren().remove(progressBar);
 
             if (helper == null) {
                 helper = new ProcessChartHelper(processPane);

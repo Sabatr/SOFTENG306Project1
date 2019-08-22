@@ -46,7 +46,6 @@ public class CustomTileBuilder {
         }
     }
     private Tile createInputGraphTile() {
-        System.out.println(tile.getStylesheets());
         //tile.setBackgroundColor(Color.BLACK);
         tile.setBackgroundColor(Color.rgb(0,0,128));
         return tile;

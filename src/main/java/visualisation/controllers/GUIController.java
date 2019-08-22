@@ -7,10 +7,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import visualisation.controllers.helpers.TreeGenerator;
 import visualisation.processor.helpers.CustomProgressBar;
 import visualisation.processor.helpers.ProcessChartHelper;
+import visualisation.processor.helpers.tile.CustomTileBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUIController {
     @FXML
@@ -18,16 +23,11 @@ public class GUIController {
     @FXML
     private Pane processPane;
     @FXML
-    private Label timeElapsed;
+    private Pane tilesPane;
     @FXML
-    private Label branchesVisited;
-    @FXML
-    private TilePane timeTile;
-    @FXML
-    private TilePane branchTile;
-    @FXML
-    private TilePane CPUTile;
+    private VBox tilesBox;
 
+    private CustomTileBuilder tileBuilder;
     private CustomProgressBar progressBar;
     private ProcessChartHelper helper;
 
@@ -44,41 +44,53 @@ public class GUIController {
      */
     @FXML
     private void initialize() {
-       createInputGraphVisual();
-       createGraphLoader();
-       setTimeLabel();
-       setBranchesLabel();
-       createTimeTile();
-       createBranchTile();
+        tileBuilder = new CustomTileBuilder();
+        instantiateTiles();
+        createInputGraphVisual();
+        createGraphLoader();
+
+    }
+
+    private void instantiateTiles() {
+        // Position 0 in the VBox
+        createBranchTile();
+
+        // Position 1 in the VBox
+        createTimeTile();
+
+        // Position 2 in the VBox
         createCPUTile();
     }
 
     private void createTimeTile() {
-        createTile(timeTile);
+        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.TIMER,
+                (int)tilesBox.getPrefWidth(),
+                (int)tilesBox.getPrefHeight()/3);
+        tilesBox.getChildren().add(tile);
     }
 
     private void createBranchTile() {
-        createTile(branchTile);
+      //  createTile(branchTile);
+        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.BRANCHES,
+                (int)tilesBox.getPrefWidth(),
+                (int)tilesBox.getPrefHeight()/3);
+        tilesBox.getChildren().add(tile);
+     //   branchTile.getChildren().add(tile);
+
     }
 
     private void createCPUTile() {
-        createTile(CPUTile);
+       // createTile(CPUTile);
     }
 
-    private void createTile(Pane pane) {
-        Tile tile = new Tile();
-        tile.setPrefHeight(pane.getPrefHeight());
-        tile.setPrefWidth(pane.getPrefWidth());
-        tile.setLayoutX(pane.getLayoutX());
-        tile.setLayoutY(pane.getLayoutY());
-        pane.getChildren().add(tile);
-    }
     /**
      * Updates the branch counter
      * @param label
      */
     public void updateBranchCount(String label) {
-        Platform.runLater(() -> branchesVisited.setText(label));
+        Platform.runLater(() ->
+                ((Tile)tilesBox.getChildren().get(0)).setText(label)
+        );
     }
 
     /**
@@ -86,22 +98,10 @@ public class GUIController {
      * @param time
      */
     public void updateTimer(String time){
-        Platform.runLater(() -> timeElapsed.setText(time));
+        Platform.runLater(() ->((Tile)tilesBox.getChildren().get(1)).setText(time));
     }
 
-    /**
-     * The initial time label
-     */
-    private void setTimeLabel() {
-        timeElapsed.setText("0ms");
-    }
 
-    /**
-     * The initial label for the branches
-     */
-    private void setBranchesLabel() {
-        branchesVisited.setText("0");
-    }
     /**
      * This method allows for the creation of the input graph visualisation.
      * It uses the InputGraphHelper class to add vertices/edges and also add styling.

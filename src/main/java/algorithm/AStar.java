@@ -42,6 +42,7 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
         startTimer();
         finalState = null;
         while (!candidate.isEmpty() && candidate.peek().getCostToBottomLevel() <= minFullPath) {
+            fireEvent(AlgorithmEvents.UPDATE_BRANCH_COUNTER);
             State s = candidate.poll();
             for (State s1 : s.generatePossibilities()) {
                 if (!visited.contains(s1)) {

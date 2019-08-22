@@ -1,5 +1,6 @@
 package visualisation.processor.helpers;
 
+import algorithm.AlgorithmBranchDetails;
 import visualisation.controllers.GUIController;
 
 /**
@@ -29,11 +30,11 @@ public class GUIUpdater {
 
     /**
      * Updates the label which tells the branch
-     * @param count
+     * @param
      */
-    public void updateBranchLabel(int count) {
-        String label = "Branches searched: " + count;
-        controller.updateBranchCount(label);
+    public void updateBranchLabel(AlgorithmBranchDetails details) {
+        String label = "Branches searched: " + details.getBranchesSeen();
+        controller.updateBranchCount(label, details);
     }
 
     /**

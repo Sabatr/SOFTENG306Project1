@@ -1,5 +1,6 @@
 package visualisation;
 
+import algorithm.AlgorithmBranchDetails;
 import javafx.concurrent.Task;
 import scheduler.State;
 import visualisation.processor.helpers.GUIUpdater;
@@ -14,6 +15,11 @@ public class AlgorithmListener implements SchedulerListener {
     private String path;
     private long timeElapsed;
     private int branchCounter;
+    private AlgorithmBranchDetails details;
+
+    public AlgorithmListener() {
+        details = new AlgorithmBranchDetails();
+    }
 
     @Override
     public void setNumberOfProcessors(int numberOfProcessors) {
@@ -48,18 +54,6 @@ public class AlgorithmListener implements SchedulerListener {
 
     @Override
     public void updateTimeElapsed(String time) {
-//        timeElapsed = time;
-//        String timeFormatted;
-//        StringBuilder builder = new StringBuilder();
-//        String seconds = "";
-//        String milliSeconds = "";
-//        milliSeconds+=""+(timeElapsed%1000);
-//        if (timeElapsed > 999) {
-//            seconds+=1;
-//
-//        builder.append(seconds);
-//        builder.append(" : ");
-//        builder.append(milliSeconds);
         GUIUpdater.getInstance().updateTimeLabel(time);
     }
 
@@ -74,7 +68,8 @@ public class AlgorithmListener implements SchedulerListener {
             @Override
             protected Void call() {
                 branchCounter++;
-                GUIUpdater.getInstance().updateBranchLabel(branchCounter);
+                details.setBranchesSeen(branchCounter);
+                GUIUpdater.getInstance().updateBranchLabel(details);
                 return null;
             }
         };

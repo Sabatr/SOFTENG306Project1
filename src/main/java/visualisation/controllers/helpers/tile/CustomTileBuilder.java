@@ -46,28 +46,31 @@ public class CustomTileBuilder {
         }
     }
     private Tile createInputGraphTile() {
-        //tile.setBackgroundColor(Color.BLACK);
-        tile.setBackgroundColor(Color.rgb(0,0,128));
+        tile.setBackgroundColor(Color.WHITE);
+        tile.setInnerShadowEnabled(true);
         return tile;
     }
     private Tile createBranchTile() {
-        tile.setSkinType(SkinType.TEXT);
-        tile.setText(DEFAULT_BRANCH_TEXT);
-        tile.setBackgroundColor(Color.RED);
+//        tile.setSkinType(SkinType.TEXT);
+//        tile.setText(DEFAULT_BRANCH_TEXT);
+        tile.setBackgroundColor(Color.rgb(25, 34, 38));
         return tile;
     }
 
     private Tile createProcessTile() {
+        tile.setBackgroundColor(Color.WHITE);
         return tile;
     }
 
     private Tile createTimerTile() {
         tile.setSkinType(SkinType.TEXT);
         tile.setText(DEFAULT_BRANCH_TEXT);
+        tile.setBackgroundColor(Color.rgb(25, 34, 38));
         return tile;
     }
 
     private Tile createCPUTile() {
+        tile.setBackgroundColor(Color.rgb(25, 34, 38));
         return tile;
     }
 

@@ -7,12 +7,12 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" styleClass="root" stylesheets="@../visualisationassets/GUI.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="visualisation.controllers.GUIController">
    <children>
       <Polyline fill="#ff008f" layoutX="512.0" layoutY="500.0" points="334.0, -203.0, 693.0, 301.0, 228.0, 301.0, -516.0, 301.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="mountain1" />
-      <Polyline fill="#ff0055" layoutX="600.0" layoutY="500.0" points="408.0, -214.0, 600.0, 300.0, 228.0, 301.0, -516.0, 301.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="mountain2" />
-      <Pane fx:id="graphPane" layoutX="719.0" layoutY="436.0" prefHeight="350.0" prefWidth="450.0" />
-      <Pane fx:id="processPane" layoutX="369.0" layoutY="14.0" prefHeight="450.0" prefWidth="800.0" />
+      <Polyline fill="#ff0055" layoutX="600.0" layoutY="495.0" points="408.0, -214.0, 600.0, 300.0, 228.0, 301.0, -516.0, 301.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="mountain2" />
+      <Pane fx:id="graphPane" layoutX="569.0" layoutY="436.0" prefHeight="350.0" prefWidth="600.0" styleClass="tile-background" />
+      <Pane fx:id="processPane" layoutX="369.0" layoutY="14.0" prefHeight="450.0" prefWidth="800.0" styleClass="tile-background" />
       <Pane fx:id="tilesPane" prefHeight="800.0" prefWidth="325.0" styleClass="stats-bar" stylesheets="@../visualisationassets/GUI.css">
          <children>
-            <VBox fx:id="tilesBox" layoutX="25.0" prefHeight="800.0" prefWidth="275.0" spacing="20.0" styleClass="tile-box" stylesheets="@../visualisationassets/GUI.css" />
+            <VBox fx:id="tilesBox" layoutX="13.0" prefHeight="800.0" prefWidth="299.0" spacing="20.0" styleClass="tile-box" stylesheets="@../visualisationassets/GUI.css" />
          </children>
       </Pane>
    </children>

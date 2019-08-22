@@ -49,7 +49,6 @@ public class Visualiser extends Application {
         stage.setTitle(VISUALISATION_TITLE);
         stage.centerOnScreen();
         stage.setScene(scene);
-        System.out.println(stage.getHeight());
         stage.show();
         // TODO: CHANGE THIS LATER
         Main.createSolution();

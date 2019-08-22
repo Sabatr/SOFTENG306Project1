@@ -1,6 +1,6 @@
 .root {
     -fx-background: #141E30;  /* fallback for old browsers */
-    -fx-background-color: linear-gradient(to right,#243B55, #141E30);
+    -fx-background-color: linear-gradient(to right,#141E30, #243B55);
 }
 
 .mountain1 {
@@ -16,10 +16,15 @@
 }
 
 .stats-bar {
-    -fx-background-color: rgb(56, 56, 56);
+    -fx-background-color: rgb(33, 44, 50);
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
 .tile-box {
+
+}
+
+.tile-background {
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.8), 10, 0, 0, 0);
 
 }

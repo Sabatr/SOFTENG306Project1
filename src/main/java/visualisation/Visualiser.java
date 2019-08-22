@@ -15,7 +15,7 @@ import visualisation.processor.helpers.GUIUpdater;
  */
 public class Visualiser extends Application {
     private GUIController controller;
-    private final int SCENE_HEIGHT = 800;
+    private final int SCENE_HEIGHT = 850;
     private final int SCENE_WIDTH = 1200;
     private final String VISUALISATION_TITLE = "Visualisation";
     private final String SCENE_PATH = "views/GUI.fxml";

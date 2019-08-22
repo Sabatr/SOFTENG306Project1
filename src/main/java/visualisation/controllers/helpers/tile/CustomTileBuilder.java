@@ -2,6 +2,7 @@ package visualisation.controllers.helpers.tile;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
+import eu.hansolo.tilesfx.chart.ChartData;
 import eu.hansolo.tilesfx.chart.TilesFXSeries;
 import javafx.geometry.Insets;
 import javafx.scene.chart.XYChart;
@@ -13,6 +14,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.Text;
+
+import java.util.Random;
 
 import static eu.hansolo.tilesfx.Tile.SkinType;
 
@@ -72,7 +76,8 @@ public class CustomTileBuilder {
     }
 
     private Tile createCPUTile() {
-        XYChart.Series<String, Number> series1 = new XYChart.Series();
+        XYChart.Series<String, Number> cpu = new XYChart.Series();
+        XYChart.Series<String, Number> memory = new XYChart.Series();
         Tile tile2 = TileBuilder.create()
                 .skinType(SkinType.SMOOTHED_CHART)
                 .chartType(Tile.ChartType.AREA)
@@ -80,19 +85,26 @@ public class CustomTileBuilder {
                 .prefSize(width,height)
                 .maxValue(100)
                 .minValue(0)
-                .unit("Unit")
-                .tooltipText("DBFF")
                 .chartGridColor(Color.TRANSPARENT)
                 //.animated(true)
                 .smoothing(true)
-                .tilesFxSeries(new TilesFXSeries<>(series1,
-                        Tile.RED,
+                .valueVisible(false)
+               // .chartData(smoothChartData1,smoothChartData2,smoothChartData3,smoothChartData4)
+
+                .tilesFxSeries(new TilesFXSeries<>(memory,Color.rgb(54,66,137),
                         new LinearGradient(0, 0, 0, 1,
                                 true, CycleMethod.NO_CYCLE,
-                                new Stop(0, Tile.RED),
-                                new Stop(1, Color.TRANSPARENT))))
+                                new Stop(0, Color.rgb(74,86,157)),
+                                new Stop(1, Color.TRANSPARENT))),
+                        new TilesFXSeries<>(cpu, Color.rgb(93,18,13),
+                        new LinearGradient(0, 0, 0, 1,
+                                true, CycleMethod.NO_CYCLE,
+                                new Stop(0, Color.rgb(93,18,13,0.5)),
+                                new Stop(1, Color.TRANSPARENT)))
+                )
                 .build();
-        tile2.setBackgroundColor(Color.rgb(25, 34, 38));
+       tile2.setBackgroundColor(Color.rgb(25, 34, 38));
+      //  tile2.setBackgroundColor(Color.rgb(80, 20, 80));
         return tile2;
     }
 

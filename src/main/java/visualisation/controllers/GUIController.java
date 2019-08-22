@@ -4,6 +4,7 @@ import algorithm.AlgorithmBranchDetails;
 import com.sun.management.OperatingSystemMXBean;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
+import eu.hansolo.tilesfx.chart.ChartData;
 import eu.hansolo.tilesfx.chart.TilesFXSeries;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -219,12 +220,23 @@ public class GUIController {
                 new KeyFrame(Duration.millis(500), (ActionEvent ae) -> {
                     Tile tile = (Tile)tilesBox.getChildren().get(3);
                     String xValue = Integer.toString((int)(Math.abs(time-System.currentTimeMillis()))/100);
-                    ObservableList<XYChart.Data<String,Number>> dataList = tile.getSeries().get(0).getData();
-                    if (dataList.size() > 10) {
-                        dataList.remove(0);
+                   // ObservableList<ChartData> dataList = tile.getChartData();
+                    ObservableList<XYChart.Data<String,Number>> cpuData = tile.getSeries().get(1).getData();
+                    ObservableList<XYChart.Data<String,Number>> memoryData = tile.getSeries().get(0).getData();
+                    if (cpuData.size() > 10) {
+                        cpuData.remove(0);
                     }
-                    dataList.add(new XYChart.Data(xValue,
+
+                    if (memoryData.size() > 10) {
+                        memoryData.remove(0);
+                    }
+
+                    cpuData.add(new XYChart.Data(xValue,
                             operatingSystemMXBean.getProcessCpuLoad()*100));
+                    double memoryUsage = operatingSystemMXBean.getTotalPhysicalMemorySize() - operatingSystemMXBean.getFreePhysicalMemorySize();
+
+                    memoryData.add(new XYChart.Data(xValue,
+                            memoryUsage/operatingSystemMXBean.getTotalPhysicalMemorySize()*100));
                 }
                 ));
         updateCounters.setCycleCount(Timeline.INDEFINITE);

@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import visualisation.controllers.helpers.TreeGenerator;
 import visualisation.processor.helpers.CustomProgressBar;
 import visualisation.processor.helpers.ProcessChartHelper;
@@ -31,6 +32,9 @@ public class GUIController {
     private CustomProgressBar progressBar;
     private ProcessChartHelper helper;
 
+    private double tileHeight;
+    private double tileWidth;
+
     /**
      * Dummy method to check for GUI responsiveness
      */
@@ -52,35 +56,41 @@ public class GUIController {
     }
 
     private void instantiateTiles() {
-        // Position 0 in the VBox
+
+        tileHeight = tilesBox.getPrefHeight()/3;
+        tileWidth = tilesBox.getPrefWidth();
+        createTileHeader();
+        // Position 1 in the VBox
         createBranchTile();
 
-        // Position 1 in the VBox
+        // Position 2 in the VBox
         createTimeTile();
 
-        // Position 2 in the VBox
+        // Position 3 in the VBox
         createCPUTile();
     }
 
+    private void createTileHeader() {
+        Text text = new Text("Statistics");
+        tilesBox.getChildren().add(text);
+    }
+
     private void createTimeTile() {
-        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.TIMER,
-                (int)tilesBox.getPrefWidth(),
-                (int)tilesBox.getPrefHeight()/3);
+        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.TIMER,tileWidth,tileHeight);
         tilesBox.getChildren().add(tile);
     }
 
     private void createBranchTile() {
       //  createTile(branchTile);
-        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.BRANCHES,
-                (int)tilesBox.getPrefWidth(),
-                (int)tilesBox.getPrefHeight()/3);
+        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.BRANCHES,tileWidth,tileHeight);
         tilesBox.getChildren().add(tile);
      //   branchTile.getChildren().add(tile);
 
     }
 
     private void createCPUTile() {
-       // createTile(CPUTile);
+        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.CPU,tileWidth,tileHeight);
+        tilesBox.getChildren().add(tile);
     }
 
     /**
@@ -89,7 +99,7 @@ public class GUIController {
      */
     public void updateBranchCount(String label) {
         Platform.runLater(() ->
-                ((Tile)tilesBox.getChildren().get(0)).setText(label)
+                ((Tile)tilesBox.getChildren().get(1)).setText(label)
         );
     }
 
@@ -98,7 +108,7 @@ public class GUIController {
      * @param time
      */
     public void updateTimer(String time){
-        Platform.runLater(() ->((Tile)tilesBox.getChildren().get(1)).setText(time));
+        Platform.runLater(() ->((Tile)tilesBox.getChildren().get(2)).setText(time));
     }
 
 

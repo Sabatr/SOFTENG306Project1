@@ -2,17 +2,19 @@ package visualisation.processor.helpers.tile;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
+import javafx.scene.paint.Color;
+
 import static eu.hansolo.tilesfx.Tile.SkinType;
 
 public class CustomTileBuilder {
     private final String DEFAULT_BRANCH_TEXT = "0";
-    private int height;
-    private int width;
+    private double height;
+    private double width;
 
     public enum MyTileType  {
             BRANCHES, TIMER, CPU, MEMORY
     }
-    public Tile build(MyTileType tileType, int width, int height) {
+    public Tile build(MyTileType tileType, double width, double height) {
         this.width = width;
         this.height = height;
         switch(tileType) {
@@ -20,16 +22,20 @@ public class CustomTileBuilder {
                 return createBranchTile();
             case TIMER:
                 return createTimerTile();
+            case CPU:
+                return createCPUTile();
             default:
                 return null;
         }
     }
 
     private Tile createBranchTile() {
-        return TileBuilder.create().skinType(SkinType.TEXT)
+        Tile tile = TileBuilder.create().skinType(SkinType.TEXT)
                 .text(DEFAULT_BRANCH_TEXT)
                 .prefSize(width, height)
                 .build();
+        tile.setBackgroundColor(Color.RED);
+        return tile;
     }
 
     private Tile createTimerTile() {
@@ -37,5 +43,13 @@ public class CustomTileBuilder {
                 .text(DEFAULT_BRANCH_TEXT)
                 .prefSize(width, height)
                 .build();
+    }
+
+    private Tile createCPUTile() {
+        Tile tile = TileBuilder.create().skinType(SkinType.TEXT)
+                .text(DEFAULT_BRANCH_TEXT)
+                .prefSize(width, height)
+                .build();
+        return tile;
     }
 }

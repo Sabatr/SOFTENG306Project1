@@ -2,6 +2,7 @@ package visualisation.processor.helpers.tile;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import static eu.hansolo.tilesfx.Tile.SkinType;
@@ -10,9 +11,10 @@ public class CustomTileBuilder {
     private final String DEFAULT_BRANCH_TEXT = "0";
     private double height;
     private double width;
+    private Tile tile;
 
     public enum MyTileType  {
-            BRANCHES, TIMER, CPU, MEMORY
+            BRANCHES, TIMER, CPU, MEMORY, PROCESS_CHART
     }
     public Tile build(MyTileType tileType, double width, double height) {
         this.width = width;
@@ -24,6 +26,8 @@ public class CustomTileBuilder {
                 return createTimerTile();
             case CPU:
                 return createCPUTile();
+            case PROCESS_CHART:
+                return createProcessTile();
             default:
                 return null;
         }
@@ -35,6 +39,13 @@ public class CustomTileBuilder {
                 .prefSize(width, height)
                 .build();
         tile.setBackgroundColor(Color.RED);
+        return tile;
+    }
+
+    private Tile createProcessTile() {
+        tile = TileBuilder.create().skinType(SkinType.CUSTOM)
+                .prefSize(width, height)
+                .build();
         return tile;
     }
 
@@ -52,4 +63,5 @@ public class CustomTileBuilder {
                 .build();
         return tile;
     }
+
 }

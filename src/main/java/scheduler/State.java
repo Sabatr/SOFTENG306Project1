@@ -123,6 +123,7 @@ public class State {
         //Collections.sort(processors);
         prevVertexEndTimeHashMap.putIfAbsent(v,currentCost);
         prevVertexEndTimeHashMap.put(v,Math.max(prevVertexEndTimeHashMap.get(v),currentCost));
+        //Collections.sort(processors);
 
         return this;
     }

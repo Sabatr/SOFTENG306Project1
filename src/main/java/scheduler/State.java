@@ -18,10 +18,14 @@ public class State {
     HashMap<Vertex, Integer> prevVertexEndTimeHashMap;
     HashMap<Vertex,Vertex> vertexPrevVertexHashMap;
     Graph g;
+    HashMap<Vertex, Integer> lastProcessorAssignedVertex;
+    Vertex intAssignedVertex;
 
     public List<Processor> getProcessors() {
         return processors;
     }
+
+    public Vertex getInitAssignedVertex() { return intAssignedVertex; }
 
     public int getCurrentCost() {
         return currentCost;
@@ -37,6 +41,10 @@ public class State {
 
     public Graph getG() {
         return g;
+    }
+
+    public void setCurrentCost(int cost){
+        currentCost = cost;
     }
 
     List<Vertex> traversed;
@@ -62,6 +70,7 @@ public class State {
         costToBottomLevel = g.calculateBottomLevel();
         currentCost = 0;
         prevVertexEndTimeHashMap = new HashMap<>();
+        lastProcessorAssignedVertex = new HashMap<>();
     }
 
     /**
@@ -81,6 +90,11 @@ public class State {
         currentLevel = copyState.currentLevel;
         costToBottomLevel = copyState.costToBottomLevel;
         prevVertexEndTimeHashMap = new HashMap<>(copyState.prevVertexEndTimeHashMap);
+        lastProcessorAssignedVertex = new HashMap<>(copyState.lastProcessorAssignedVertex);
+    }
+
+    public HashMap<Vertex,Integer> getLastProcessorAssignedVertex(){
+        return lastProcessorAssignedVertex;
     }
 
     public State addVertex(int processorNum, Vertex v) {
@@ -118,8 +132,9 @@ public class State {
             }
         }
 
+        //TODO fix this
         // Required to check for duplicates later.
-        Collections.sort(processors);
+        //Collections.sort(processors);
         prevVertexEndTimeHashMap.putIfAbsent(v,currentCost);
         prevVertexEndTimeHashMap.put(v,Math.max(prevVertexEndTimeHashMap.get(v),currentCost));
 
@@ -135,6 +150,41 @@ public class State {
     public boolean allVisited() {
         //Checks if any more vertexes exist to expand
         return toTraverse.isEmpty();
+    }
+
+    public boolean isScheduleEmpty(){
+        return traversed.isEmpty();
+    }
+
+
+    public State getNextPossibleState(State currentState){
+        if (!allVisited()) {
+            for (Vertex v : toTraverse) {
+                if (canVisit(v)) {
+
+                    if (!lastProcessorAssignedVertex.containsKey(v)){
+                        lastProcessorAssignedVertex.put(v, 0);
+                        currentState = new State(this);
+                        currentState.addVertex(0,v);
+                        return currentState;
+                    }
+                    if (lastProcessorAssignedVertex.get(v) == processors.size()){
+                        toTraverse.remove(v);
+                        return null;
+
+                    } else if (lastProcessorAssignedVertex.get(v) < processors.size()){
+                        int lastProcessor = lastProcessorAssignedVertex.get(v);
+                        lastProcessor = lastProcessor + 1;
+                            lastProcessorAssignedVertex.put(v, lastProcessor - 1);
+                            currentState.addVertex(lastProcessor, v);
+                            return currentState;
+
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -156,6 +206,7 @@ public class State {
                         if(!checkedProcessors.contains(p)) {
                             checkedProcessors.add(p);
                             copy.addVertex(i, v);
+                            //lastProcessorAssignedVertex.put(v,i);
                             possibleStates.add(copy);
                         }
                     }

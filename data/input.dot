@@ -1,6 +1,6 @@
 digraph "example" {
     a	[Weight=2];
-    b	[Weight=3];
+    b	[Weight=2];
     a->b	[Weight=2];
     c	[Weight=3];
     a->c	[Weight=1];

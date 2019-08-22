@@ -21,6 +21,10 @@ public class Processor implements Comparable<Processor> {
     int boundCost;
     int startCost;
 
+    public int getProcessorNumber(){
+        return processorNumber;
+    }
+
     /**
      * Setting up the fields of the Processor with initial values
      */

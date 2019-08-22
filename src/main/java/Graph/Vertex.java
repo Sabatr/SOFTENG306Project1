@@ -47,6 +47,8 @@ public class Vertex {
         this.processorNo = processorNo;
     }
 
+    public int getProcessorNo(){ return  this.processorNo; }
+
     public int getLevel() {
         return level;
     }

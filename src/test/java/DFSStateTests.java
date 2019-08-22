@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 /**
- * A test class to test multiple input graphs with the AStar algorithm.
+ * A test class to test multiple input graphs with the DFS algorithm.
  */
 public class DFSStateTests {
     /**
@@ -48,6 +48,13 @@ public class DFSStateTests {
         State optimalState = new DFS(2, createdGraph).runAlgorithm();
         Assert.assertEquals(optimalState.getCurrentCost(), 581);
         Assert.assertTrue(optimalState.isValid());
+    }
+
+    @Test
+    public void testInput() {
+        Graph createdGraph = createGraph("input.dot");
+        State optimalState = new DFS(2, createdGraph).runAlgorithm();
+
     }
 
     /**

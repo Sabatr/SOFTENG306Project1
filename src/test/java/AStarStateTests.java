@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 public class AStarStateTests {
     /**
      * A method for creating a graph for the test cases.
+     *
      * @param inputURL
      * @return
      */
@@ -37,6 +38,21 @@ public class AStarStateTests {
         State optimalState = new AStar(2, createdGraph).runAlgorithm();
         Assert.assertEquals(optimalState.getCurrentCost(), 581);
         Assert.assertTrue(optimalState.isValid());
+    }
+
+    /**
+     * This tests if the algorithm can handle inputs with multiple roots and exits
+     */
+    @Test
+    public void testGraphWithMultipleEntriesAndExits() {
+        Graph createdGraph = createGraph("input4.dot");
+        Assert.assertEquals(15, new AStar(2, createdGraph).runAlgorithm().getCurrentCost());
+    }
+
+    @Test
+    public void testInput() {
+        Graph createdGraph = createGraph("input.dot");
+        new AStar(2, createdGraph).runAlgorithm().getCurrentCost();
     }
 
     /**

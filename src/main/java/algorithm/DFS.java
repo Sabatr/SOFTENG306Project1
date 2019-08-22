@@ -16,13 +16,26 @@ public class DFS implements Algorithm {
     Graph graph;
     private int boundValue;
 
+    public DFS(int numProcessors, Graph g, State initState) {
+        graph = g;
+        stateStack = new Stack<State>();
+        numP = numProcessors;
+
+        //Init state
+        stateStack.push(initState);
+        boundValue = Integer.MAX_VALUE;
+
+
+
+    }
+
     public DFS(int numProcessors, Graph g) {
         graph = g;
         stateStack = new Stack<State>();
         numP = numProcessors;
 
         //Init state
-        stateStack.push(new State(numP, graph));
+        stateStack.push(new State(numProcessors,g));
         boundValue = Integer.MAX_VALUE;
 
 
@@ -35,23 +48,54 @@ public class DFS implements Algorithm {
      */
     public State runAlgorithm() {
         State bestState = new State(numP, graph);
-        while (!stateStack.empty()) {
-            //get latest state
-            State state = stateStack.pop();
-            int currentBoundValue = boundValue;
-            //If cost of state equals or greater than bound value don't visit its following states then
-            if (state.getCurrentCost() < currentBoundValue) {
-                if (state.allVisited()) {
-                    boundValue = state.getCurrentCost();
-                    bestState = state;
+        bestState.setCurrentCost(Integer.MAX_VALUE);
+            State state = stateStack.peek();
+            while (!stateStack.empty()) {
+                if (state.getCurrentCost() < bestState.getCurrentCost()) {
+                    state = state.getNextPossibleState(state);
                 } else {
-                    for (State nextState : state.generatePossibilities()) {
-                        stateStack.push(nextState);
-                    }
+                    state = null;
                 }
-            }
+                if (state != null ) {
+                    stateStack.push(state);
+                } else {
+                    stateStack.pop();
+                    if (stateStack.isEmpty()){
+                        break;
+                    }
+                    state = stateStack.peek();
+                    if (state.isScheduleEmpty()){
+                        break;
+                    }
+                    if (state.allVisited() && state.getCurrentCost() < bestState.getCurrentCost()){
+                        bestState = state;
+                    }
+
+                }
+                System.out.println(state);
 
         }
+
+        System.out.println("Here is stack " + stateStack);
+
+
+//        while (!stateStack.empty()) {
+//            //get latest state
+//
+//            int currentBoundValue = boundValue;
+//            //If cost of state equals or greater than bound value don't visit its following states then
+//            if (state.getCurrentCost() < currentBoundValue) {
+//                if (state.allVisited()) {
+//                    boundValue = state.getCurrentCost();
+//                    bestState = state;
+//                } else {
+//                    for (State nextState : state.generatePossibilities()) {
+//                        stateStack.push(nextState);
+//                    }
+//                }
+//            }
+//
+//        }
         return bestState;
     }
 

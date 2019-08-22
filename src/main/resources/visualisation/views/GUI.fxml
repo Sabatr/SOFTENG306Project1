@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -9,7 +10,11 @@
       <Pane fx:id="processPane" layoutX="300.0" prefHeight="500.0" prefWidth="800.0" />
       <Pane fx:id="tilesPane" prefHeight="900.0" prefWidth="300.0">
          <children>
-            <VBox fx:id="tilesBox" prefHeight="900.0" prefWidth="300.0" />
+            <VBox fx:id="tilesBox" prefHeight="900.0" prefWidth="300.0" spacing="10.0">
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </VBox>
          </children>
       </Pane>
    </children>

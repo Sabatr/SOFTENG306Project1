@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1100.0" stylesheets="@../visualisationassets/GUI.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="visualisation.controllers.GUIController">
    <children>
-      <Pane fx:id="graphPane" layoutX="400.0" layoutY="500.0" prefHeight="400.0" prefWidth="700.0" />
-      <TilePane fx:id="CPUTile" layoutY="300.0" prefColumns="1" prefHeight="300.0" prefRows="1" prefTileHeight="300.0" prefTileWidth="300.0" prefWidth="300.0" vgap="10.0">
-         <padding>
-            <Insets bottom="10.0" />
-         </padding></TilePane>
-      <Pane fx:id="processPane" layoutX="400.0" prefHeight="500.0" prefWidth="700.0" />
-      <Label fx:id="timeElapsed" layoutX="357.0" layoutY="750.0" text="Label" />
-      <TilePane fx:id="branchTile" prefColumns="1" prefHeight="300.0" prefRows="1" prefTileHeight="300.0" prefTileWidth="300.0" prefWidth="300.0">
-         <padding>
-            <Insets bottom="10.0" />
-         </padding></TilePane>
-      <TilePane fx:id="timeTile" layoutY="600.0" minHeight="300.0" minWidth="300.0" prefColumns="1" prefHeight="300.0" prefRows="1" prefTileHeight="300.0" prefTileWidth="300.0" prefWidth="300.0" />
-      <Label fx:id="branchesVisited" layoutX="357.0" layoutY="793.0" text="Label" />
+      <Pane fx:id="graphPane" layoutX="300.0" layoutY="500.0" prefHeight="400.0" prefWidth="800.0" />
+      <Pane fx:id="processPane" layoutX="300.0" prefHeight="500.0" prefWidth="800.0" />
+      <Pane fx:id="tilesPane" prefHeight="900.0" prefWidth="300.0">
+         <children>
+            <VBox fx:id="tilesBox" prefHeight="900.0" prefWidth="300.0" />
+         </children>
+      </Pane>
    </children>
 </Pane>

@@ -3,20 +3,13 @@ package visualisation.controllers;
 import eu.hansolo.tilesfx.Tile;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import visualisation.controllers.helpers.TreeGenerator;
 import visualisation.processor.helpers.CustomProgressBar;
 import visualisation.processor.helpers.ProcessChartHelper;
 import visualisation.processor.helpers.tile.CustomTileBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GUIController {
     @FXML
@@ -49,13 +42,26 @@ public class GUIController {
     @FXML
     private void initialize() {
         tileBuilder = new CustomTileBuilder();
-        instantiateTiles();
+        instantiateStatTiles();
+        createProcessGraphTile();
         createInputGraphVisual();
-        createGraphLoader();
-
+        //createGraphLoader();
     }
 
-    private void instantiateTiles() {
+    private void createProcessGraphTile() {
+        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.PROCESS_CHART,
+                processPane.getPrefWidth(),processPane.getPrefHeight());
+
+        Platform.runLater(() -> {
+            // placeHolder = new Circle(processPane.getLayoutX(),processPane.getLayoutY(),100);
+            progressBar = new CustomProgressBar(processPane);
+            tile.setGraphic(progressBar);
+            //processPane.getChildren().add(progressBar);
+        });
+        processPane.getChildren().add(tile);
+    }
+
+    private void instantiateStatTiles() {
 
         tileHeight = tilesBox.getPrefHeight()/3;
         tileWidth = tilesBox.getPrefWidth();
@@ -69,6 +75,7 @@ public class GUIController {
         // Position 3 in the VBox
         createCPUTile();
     }
+
 
     private void createTileHeader() {
         Text text = new Text("Statistics");
@@ -91,6 +98,7 @@ public class GUIController {
     private void createCPUTile() {
         Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.CPU,tileWidth,tileHeight);
         tilesBox.getChildren().add(tile);
+
     }
 
     /**
@@ -123,29 +131,16 @@ public class GUIController {
     }
 
     /**
-     * This method creates a loader while the solution is running
-     */
-    public void createGraphLoader() {
-        // Loading should go here
-        Platform.runLater(() -> {
-           // placeHolder = new Circle(processPane.getLayoutX(),processPane.getLayoutY(),100);
-            progressBar = new CustomProgressBar(processPane);
-            processPane.getChildren().add(progressBar);
-        });
-
-    }
-
-    /**
      * Create the ProcessChart when the algorithm has been complete
      */
     public void createChart() {
         Platform.runLater(()-> {
-            processPane.getChildren().remove(progressBar);
+            Tile tile = (Tile)processPane.getChildren().get(0);
 
             if (helper == null) {
                 helper = new ProcessChartHelper(processPane);
             }
-            processPane.getChildren().add(helper.getProcessChart());
+            tile.setGraphic(helper.getProcessChart());
         });
     }
 

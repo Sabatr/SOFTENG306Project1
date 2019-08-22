@@ -2,12 +2,17 @@ package visualisation.controllers.helpers.tile;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
+import eu.hansolo.tilesfx.chart.TilesFXSeries;
 import javafx.geometry.Insets;
+import javafx.scene.chart.XYChart;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 
 import static eu.hansolo.tilesfx.Tile.SkinType;
 
@@ -67,8 +72,28 @@ public class CustomTileBuilder {
     }
 
     private Tile createCPUTile() {
-        tile.setBackgroundColor(Color.rgb(25, 34, 38));
-        return tile;
+        XYChart.Series<String, Number> series1 = new XYChart.Series();
+        Tile tile2 = TileBuilder.create()
+                .skinType(SkinType.SMOOTHED_CHART)
+                .chartType(Tile.ChartType.AREA)
+                .title("CPU USAGE")
+                .prefSize(width,height)
+                .maxValue(100)
+                .minValue(0)
+                .unit("Unit")
+                .tooltipText("DBFF")
+                .chartGridColor(Color.TRANSPARENT)
+                //.animated(true)
+                .smoothing(true)
+                .tilesFxSeries(new TilesFXSeries<>(series1,
+                        Tile.RED,
+                        new LinearGradient(0, 0, 0, 1,
+                                true, CycleMethod.NO_CYCLE,
+                                new Stop(0, Tile.RED),
+                                new Stop(1, Color.TRANSPARENT))))
+                .build();
+        tile2.setBackgroundColor(Color.rgb(25, 34, 38));
+        return tile2;
     }
 
 }

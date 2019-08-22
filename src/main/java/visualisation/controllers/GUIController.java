@@ -1,23 +1,37 @@
 package visualisation.controllers;
 
 import algorithm.AlgorithmBranchDetails;
+import com.sun.management.OperatingSystemMXBean;
 import eu.hansolo.tilesfx.Tile;
+import eu.hansolo.tilesfx.TileBuilder;
+import eu.hansolo.tilesfx.chart.TilesFXSeries;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import visualisation.controllers.helpers.TreeGenerator;
 import visualisation.controllers.helpers.tile.CustomCounter;
 import visualisation.controllers.helpers.tile.CustomPieChart;
 import visualisation.controllers.helpers.tile.CustomTileBuilder;
 import visualisation.processor.helpers.CustomProgressBar;
 import visualisation.processor.helpers.ProcessChartHelper;
+
+import java.lang.management.ManagementFactory;
 
 public class GUIController {
     @FXML
@@ -55,6 +69,7 @@ public class GUIController {
         instantiateStatTiles();
         createProcessGraphTile();
         createInputGraphVisual();
+        startCPUCheck();
     }
 
     private void createProcessGraphTile() {
@@ -118,12 +133,6 @@ public class GUIController {
 
         tile.setGraphic(pane);
         tilesBox.getChildren().add(tile);
-    }
-
-    private void createCPUTile() {
-        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.CPU,tileWidth,tileHeight);
-        tilesBox.getChildren().add(tile);
-
     }
 
     /**
@@ -196,4 +205,29 @@ public class GUIController {
         });
     }
 
+    private void createCPUTile() {
+        Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.CPU,tileWidth,tileHeight);
+           tilesBox.getChildren().add(tile);
+
+    }
+
+    private void startCPUCheck() {
+        long time = System.currentTimeMillis();
+        com.sun.management.OperatingSystemMXBean operatingSystemMXBean =
+                (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+        Timeline updateCounters = new Timeline(
+                new KeyFrame(Duration.millis(500), (ActionEvent ae) -> {
+                    Tile tile = (Tile)tilesBox.getChildren().get(3);
+                    String xValue = Integer.toString((int)(Math.abs(time-System.currentTimeMillis()))/100);
+                    ObservableList<XYChart.Data<String,Number>> dataList = tile.getSeries().get(0).getData();
+                    if (dataList.size() > 10) {
+                        dataList.remove(0);
+                    }
+                    dataList.add(new XYChart.Data(xValue,
+                            operatingSystemMXBean.getProcessCpuLoad()*100));
+                }
+                ));
+        updateCounters.setCycleCount(Timeline.INDEFINITE);
+        updateCounters.play();
+    }
 }

@@ -126,7 +126,12 @@ public class GUIController {
         Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.INPUT_GRAPH,
                 graphPane.getPrefWidth(),graphPane.getPrefHeight());
         Pane pane  = new Pane();
+        pane.setLayoutX(graphPane.getLayoutX());
+        pane.setLayoutY(graphPane.getLayoutY());
         pane.setPrefSize(graphPane.getPrefWidth(),graphPane.getPrefHeight());
+        System.out.println(pane.getPrefWidth());
+        System.out.println(graphPane.getPrefWidth());
+        System.out.println(tile.getPrefWidth());
         TreeGenerator generator = new TreeGenerator(pane);
         tile.setGraphic(generator.generate());
         graphPane.getChildren().add(tile);

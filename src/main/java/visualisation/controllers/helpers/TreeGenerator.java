@@ -16,7 +16,7 @@ public class TreeGenerator {
     private HashMap<Integer,List<Vertex>> layerNode;
     private HashMap<Vertex,VisualNode> vertexToNode = new HashMap<>();
     private int size;
-    private final int DEFAULT_NODE_SIZE = 100;
+    private final int DEFAULT_NODE_SIZE = 200;
     private final int PANE_CENTER_DIVIDER = 2;
     private final int INCREASED_AMOUNT_MULTIPLIER = 2;
     private final int Y_POSITION_INCREASE = 1;
@@ -39,8 +39,8 @@ public class TreeGenerator {
         for (Vertex vertex : vertices) {
             // Guarantees the positioning of the nodes
             int x = (int) Math.ceil(paneWidth/vertices.size()/PANE_CENTER_DIVIDER +
-                    (INCREASED_AMOUNT_MULTIPLIER * current * paneWidth/vertices.size()/PANE_CENTER_DIVIDER));
-            int y = (int) Math.ceil( paneHeight / (layerNode.size()+Y_POSITION_INCREASE) * currentLayer);
+                    (INCREASED_AMOUNT_MULTIPLIER * current * paneWidth/vertices.size()/PANE_CENTER_DIVIDER) - 10);
+            int y = (int) Math.ceil( paneHeight / (layerNode.size()+Y_POSITION_INCREASE) * currentLayer - 40);
             VisualNode node = new VisualNode(x,y,size,vertex);
             vertexToNode.put(vertex,node);
             graphPane.getChildren().add(node);

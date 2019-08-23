@@ -22,7 +22,8 @@ public class TreeGenerator {
     private final int Y_POSITION_INCREASE = 1;
     public TreeGenerator(Pane parentPane) {
         this.graphPane = parentPane;
-        this.inputGraph = retrieveInputGraph(AlgorithmDataStorage.getInstance().getInputFileName());
+       // this.inputGraph = retrieveInputGraph(AlgorithmDataStorage.getInstance().getInputFileName());
+        inputGraph = DotParser.getInstance().getGraph();
         layerNode = new HashMap<>();
         size = DEFAULT_NODE_SIZE / inputGraph.getVertexHashMap().size();
     }
@@ -180,19 +181,5 @@ public class TreeGenerator {
     public Pane generate() {
         generateNodePositions();
         return graphPane;
-    }
-
-    /**
-     * Retrieving the input graph.
-     * @return
-     */
-    private Graph retrieveInputGraph(String path) {
-        Graph inputGraph = null;
-        try {
-            inputGraph = new DotParser(new File(path)).parseGraph();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return inputGraph;
     }
 }

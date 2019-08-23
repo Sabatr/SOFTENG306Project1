@@ -15,8 +15,6 @@ public class State {
     int currentCost;
     int currentLevel;
     int costToBottomLevel;
-    HashMap<Vertex, Integer> prevVertexEndTimeHashMap;
-    HashMap<Vertex,Vertex> vertexPrevVertexHashMap;
     Graph g;
 
     public List<Processor> getProcessors() {
@@ -61,7 +59,6 @@ public class State {
         currentLevel = 0;
         costToBottomLevel = g.calculateBottomLevel();
         currentCost = 0;
-        prevVertexEndTimeHashMap = new HashMap<>();
     }
 
     /**
@@ -80,7 +77,17 @@ public class State {
         toTraverse.addAll(copyState.toTraverse);
         currentLevel = copyState.currentLevel;
         costToBottomLevel = copyState.costToBottomLevel;
-        prevVertexEndTimeHashMap = new HashMap<>(copyState.prevVertexEndTimeHashMap);
+    }
+    public HashMap<Vertex, Integer> getPrevVertexEndTimeHashMap() {
+        HashMap<Vertex, Integer> prevVertexEndTimeHashMap = new HashMap<Vertex, Integer>();
+        if (traversed.size() > 0 ){
+            for (Processor processor : processors) {
+                for (ProcessorBlock block : processor.processorBlockList) {
+                    prevVertexEndTimeHashMap.put(block.getV(), block.getEndTime());
+                }
+            }
+        }
+        return prevVertexEndTimeHashMap;
     }
 
     public State addVertex(int processorNum, Vertex v) {
@@ -92,7 +99,7 @@ public class State {
 
         //System.out.println(Arrays.toString(hasBlock.toArray()));
         // Add the vertex to processor x, at the earliest possible time.
-        int boundCost = processors.get(processorNum).addVertex(v, traversed, prevVertexEndTimeHashMap);
+        int boundCost = processors.get(processorNum).addVertex(v, traversed, getPrevVertexEndTimeHashMap());
         costToBottomLevel = Math.max(costToBottomLevel, boundCost);
 
         // Set the new currentCost && current level
@@ -121,10 +128,6 @@ public class State {
         //TODO fix this
         // Required to check for duplicates later.
         //Collections.sort(processors);
-        prevVertexEndTimeHashMap.putIfAbsent(v,currentCost);
-        prevVertexEndTimeHashMap.put(v,Math.max(prevVertexEndTimeHashMap.get(v),currentCost));
-        //Collections.sort(processors);
-
         return this;
     }
 

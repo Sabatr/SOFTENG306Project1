@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import utils.CliParser;
 import visualisation.controllers.GUIController;
 import visualisation.processor.helpers.GUIUpdater;
 
@@ -51,7 +52,7 @@ public class Visualiser extends Application {
         stage.setScene(scene);
         stage.show();
         // TODO: CHANGE THIS LATER
-        Main.createSolution();
+        CliParser.createSolution();
     }
 
     /**

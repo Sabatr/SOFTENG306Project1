@@ -7,6 +7,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
 import scheduler.State;
+import utils.CliParser;
 import visualisation.processor.listeners.ObservableAlgorithm;
 import visualisation.processor.listeners.SchedulerListener;
 import java.util.ArrayList;
@@ -107,6 +108,7 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
      * Begins the timer which is used to record the time taken until the algorithm is complete
      */
     protected void startTimer() {
+        if (!CliParser.isVisualisation()) return;
         long time = System.currentTimeMillis();
         timeline = new Timeline();
         Task task = new Task<Void>() {
@@ -145,6 +147,7 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
      * Updates the listeners whenever an event occurs
      */
     private void fire() {
+        if (!CliParser.isVisualisation()) return;
         switch(eventType) {
             case ALGORITHM_FINISHED:
                 endTimer();

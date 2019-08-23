@@ -43,6 +43,7 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
 
     /**
      * Runs the algorithm
+     *
      * @return
      */
     public State runAlgorithm() {
@@ -60,17 +61,12 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
                     if (s1.getCostToBottomLevel() < minFullPath) {
                         candidate.add(s1);
                         if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
-
-                            int prunedBranchesChange = candidate.size();
                             //Prune branches
-                            candidate.removeIf( (state) -> aStarComparator.compare(s1,state) < 0);
-                            prunedBranchesChange -= candidate.size();
-
                             minFullPath = s1.getCostToBottomLevel();
                             finalState = s1;
                             AlgorithmDataStorage.getInstance().setPrunedBranches(
                                     AlgorithmDataStorage.getInstance().getDetails().getBranchesPruned()
-                                            +prunedBranchesChange);
+                                            +minFullPath);
 
                         }
                     }
@@ -120,10 +116,8 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
     //Todo implement this class.
     /*
     Initialise MinFullPath to integer.Maxint
-
     Add the initial State(Empty, VisitedList(root),CandidateList(roots' children),currentCost) to the
     Priority Queue
-
     While the priorityQueue is not empty:
         Generate the possibilities involving all nodes in the candidate list
         If we have traversed all nodes and cost is less than the minFullPathCost:
@@ -131,15 +125,12 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
         Else:
             Add the possibilities onto the priority queue
         Pop off the priority queue
-
         if current is full state and cheaper than minFullPath:
             replace minFullPath
-
             For all states in priority queue:
                 If cost is less than the minFullPathCost:
                     Remove it from the priority queue
     done
-
     Select the State with cheapest DFS cost
      */
 }

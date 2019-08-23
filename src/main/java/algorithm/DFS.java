@@ -3,6 +3,7 @@ package algorithm;
 import graph.Graph;
 import scheduler.State;
 
+import java.util.HashSet;
 import java.util.Stack;
 
 /**
@@ -14,6 +15,7 @@ public class DFS implements Algorithm {
     private final int numP;
     private Stack<State> stateStack;
     Graph graph;
+    HashSet<State> visited = new HashSet<>();
     private int boundValue;
 
     public DFS(int numProcessors, Graph g, State initState) {
@@ -47,69 +49,109 @@ public class DFS implements Algorithm {
      * @return
      */
     public State runAlgorithm() {
-
-//             state = state.getNextPossibleState(state);
+//        State bestState = new State(numP, graph);
+//        bestState.setCurrentCost(Integer.MAX_VALUE);
+//        State state = stateStack.peek();
+//
+//        state = state.getNextPossibleState();
 //            System.out.println("next state " + state);
-//            State afterState = state.getNextPossibleState(state);
+//            State afterState = state.getNextPossibleState();
 //            System.out.println("AFTER state " + afterState);
-//        System.out.println("GET count " + state.getCountNextStateCalled());
 //
 //
 //
-//        State state2 = state.getNextPossibleState(state);
+//        State state2 = state.getNextPossibleState();
 //        System.out.println("next state " + state2);
 //
-//        State state3 = state.getNextPossibleState(state);
+//        State state3 = state.getNextPossibleState();
 //        System.out.println("next state " + state3);
 //
-//        State state4 = state.getNextPossibleState(state);
+//        State state4 = state.getNextPossibleState();
 //        System.out.println("next state " + state4);
-
-
-
-//        System.out.println("Here is the count " + state.getCountNextStateCalled());
 //
-//
+//        State state5 = state.getNextPossibleState();
+//        System.out.println("next state " + state5);
+
 
         State bestState = new State(numP, graph);
         bestState.setCurrentCost(Integer.MAX_VALUE);
         State state = stateStack.peek();
-        System.out.println(state);
-            while (!stateStack.empty()) {
-                    if (state.getCurrentCost() == 2){
-                        System.out.println(state);
-                    }
 
-                    state = state.getNextPossibleState(state);
-//                } else {
-//                    state = null;
-//                }
-                if (state != null ) {
-                    stateStack.push(state);
-                } else {
-                    stateStack.pop();
-                    if (stateStack.isEmpty()){
-                        break;
-                    }
-                    state = stateStack.peek();
-                    if (state.isScheduleEmpty()){
-                        break;
-                    }
-                    if (state.getCurrentCost() < bestState.getCurrentCost()){
-                        bestState = state;
-                    }
-//
-//                    System.out.println(state);
+        while (!stateStack.empty()) {
 
-                }
+            if (state.allVisited() && state.getCurrentCost() < bestState.getCurrentCost()){
+                bestState = state;
+            }
+
+            if (state.getCurrentCost() == 50 && state.allVisited()){
                 System.out.println(state);
+            }
+
+            if (state.getCurrentCost() < bestState.getCurrentCost()){
+                state = state.getNextPossibleState();
+            } else {
+                state = null;
+            }
+
+//                } else {
+//                   state = null;
+//                }
+            if (state != null ) {
+                if(!visited.contains(state)) {
+                    stateStack.push(state);
+                   visited.add(state);
+                }
+            } else {
+                stateStack.pop();
+                if (stateStack.isEmpty()){
+                    break;
+                }
+                state = stateStack.peek();
+                if (state.isScheduleEmpty()){
+                    break;
+                }
+
+
+
+            }
+
+
 
         }
 
-        System.out.println(bestState);
 
+
+
+//            while (!stateStack.empty()) {
+//                if (state.getCurrentCost() == 2){
+//                    System.out.println(state);
+//                }
 //
-//        System.out.println("best state " +  bestState);
+//                    state = state.getNextPossibleState(state);
+//
+//
+//                if (state != null ) {
+//                    stateStack.push(state);
+//                } else {
+//                    stateStack.pop();
+//                    if (stateStack.isEmpty()){
+//                        break;
+//                    }
+//                    state = stateStack.peek();
+//                    if (state.isScheduleEmpty()){
+//                        break;
+//                    }
+//                    if (state.allVisited() && state.getCurrentCost() < bestState.getCurrentCost()){
+//                        bestState = state;
+//                    }
+//
+//                }
+//                System.out.println(state);
+//
+//        }
+//
+//        System.out.println("Here is stack " + stateStack);
+
 
 //        while (!stateStack.empty()) {
 //            //get latest state

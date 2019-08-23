@@ -71,7 +71,6 @@ public class DFSParallel implements Algorithm {
         for (DFSThread thread : threadList){
             try {
                 thread.join();
-                System.out.println("thread finished");
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
@@ -103,21 +102,22 @@ public class DFSParallel implements Algorithm {
         result = s;
     }
 
+    private synchronized boolean stackCompare(State s){
+        return s.getCostToBottomLevel() < minFullPath;
+    }
+
     public void iterate(){
         //each thread gets a unique 's'
         State s = stackPop();
         if (s != null) {
             for (State s1 : s.generatePossibilities()) {
                 if (!visited.contains(s1)) {
-                    if (s1.getCostToBottomLevel() < minFullPath) {
-                        //candidate.push(s1);
+                    if (stackCompare(s1)) {
 
                         stackPush(s1);
-                        if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
+                        if (s1.allVisited() && stackCompare(s1)) {
                             //Prune branches
                             stackRemove(s1);
-
-                            //candidate.removeIf((state) -> aStarComparator.compare(s1, state) < 0);
                             minFullPath = s1.getCostToBottomLevel();
                             setResult(s1);
                         }

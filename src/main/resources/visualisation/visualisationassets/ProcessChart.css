@@ -24,8 +24,9 @@
     -fx-text-fill: #000000;
 }
 
-.axis {
-    -fx-tick-label-fill: #000000;
+.axis{
+    -fx-tick-label-fill: rgb(137, 39, 0);
+    -fx-grid-lines-visible: false;
 }
 
 .axis-label {

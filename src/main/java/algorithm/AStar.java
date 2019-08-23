@@ -47,6 +47,7 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
             for (State s1 : s.generatePossibilities()) {
                 if (!visited.contains(s1)) {
                     if (s1.getCostToBottomLevel() < minFullPath) {
+                        System.out.println(candidate.size());
                         candidate.add(s1);
                         if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
                             minFullPath = s1.getCostToBottomLevel();

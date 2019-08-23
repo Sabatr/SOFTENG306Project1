@@ -10,6 +10,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -165,13 +166,25 @@ public class GUIController {
      * @param time
      */
     public void updateTimer(String time){
-        Platform.runLater(() ->{
-           Tile tile =  (Tile)tilesBox.getChildren().get(2);
-           CustomCounter counter = (CustomCounter) tile.getGraphic();
-           Text text = counter.getText();
-           text.setText(time);
-           counter.setText(text);
-        });
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Tile tile =  (Tile)tilesBox.getChildren().get(2);
+                CustomCounter counter = (CustomCounter) tile.getGraphic();
+                Text text = counter.getText();
+                text.setText(time);
+                counter.setText(text);
+                return null;
+            }
+        };
+        new Thread(task).start();
+//        Platform.runLater(() ->{
+//           Tile tile =  (Tile)tilesBox.getChildren().get(2);
+//           CustomCounter counter = (CustomCounter) tile.getGraphic();
+//           Text text = counter.getText();
+//           text.setText(time);
+//           counter.setText(text);
+//        });
     }
 
 

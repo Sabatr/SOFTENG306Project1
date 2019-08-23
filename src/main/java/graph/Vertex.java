@@ -66,7 +66,7 @@ public class Vertex {
         findLevel();
     }
 
-    public int findLevel() {
+    private int findLevel() {
         for (Vertex v : incomingVerticies) {
             if (v.level >= level) {
                 level = v.level + 1;

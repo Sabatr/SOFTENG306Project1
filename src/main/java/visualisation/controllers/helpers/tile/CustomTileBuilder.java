@@ -37,8 +37,6 @@ public class CustomTileBuilder {
         tile = TileBuilder.create().skinType(SkinType.CUSTOM)
                 .prefSize(width, height - 50)
                 .build();
-        //tile.getStylesheets().add(CustomTileBuilder.class.getResource("../../../visualisationassets/Tiles.css").toString());
-
         switch(tileType) {
             case BRANCHES:
                 return createBranchTile();
@@ -55,7 +53,8 @@ public class CustomTileBuilder {
         }
     }
     private Tile createInputGraphTile() {
-        tile.setBackgroundColor(Color.WHITE);
+
+        tile.setBackgroundColor(Color.rgb(238, 238, 238));
         tile.setInnerShadowEnabled(true);
         return tile;
     }
@@ -65,7 +64,7 @@ public class CustomTileBuilder {
     }
 
     private Tile createProcessTile() {
-        tile.setBackgroundColor(Color.WHITE);
+        tile.setBackgroundColor(Color.rgb(238, 238, 238));
         return tile;
     }
 

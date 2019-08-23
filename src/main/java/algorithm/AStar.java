@@ -5,6 +5,7 @@ import graph.Vertex;
 import scheduler.AStarComparator;
 import scheduler.Processor;
 import scheduler.State;
+import visualisation.AlgorithmDataStorage;
 import visualisation.processor.listeners.ObservableAlgorithm;
 import visualisation.processor.listeners.SchedulerListener;
 
@@ -27,8 +28,11 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
     private State finalState;
     private int numberOfProcessors;
     private int prunedBranches;
+    private int totalBranches;
 
     public AStar(int numProcessors, Graph graph) {
+        super();
+        totalBranches = 1;
         this.numberOfProcessors = numProcessors;
         candidate = new PriorityQueue<>(new AStarComparator());
         visited = new HashSet();
@@ -47,9 +51,11 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
         AStarComparator aStarComparator = new AStarComparator();
         State result = null;
         while (!candidate.isEmpty()) {
-            fireEvent(AlgorithmEvents.UPDATE_BRANCH_COUNTER);
+
             State s = candidate.poll();
             for (State s1 : generatePossibilities(s)) {
+                AlgorithmDataStorage.getInstance().setTotalBranches(totalBranches);
+                totalBranches++;
                 if (!visited.contains(s1)) {
                     if (s1.getCostToBottomLevel() < minFullPath) {
                         candidate.add(s1);
@@ -62,12 +68,15 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
 
                             minFullPath = s1.getCostToBottomLevel();
                             finalState = s1;
+                            AlgorithmDataStorage.getInstance().setPrunedBranches(
+                                    AlgorithmDataStorage.getInstance().getDetails().getBranchesPruned()
+                                            +prunedBranchesChange);
+
                         }
                     }
                     visited.add(s1);
                 }
             }
-
         }
         fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,finalState);
         return finalState;

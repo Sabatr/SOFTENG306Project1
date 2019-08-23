@@ -10,6 +10,7 @@ import visualisation.controllers.GUIController;
 public class GUIUpdater {
     private static GUIUpdater guiUpdater;
     private GUIController controller;
+    private StringBuilder builder;
     private GUIUpdater() {
     }
 
@@ -33,7 +34,10 @@ public class GUIUpdater {
      * @param
      */
     public void updateBranchLabel(AlgorithmBranchDetails details) {
-        String label = "Total branches: " + details.getBranchesSeen();
+//        builder = new StringBuilder();
+//        builder.append("Total branches: ");
+//        builder.append(details.getBranchesSeen());
+       String label = "Total branches: " + details.getBranchesSeen();
         controller.updateBranchCount(label, details);
     }
 

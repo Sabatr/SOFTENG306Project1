@@ -21,7 +21,7 @@ public class ProcessChartHelper {
     private final NumberAxis X_AXIS = new NumberAxis();
     private final CategoryAxis Y_AXIS = new CategoryAxis();
     private final String Y_AXIS_NAME = "Processor ";
-    private final String X_AXIS_LABEL = "Time";
+    private final String X_AXIS_LABEL = "Time (seconds)";
     private final String CHART_NAME = "Process Chart";
     private final String PROCESS_CHART_STYLESHEET = "visualisation/visualisationassets/ProcessChart.css";
     private final int X_AXIS_MINOR_TICK_COUNT = 5;
@@ -71,17 +71,14 @@ public class ProcessChartHelper {
     }
 
     private String getRandomColour() {
-        int rand = (int)Math.round(Math.random() * 4);
-        switch (rand) {
-            case 0:
-                return "status-blue";
-            case 1:
-                return "status-red";
-            case 2:
-                return "status-green";
-            default:
-                return "status-yellow";
-        }
+        int rand = (int)Math.round(Math.random() * 3);
+        List<String> colours = new ArrayList<>();
+        colours.add("red");
+        colours.add("blue");
+        colours.add("purple");
+        colours.add("green");
+
+        return colours.get(rand);
     }
     private void setUpInitialData() {
         seriesMap.keySet().forEach(key-> chart.getData().add(seriesMap.get(key)));
@@ -129,6 +126,7 @@ public class ProcessChartHelper {
     private void initialiseSettings() {
         chart.setTitle(CHART_NAME);
         chart.setLegendVisible(false);
+        //chart.setVerticalGridLinesVisible(false);
         chart.setPrefHeight(processPane.getPrefHeight());
         chart.setPrefWidth(processPane.getPrefWidth());
         chart.getStylesheets().add(PROCESS_CHART_STYLESHEET);

@@ -1,5 +1,6 @@
 package visualisation;
 
+import algorithm.AlgorithmBranchDetails;
 import visualisation.processor.listeners.SchedulerListener;
 import scheduler.State;
 
@@ -12,6 +13,7 @@ public class AlgorithmDataStorage {
     private static AlgorithmDataStorage storage;
     private SchedulerListener listener;
     private String outputName;
+    private AlgorithmBranchDetails branchDetails = new AlgorithmBranchDetails();
     private AlgorithmDataStorage() {
     }
 
@@ -44,5 +46,19 @@ public class AlgorithmDataStorage {
 
     public long getTimeElapsed() { return listener.getTimeElapsed();}
 
-    public int getBranchesVisited() { return listener.getBranchCounter();}
+    public void setTotalBranches(int counter) {
+        branchDetails.setBranchesSeen(counter);
+    }
+
+    public void setPrunedBranches(int counter) {
+        branchDetails.setBranchesPruned(counter);
+    }
+
+    public void setDuplicateBranches(int counter) {
+        branchDetails.setBranchesPruned(counter);
+    }
+
+    public AlgorithmBranchDetails getDetails() {
+        return branchDetails;
+    }
 }

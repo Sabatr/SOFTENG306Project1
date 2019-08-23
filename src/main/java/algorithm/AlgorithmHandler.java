@@ -1,4 +1,5 @@
 package algorithm;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -24,6 +25,51 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
     private Timeline timeline;
     private boolean timerStarted = false;
     private String formattedTime;
+
+    public AlgorithmHandler() {
+        branchUpdate();
+    }
+
+    private void branchUpdate() {
+        Timeline timeline = new Timeline(
+            new KeyFrame(
+                    Duration.millis( 1000 ),
+                    event -> {
+                        fireEvent(AlgorithmEvents.UPDATE_BRANCH_COUNTER);
+                    }
+            )
+        );
+        timeline.setCycleCount( Animation.INDEFINITE );
+        timeline.play();
+    }
+
+    private void timeUpdate() {
+//        Timeline timeline = new Timeline(
+//                new KeyFrame(
+//                        Duration.millis( 1000 ),
+//                        event -> {
+//
+//                        }
+//                )
+//        );
+//        Task<Void> task = new Task<Void>() {
+//            @Override
+//            protected Void call() throws Exception {
+//                AlgorithmHandler.this.fireEvent(AlgorithmEvents.UPDATE_TIME_ELAPSED);
+//                return null;
+//            }
+//        };
+//        timeline.setCycleCount( Animation.INDEFINITE );
+//        timeline.play();
+//        Thread thread = new Thread(task);
+//        try {
+//            thread.start();
+//            thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+    }
+
     @Override
     public void addListener(SchedulerListener listener) {
         listeners.add(listener);
@@ -69,14 +115,18 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
                 timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10), (ActionEvent e) -> {
                     eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
                     timeTaken = System.currentTimeMillis() - time;
+//                    formattedTime = TimeUnit.MILLISECONDS.toMinutes(timeTaken)
+//                            + ":" + TimeUnit.MILLISECONDS.toSeconds(timeTaken)
+//                            + ":" + timeTaken%1000;
                     formattedTime = String.format("%02d:%02d:%03d",
                             TimeUnit.MILLISECONDS.toMinutes(timeTaken),
                             TimeUnit.MILLISECONDS.toSeconds(timeTaken),
                             timeTaken%1000);
-                    fire();
+
                     if (timerStarted) {
                         timeline.stop();
                     }
+                    fire();
                 } ));
                 timeline.setCycleCount(Timeline.INDEFINITE);
                 timeline.play();
@@ -108,7 +158,6 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
                 }
                 return;
             case UPDATE_BRANCH_COUNTER:
-                //TODO: Not sure if this is accurate
                 for (SchedulerListener listener: listeners) {
                     listener.updateBranchCounter();
                 }

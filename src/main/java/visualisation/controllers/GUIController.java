@@ -142,16 +142,18 @@ public class GUIController {
      * @param label
      */
     public void updateBranchCount(String label, AlgorithmBranchDetails algorithmBranchDetails) {
-
-        Platform.runLater(() -> {
-            Tile tile = ((Tile)tilesBox.getChildren().get(1));
-            Pane nodePane = (Pane)tile.getGraphic();
-            PieChart chart = (PieChart)nodePane.getChildren().get(0);
-            PieChart.Data slice1 = chart.getData().get(0);
-            slice1.setPieValue(algorithmBranchDetails.getBranchesSeen());
-            ((Text)nodePane.getChildren().get(1)).setText(label);
-        }
-        );
+        Tile tile = ((Tile)tilesBox.getChildren().get(1));
+        Pane nodePane = (Pane)tile.getGraphic();
+        PieChart chart = (PieChart)nodePane.getChildren().get(0);
+        PieChart.Data slice1 = chart.getData().get(0);
+        PieChart.Data slice2 = chart.getData().get(1);
+        slice2.setPieValue(algorithmBranchDetails.getBranchesPruned());
+        slice1.setPieValue(algorithmBranchDetails.getBranchesSeen());
+        ((Text)nodePane.getChildren().get(1)).setText(label);
+//        Platform.runLater(() -> {
+//
+//        }
+        //);
     }
 
     private void createTimeTile() {
@@ -166,24 +168,30 @@ public class GUIController {
      * @param time
      */
     public void updateTimer(String time){
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                Tile tile =  (Tile)tilesBox.getChildren().get(2);
-                CustomCounter counter = (CustomCounter) tile.getGraphic();
-                Text text = counter.getText();
-                text.setText(time);
-                counter.setText(text);
-                return null;
-            }
-        };
-        new Thread(task).start();
+        Tile tile =  (Tile)tilesBox.getChildren().get(2);
+        CustomCounter counter = (CustomCounter) tile.getGraphic();
+        Text text = counter.getText();
+        text.setText(time);
+        counter.setText(text);
+//        Tile tile =  (Tile)tilesBox.getChildren().get(2);
+//        CustomCounter counter = (CustomCounter) tile.getGraphic();
+//        Text text = counter.getText();
+//        text.setText(time);
+//        counter.setText(text);
+//        Task<Void> task = new Task<Void>() {
+//            @Override
+//            protected Void call() throws Exception {
+//                Tile tile =  (Tile)tilesBox.getChildren().get(2);
+//                CustomCounter counter = (CustomCounter) tile.getGraphic();
+//                Text text = counter.getText();
+//                text.setText(time);
+//                counter.setText(text);
+//                return null;
+//            }
+//        };
+//        new Thread(task).start();
 //        Platform.runLater(() ->{
-//           Tile tile =  (Tile)tilesBox.getChildren().get(2);
-//           CustomCounter counter = (CustomCounter) tile.getGraphic();
-//           Text text = counter.getText();
-//           text.setText(time);
-//           counter.setText(text);
+//
 //        });
     }
 

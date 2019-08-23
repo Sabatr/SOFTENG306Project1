@@ -82,7 +82,7 @@ public class TreeGenerator {
 
 
                 VisualEdge edge = new VisualEdge(getFromX,getFromY,getToX,getToY);
-                DirectedArrow dArrow = new DirectedArrow(edge,size);
+                //DirectedArrow dArrow = new DirectedArrow(edge,size);
                 graphPane.getChildren().add(edge);
                 graphPane.getChildren().add(edge.getEdgeText(fromVertex,vertex, size));
             }

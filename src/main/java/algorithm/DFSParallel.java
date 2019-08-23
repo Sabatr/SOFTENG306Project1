@@ -58,7 +58,7 @@ public class DFSParallel implements Algorithm {
 
         while (!candidate.isEmpty()) {
 
-            if (currentThreads < MAX_THREADS ) {
+            if (currentThreads < MAX_THREADS) {
                 currentThreads++;
                 DFSThread newThread = new DFSThread();
                 threadList.add(newThread);
@@ -68,10 +68,10 @@ public class DFSParallel implements Algorithm {
             }
         }
 
-        for (DFSThread thread : threadList){
+        for (DFSThread thread : threadList) {
             try {
                 thread.join();
-            } catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -80,16 +80,14 @@ public class DFSParallel implements Algorithm {
     }
 
     private synchronized void stackPush(State s) {
-
         candidate.push(s);
-
     }
 
-    private synchronized void stackRemove(State s){
+    private void pruneStack(State s) {
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
     }
 
-    private synchronized State stackPop(){
+    private synchronized State stackPop() {
         if (!candidate.empty()) {
             State s = candidate.pop();
             return s;
@@ -98,27 +96,29 @@ public class DFSParallel implements Algorithm {
         }
     }
 
-    private synchronized void setResult(State s){
-        result = s;
+    private synchronized void setResult(State s) {
+        if (s.allVisited() && s.getCostToBottomLevel() < minFullPath) {
+            System.out.println(s.getCostToBottomLevel());
+            result = s;
+            minFullPath = s.getCostToBottomLevel();
+        }
     }
 
-    private synchronized boolean stackCompare(State s){
+    private boolean stackCompare(State s) {
         return s.getCostToBottomLevel() < minFullPath;
     }
 
-    public void iterate(){
+    public void iterate() {
         //each thread gets a unique 's'
         State s = stackPop();
         if (s != null) {
             for (State s1 : s.generatePossibilities()) {
                 if (!visited.contains(s1)) {
                     if (stackCompare(s1)) {
-
                         stackPush(s1);
-                        if (s1.allVisited() && stackCompare(s1)) {
+                        if (s1.allVisited()) {
                             //Prune branches
-                            stackRemove(s1);
-                            minFullPath = s1.getCostToBottomLevel();
+                            pruneStack(s1);
                             setResult(s1);
                         }
                     }
@@ -128,32 +128,12 @@ public class DFSParallel implements Algorithm {
         }
     }
 
-    private class DFSThread extends Thread{
+    private class DFSThread extends Thread {
         @Override
         public void run() {
             runAlgorithm();
         }
     }
 
-    //Todo implement this class.
-    /*
-    Initialise MinFullPath to integer.Maxint
-    Add the initial State(Empty, VisitedList(root),CandidateList(roots' children),currentCost) to the
-    Priority Queue
-    While the priorityQueue is not empty:
-        Generate the possibilities involving all nodes in the candidate list
-        If we have traversed all nodes and cost is less than the minFullPathCost:
-            Add the possibilities onto the priority queue
-        Else:
-            Add the possibilities onto the priority queue
-        Pop off the priority queue
-        if current is full state and cheaper than minFullPath:
-            replace minFullPath
-            For all states in priority queue:
-                If cost is less than the minFullPathCost:
-                    Remove it from the priority queue
-    done
-    Select the State with cheapest DFS cost
-     */
 }
 

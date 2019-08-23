@@ -140,7 +140,7 @@ public class State {
 
     public boolean allVisited() {
         //Checks if any more vertexes exist to expand
-        return toTraverse.isEmpty();
+        return traversed.size() == g.getNumVertices();
     }
 
     /**

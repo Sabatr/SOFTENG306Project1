@@ -40,7 +40,7 @@ public class State {
     }
 
     List<Vertex> traversed;
-    PriorityQueue<Vertex> toTraverse;
+    List<Vertex> toTraverse;
     int lastProcessorVertexAddedTo;
     private int prevProcessNum = -1;
 
@@ -56,7 +56,7 @@ public class State {
         for (int i = 0; i < numProcessors; i++) {
             processors.add(new Processor(i + 1));
         }
-        toTraverse = new PriorityQueue<>(new VertexComparator());
+        toTraverse = new ArrayList<>();
         toTraverse.addAll(g.getRoots());
         currentLevel = 0;
         costToBottomLevel = g.calculateBottomLevel();
@@ -76,7 +76,7 @@ public class State {
         for (int i = 0; i < copyState.processors.size(); i++) {
             processors.add(new Processor(copyState.processors.get(i), i + 1));
         }
-        toTraverse = new PriorityQueue<>(new VertexComparator());
+        toTraverse = new ArrayList<>();
         toTraverse.addAll(copyState.toTraverse);
         currentLevel = copyState.currentLevel;
         costToBottomLevel = copyState.costToBottomLevel;

@@ -4,9 +4,7 @@ import graph.Graph;
 import scheduler.AStarComparator;
 import scheduler.State;
 
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Algorithm which deals with using the A star implementation. Here, a priority queue
@@ -55,31 +53,52 @@ public class DFSParallel implements Algorithm {
      * @return
      */
     public State runAlgorithm() {
+
+        List<DFSThread> threadList = new ArrayList<>();
+
         while (!candidate.isEmpty()) {
 
             if (currentThreads < MAX_THREADS ) {
                 currentThreads++;
-                new DFSThread().start();
-                iterate();
+                DFSThread newThread = new DFSThread();
+                threadList.add(newThread);
+                newThread.start();
             } else {
                 iterate();
             }
         }
 
-        return result ;
+        for (DFSThread thread : threadList){
+            try {
+                thread.join();
+                System.out.println("thread finished");
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+
+        return result;
     }
 
-    private synchronized void stackPush(State s){
+    private synchronized void stackPush(State s) {
+
         candidate.push(s);
+
     }
 
     private synchronized void stackRemove(State s){
+
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
+
     }
 
     private synchronized State stackPop(){
-        State s = candidate.pop();
-        return s;
+        if (!candidate.empty()) {
+            State s = candidate.pop();
+            return s;
+        } else {
+            return null;
+        }
     }
 
     private synchronized void setResult(State s){
@@ -87,21 +106,26 @@ public class DFSParallel implements Algorithm {
     }
 
     public void iterate(){
+        //each thread gets a unique 's'
         State s = stackPop();
-        for (State s1 : s.generatePossibilities()) {
-            if (!visited.contains(s1)) {
-                if (s1.getCostToBottomLevel() < minFullPath) {
-                    //candidate.push(s1);
-                    stackPush(s1);
-                    if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
-                        //Prune branches
-                        stackRemove(s1);
-                        //candidate.removeIf((state) -> aStarComparator.compare(s1, state) < 0);
-                        minFullPath = s1.getCostToBottomLevel();
-                        setResult(s1);
+        if (s != null) {
+            for (State s1 : s.generatePossibilities()) {
+                if (!visited.contains(s1)) {
+                    if (s1.getCostToBottomLevel() < minFullPath) {
+                        //candidate.push(s1);
+
+                        stackPush(s1);
+                        if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
+                            //Prune branches
+                            stackRemove(s1);
+
+                            //candidate.removeIf((state) -> aStarComparator.compare(s1, state) < 0);
+                            minFullPath = s1.getCostToBottomLevel();
+                            setResult(s1);
+                        }
                     }
+                    visited.add(s1);
                 }
-                visited.add(s1);
             }
         }
     }

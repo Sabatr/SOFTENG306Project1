@@ -79,7 +79,7 @@ public class DFSParallel implements Algorithm {
         return result;
     }
 
-    private synchronized void stackPush(State s) {
+    private void stackPush(State s) {
         candidate.push(s);
     }
 
@@ -87,7 +87,7 @@ public class DFSParallel implements Algorithm {
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
     }
 
-    private synchronized State stackPop() {
+    private State stackPop() {
         if (!candidate.empty()) {
             State s = candidate.pop();
             return s;

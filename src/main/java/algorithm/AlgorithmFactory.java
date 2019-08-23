@@ -16,7 +16,8 @@ public class AlgorithmFactory  {
         int numberOfProcessors = Integer.parseInt(args[1]);
         switch (choice) {
             case DFS:
-                algorithm = new DFS(numberOfProcessors,graph);
+                //TODO fixProblem
+                algorithm = new AStar(numberOfProcessors,graph);
                 break;
             case ASTAR:
                 algorithm = new AStar(numberOfProcessors,graph);

@@ -1,4 +1,4 @@
-package algorhithm;
+package algorithm;
 
 /**
  * An enum to determine the different types of algorithm events

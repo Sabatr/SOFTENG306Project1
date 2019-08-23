@@ -83,18 +83,6 @@ public class State {
         prevVertexEndTimeHashMap = new HashMap<>(copyState.prevVertexEndTimeHashMap);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        State state = (State) o;
-        return Objects.equals(processors, state.processors);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(processors);
-    }
 
     public State addVertex(int processorNum, Vertex v) {
         // Clone state then add the new vertex. Will also have to clone the processor list and processor block

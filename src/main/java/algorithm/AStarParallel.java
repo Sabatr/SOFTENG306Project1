@@ -3,6 +3,7 @@ package algorithm;
 import graph.Graph;
 import scheduler.AStarComparator;
 import scheduler.State;
+import visualisation.processor.listeners.SchedulerListener;
 
 import java.util.HashSet;
 import java.util.PriorityQueue;
@@ -36,6 +37,11 @@ public class AStarParallel  implements  Algorithm{
 
     private synchronized void changeCurrentThreads(int i){
         currentThreads = currentThreads + i;
+    }
+
+    @Override
+    public void addListener(SchedulerListener listener) {
+
     }
 
     /**

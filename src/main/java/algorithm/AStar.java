@@ -16,7 +16,7 @@ import java.util.PriorityQueue;
  * is used to ensure that nodes with least cost are placed with greatest priority followed
  * by their level.
  */
-public class AStar extends AlgorithmHandler implements  Algorithm {
+public class AStar extends AlgorithmHandler implements Algorithm {
     private int minFullPath = Integer.MAX_VALUE;
     private boolean traversed;
     private PriorityQueue<State> candidate;
@@ -36,6 +36,7 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
 
     /**
      * Runs the algorithm
+     *
      * @return
      */
     public State runAlgorithm() {
@@ -47,8 +48,10 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
             for (State s1 : s.generatePossibilities()) {
                 if (!visited.contains(s1)) {
                     if (s1.getCostToBottomLevel() < minFullPath) {
+                        System.out.println(candidate.size());
                         candidate.add(s1);
                         if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
+                            candidate.removeIf((state) -> new AStarComparator().compare(s1, state) > 1);
                             minFullPath = s1.getCostToBottomLevel();
                             finalState = s1;
                         }
@@ -59,7 +62,7 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
             }
         }
 
-        fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,finalState);
+        fireEvent(AlgorithmEvents.ALGORITHM_FINISHED, finalState);
         return finalState;
     }
 

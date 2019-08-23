@@ -40,7 +40,7 @@ public class State {
     }
 
     List<Vertex> traversed;
-    PriorityQueue<Vertex> toTraverse;
+    List<Vertex> toTraverse;
     int lastProcessorVertexAddedTo;
     private int prevProcessNum = -1;
 
@@ -56,7 +56,7 @@ public class State {
         for (int i = 0; i < numProcessors; i++) {
             processors.add(new Processor(i + 1));
         }
-        toTraverse = new PriorityQueue<>(new VertexComparator());
+        toTraverse = new ArrayList<>();
         toTraverse.addAll(g.getRoots());
         currentLevel = 0;
         costToBottomLevel = g.calculateBottomLevel();
@@ -68,7 +68,7 @@ public class State {
      * Create a copy a given state
      * @param copyState
      */
-    private State(State copyState) {
+    public State (State copyState) {
         traversed = new ArrayList<>();
         traversed.addAll(copyState.traversed);
         processors = new ArrayList<>();
@@ -76,24 +76,11 @@ public class State {
         for (int i = 0; i < copyState.processors.size(); i++) {
             processors.add(new Processor(copyState.processors.get(i), i + 1));
         }
-        toTraverse = new PriorityQueue<>(new VertexComparator());
+        toTraverse = new ArrayList<>();
         toTraverse.addAll(copyState.toTraverse);
         currentLevel = copyState.currentLevel;
         costToBottomLevel = copyState.costToBottomLevel;
         prevVertexEndTimeHashMap = new HashMap<>(copyState.prevVertexEndTimeHashMap);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        State state = (State) o;
-        return Objects.equals(processors, state.processors);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(processors);
     }
 
     public State addVertex(int processorNum, Vertex v) {
@@ -131,10 +118,12 @@ public class State {
             }
         }
 
+        //TODO fix this
         // Required to check for duplicates later.
-        // Collections.sort(processors);
+        //Collections.sort(processors);
         prevVertexEndTimeHashMap.putIfAbsent(v,currentCost);
         prevVertexEndTimeHashMap.put(v,Math.max(prevVertexEndTimeHashMap.get(v),currentCost));
+        //Collections.sort(processors);
 
         return this;
     }
@@ -148,6 +137,10 @@ public class State {
     public boolean allVisited() {
         //Checks if any more vertexes exist to expand
         return toTraverse.isEmpty();
+    }
+
+    public List<Vertex> getToTraverse() {
+        return toTraverse;
     }
 
     /**
@@ -180,6 +173,19 @@ public class State {
 
         return possibleStates;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        State state = (State) o;
+        return Objects.equals(processors, state.processors);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(processors);
     }
 
     //TODO return a copy of State, fpr a;; addVertex here.

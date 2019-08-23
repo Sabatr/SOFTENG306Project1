@@ -1,7 +1,9 @@
 package algorithm;
 
 import graph.Graph;
+import graph.Vertex;
 import scheduler.AStarComparator;
+import scheduler.Processor;
 import scheduler.State;
 import visualisation.processor.listeners.ObservableAlgorithm;
 import visualisation.processor.listeners.SchedulerListener;
@@ -24,6 +26,7 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
     private Graph graph;
     private State finalState;
     private int numberOfProcessors;
+    private int prunedBranches;
 
     public AStar(int numProcessors, Graph graph) {
         this.numberOfProcessors = numProcessors;
@@ -41,29 +44,71 @@ public class AStar extends AlgorithmHandler implements  Algorithm {
     public State runAlgorithm() {
         startTimer();
         finalState = null;
-        while (!candidate.isEmpty() && candidate.peek().getCostToBottomLevel() <= minFullPath) {
+        AStarComparator aStarComparator = new AStarComparator();
+        State result = null;
+        while (!candidate.isEmpty()) {
             fireEvent(AlgorithmEvents.UPDATE_BRANCH_COUNTER);
             State s = candidate.poll();
-            for (State s1 : s.generatePossibilities()) {
+            for (State s1 : generatePossibilities(s)) {
                 if (!visited.contains(s1)) {
                     if (s1.getCostToBottomLevel() < minFullPath) {
                         System.out.println(candidate.size());
                         candidate.add(s1);
                         if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
+
+                            int prunedBranchesChange = candidate.size();
+                            //Prune branches
+                            candidate.removeIf( (state) -> aStarComparator.compare(s1,state) < 0);
+                            prunedBranchesChange -= candidate.size();
+
                             minFullPath = s1.getCostToBottomLevel();
                             finalState = s1;
                         }
                     }
                     visited.add(s1);
                 }
-
             }
-        }
 
+        }
         fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,finalState);
         return finalState;
     }
+    /**
+     * Generates all of the possible states
+     * @return
+     */
+    public HashSet<State> generatePossibilities(State state) {
+        int duplicates = 0;
+        //Generates a list of possible states to visit
 
+        HashSet<State> possibleStates = new HashSet<>();
+        if (!state.allVisited()) {
+            List<Vertex> toAddList = new ArrayList<>();
+            for (Vertex v : state.getToTraverse()) {
+                if (state.canVisit(v)) {
+                    toAddList.add(v);
+                    HashSet<Processor> checkedProcessors = new HashSet<>();
+                    for (int i = 0; i < state.getProcessors().size(); i++) {
+                        State copy = new State(state);
+                        Processor p = state.getProcessors().get(i);
+                        if(!checkedProcessors.contains(p)) {
+                            checkedProcessors.add(p);
+                            copy.addVertex(i, v);
+                            possibleStates.add(copy);
+                        }else{
+                            // Duplicate branches count found here.
+                            duplicates++;
+                        }
+                    }
+                }
+            }
+            state.getToTraverse().addAll(toAddList);
+            state.getToTraverse().removeAll(toAddList);
+        }
+
+        return possibleStates;
+
+    }
     //Todo implement this class.
     /*
     Initialise MinFullPath to integer.Maxint

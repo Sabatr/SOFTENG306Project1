@@ -83,6 +83,19 @@ public class State {
         prevVertexEndTimeHashMap = new HashMap<>(copyState.prevVertexEndTimeHashMap);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        State state = (State) o;
+        return Objects.equals(processors, state.processors);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(processors);
+    }
+
     public State addVertex(int processorNum, Vertex v) {
         // Clone state then add the new vertex. Will also have to clone the processor list and processor block
         // list within it -> reference disappears once u clone so must use int
@@ -119,7 +132,7 @@ public class State {
         }
 
         // Required to check for duplicates later.
-        Collections.sort(processors);
+        // Collections.sort(processors);
         prevVertexEndTimeHashMap.putIfAbsent(v,currentCost);
         prevVertexEndTimeHashMap.put(v,Math.max(prevVertexEndTimeHashMap.get(v),currentCost));
 
@@ -167,24 +180,6 @@ public class State {
 
         return possibleStates;
 
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        State state = (State) o;
-        return currentCost == state.currentCost &&
-                currentLevel == state.currentLevel &&
-                processors.equals(state.processors) &&
-                g.equals(state.g) &&
-                traversed.equals(state.traversed) &&
-                toTraverse.equals(state.toTraverse);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(processors, currentCost, currentLevel, g, traversed, toTraverse);
     }
 
     //TODO return a copy of State, fpr a;; addVertex here.

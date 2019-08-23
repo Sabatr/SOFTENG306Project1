@@ -79,6 +79,16 @@ public class DFSParallel implements Algorithm {
         return result;
     }
 
+    private synchronized void stackPush(State s) {
+
+        candidate.push(s);
+
+    }
+
+    private synchronized void stackRemove(State s){
+        candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
+    }
+
     private synchronized State stackPop(){
         if (!candidate.empty()) {
             State s = candidate.pop();
@@ -103,10 +113,11 @@ public class DFSParallel implements Algorithm {
             for (State s1 : s.generatePossibilities()) {
                 if (!visited.contains(s1)) {
                     if (stackCompare(s1)) {
-                        candidate.push(s);
+
+                        stackPush(s1);
                         if (s1.allVisited() && stackCompare(s1)) {
                             //Prune branches
-                            candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
+                            stackRemove(s1);
                             minFullPath = s1.getCostToBottomLevel();
                             setResult(s1);
                         }

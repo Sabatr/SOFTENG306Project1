@@ -14,18 +14,14 @@ public class DirectedArrow extends Group{
         this.size = size;
         this.edge = edge;
         Polygon triangle = createArrowHead();
-        System.out.println(triangle);
         this.getChildren().add(triangle);
         this.getChildren().add(edge);
     }
 
     private Polygon createArrowHead() {
-        //System.out.println("powe");
         Polygon polygon = new Polygon();
         double headPointX = edge.getEndingX();
         double headPointY = edge.getEndingY();
-
-        System.out.println(edge);
         double leftPointX;
         double leftPointY;
 
@@ -34,8 +30,8 @@ public class DirectedArrow extends Group{
 
         int xWidth = Math.abs(edge.getStartingX() - edge.getEndingX());
         int yWidth = Math.abs(edge.getStartingY() - edge.getEndingY());
+
         double angle = Math.atan(xWidth/yWidth);
-        //System.out.println("Angle is" + angle);
         if (angle == 0) {
             angle = 90.0;
             xWidth = 1;

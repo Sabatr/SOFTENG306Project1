@@ -66,7 +66,7 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
         Task task = new Task<Void>() {
             @Override
             protected Void call() {
-                timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100), (ActionEvent e) -> {
+                timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10), (ActionEvent e) -> {
                     eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
                     timeTaken = System.currentTimeMillis() - time;
                     formattedTime = String.format("%02d:%02d:%03d",

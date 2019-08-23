@@ -58,6 +58,7 @@ public class DFSParallel implements Algorithm {
         while (!candidate.isEmpty()) {
 
             if (currentThreads < MAX_THREADS ) {
+                currentThreads++;
                 new DFSThread().start();
                 iterate();
             } else {

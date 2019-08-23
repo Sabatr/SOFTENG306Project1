@@ -87,9 +87,7 @@ public class DFSParallel implements Algorithm {
     }
 
     private synchronized void stackRemove(State s){
-
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
-
     }
 
     private synchronized State stackPop(){

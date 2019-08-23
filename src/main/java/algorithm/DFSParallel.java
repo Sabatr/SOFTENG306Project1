@@ -3,6 +3,7 @@ package algorithm;
 import graph.Graph;
 import scheduler.AStarComparator;
 import scheduler.State;
+import visualisation.processor.listeners.SchedulerListener;
 
 import java.util.*;
 
@@ -45,6 +46,11 @@ public class DFSParallel implements Algorithm {
         candidate.add(new State(numProcessors, graph));
         aStarComparator = new AStarComparator();
         MAX_THREADS = 4;
+    }
+
+    @Override
+    public void addListener(SchedulerListener listener) {
+
     }
 
     /**

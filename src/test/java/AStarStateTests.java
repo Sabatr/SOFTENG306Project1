@@ -19,13 +19,14 @@ public class AStarStateTests {
      * @return
      */
     private Graph createGraph(String inputURL) {
-        DotParser dp = new DotParser(new File("data/" + inputURL));
-        Graph g1 = null;
         try {
-            g1 = dp.parseGraph();
+            DotParser.getInstance().parseGraph(new File("data/" + inputURL));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        //  DotParser dp = new DotParser(new File("data/" + inputURL));
+        Graph g1 = null;
+        g1 = DotParser.getInstance().getGraph();
         return g1;
     }
 

@@ -68,9 +68,12 @@ public class DFSParallel implements Algorithm {
             }
         }
 
-        for (DFSThread thread : threadList) {
+        System.out.println("\n");
+        for (int i = 0; i < threadList.size(); i++) {
+            DFSThread thread =threadList.get(i);
             try {
                 thread.join();
+                System.out.println("thread " + Integer.toString(i));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -79,15 +82,16 @@ public class DFSParallel implements Algorithm {
         return result;
     }
 
-    private void stackPush(State s) {
+    private synchronized void stackPush(State s) {
         candidate.push(s);
     }
 
-    private void pruneStack(State s) {
+    private synchronized void pruneStack(State s) {
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
     }
 
-    private State stackPop() {
+    /*This must be synchronised*/
+    private synchronized State stackPop() {
         if (!candidate.empty()) {
             State s = candidate.pop();
             return s;
@@ -96,15 +100,16 @@ public class DFSParallel implements Algorithm {
         }
     }
 
+    /*This must be synchronised*/
     private synchronized void setResult(State s) {
         if (s.allVisited() && s.getCostToBottomLevel() < minFullPath) {
-            System.out.println(s.getCostToBottomLevel());
             result = s;
             minFullPath = s.getCostToBottomLevel();
         }
     }
 
-    private boolean stackCompare(State s) {
+    /*This must be synchronised*/
+    private synchronized boolean stackCompare(State s) {
         return s.getCostToBottomLevel() < minFullPath;
     }
 

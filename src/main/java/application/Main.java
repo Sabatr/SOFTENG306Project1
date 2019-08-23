@@ -15,17 +15,6 @@ import java.io.FileNotFoundException;
 import static utils.CliParser.UI;
 
 public class Main {
-    private static Algorithm algorithm;
-    private static String outputName;
-    public static boolean isStringIsNumericAndPositive(String str) {
-        try {
-            if (Integer.parseInt(str) > 0) return true;
-        } catch (NumberFormatException | NullPointerException nfe) {
-            return false;
-        }
-        return false;
-    }
-
     /**
      * @param args
      * Input values when executing the program in console

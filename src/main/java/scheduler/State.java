@@ -65,7 +65,7 @@ public class State {
      * Create a copy a given state
      * @param copyState
      */
-    private State(State copyState) {
+    public State (State copyState) {
         traversed = new ArrayList<>();
         traversed.addAll(copyState.traversed);
         processors = new ArrayList<>();
@@ -128,7 +128,6 @@ public class State {
         //TODO fix this
         // Required to check for duplicates later.
         //Collections.sort(processors);
-
         return this;
     }
 
@@ -141,6 +140,10 @@ public class State {
     public boolean allVisited() {
         //Checks if any more vertexes exist to expand
         return toTraverse.isEmpty();
+    }
+
+    public List<Vertex> getToTraverse() {
+        return toTraverse;
     }
 
     /**

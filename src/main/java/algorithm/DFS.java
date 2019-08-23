@@ -3,6 +3,7 @@ package algorithm;
 import graph.Graph;
 import scheduler.AStarComparator;
 import scheduler.State;
+import visualisation.AlgorithmDataStorage;
 
 import java.util.HashSet;
 import java.util.PriorityQueue;
@@ -13,7 +14,7 @@ import java.util.Stack;
  * is used to ensure that nodes with least cost are placed with greatest priority followed
  * by their level.
  */
-public class DFS implements Algorithm {
+public class DFS extends AlgorithmHandler implements Algorithm  {
     private int minFullPath = Integer.MAX_VALUE;
     private boolean traversed;
     private Stack<State> candidate;
@@ -34,11 +35,14 @@ public class DFS implements Algorithm {
      * @return
      */
     public State runAlgorithm() {
+        startTimer();
         AStarComparator aStarComparator = new AStarComparator();
         State result = null;
         while (!candidate.isEmpty()) {
             State s = candidate.pop();
             for (State s1 : s.generatePossibilities()) {
+                AlgorithmDataStorage.getInstance().setTotalBranches(visited.size());
+                //totalBranches++;
                 if (!visited.contains(s1)) {
                     if (s1.getCostToBottomLevel() < minFullPath) {
                         candidate.push(s1);
@@ -54,6 +58,7 @@ public class DFS implements Algorithm {
             }
 
         }
+        fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,result);
         return result;
     }
 

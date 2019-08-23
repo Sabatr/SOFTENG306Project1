@@ -16,20 +16,25 @@ import graph.Edge;
  * Class to help deal with file input, and generating a corresponding graph from this input
  */
 public class DotParser {
-    File f;
+    private static DotParser parser = new DotParser();
+    private static File f;
 
-    public DotParser(File f) {
-        this.f = f;
+    // ONLY WANT ONE INSTANCE OF A GRAPH
+    private static Graph g;
+    private DotParser() {
+
     }
-
+    public static DotParser getInstance() {
+        return parser;
+    }
     /**
-     * Main method in charge of parsing the graph
+     * application.Main method in charge of parsing the graph
      * @return
      * @throws FileNotFoundException
      */
-    public Graph parseGraph() throws FileNotFoundException {
+    public void parseGraph(File f) throws FileNotFoundException {
         GraphParser graphParser = new GraphParser(new FileInputStream(f));
-        Graph g = new Graph(graphParser.getGraphId());
+        g = new Graph(graphParser.getGraphId());
 
         //Set up the vertices
         for (GraphNode node : graphParser.getNodes().values()) {
@@ -53,8 +58,9 @@ public class DotParser {
             from.addOutgoingEdge(toAdd);
             g.addEdge(toAdd.getId(),toAdd);
         }
+    }
 
+    public Graph getGraph() {
         return g;
-
     }
 }

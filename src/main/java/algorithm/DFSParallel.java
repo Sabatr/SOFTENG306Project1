@@ -9,9 +9,8 @@ import visualisation.processor.listeners.SchedulerListener;
 import java.util.*;
 
 /**
- * Algorithm which deals with using the A star implementation. Here, a priority queue
- * is used to ensure that nodes with least cost are placed with greatest priority followed
- * by their level.
+ *  Algorithm which uses dfs to solve the problem at hand.
+ *  This code is adapted from the DFS algorithm
  */
 public class DFSParallel extends AlgorithmHandler implements Algorithm {
     private int minFullPath = Integer.MAX_VALUE;
@@ -121,6 +120,12 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
 
     }
 
+    /**
+     * Checks to see if a state could more optimal than the one provided.
+     * If it is, then the algorithm can be run on that state.
+     * @param s
+     * @return
+     */
     private boolean stackCompare(State s) {
         return s.getCostToBottomLevel() < minFullPath;
     }
@@ -129,12 +134,19 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
         //each thread gets a unique 's'
         State s = stackPop();
         if (s != null) {
+            //Generate possibilities for the given state
             for (State s1 : s.generatePossibilities()) {
+
+                //Only check unique states which haven't been visited before
                 if (!visited.contains(s1)) {
                     AlgorithmDataStorage.getInstance().incrementVisited();
                     totalBranches++;
+
+                    //Ensure that it could create a better than optimal solution
                     if (stackCompare(s1)) {
                         stackPush(s1);
+
+                        // If it is better than the optimal state, update.
                         if (s1.allVisited()) {
                             pruneStack(s1);
                             setResult(s1);

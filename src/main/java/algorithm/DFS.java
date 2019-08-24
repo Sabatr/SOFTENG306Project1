@@ -10,9 +10,8 @@ import java.util.PriorityQueue;
 import java.util.Stack;
 
 /**
- * Algorithm which deals with using the A star implementation. Here, a priority queue
- * is used to ensure that nodes with least cost are placed with greatest priority followed
- * by their level.
+ * Algorithm which uses a stack in place of a priority queue to ensure try and find the optimal
+ * schedule for the problem at hand
  */
 public class DFS extends AlgorithmHandler implements Algorithm  {
     private int minFullPath = Integer.MAX_VALUE;
@@ -38,14 +37,23 @@ public class DFS extends AlgorithmHandler implements Algorithm  {
         startTimer();
         AStarComparator aStarComparator = new AStarComparator();
         State result = null;
+
+        //Run until the priority queue is empty
         while (!candidate.isEmpty()) {
             State s = candidate.pop();
+
+            //Generate the possibilities for state s
             for (State s1 : s.generatePossibilities()) {
                 AlgorithmDataStorage.getInstance().setTotalBranches(visited.size());
-                //totalBranches++;
+
+                //Only try to visit if not visited before
                 if (!visited.contains(s1)) {
+
+                    // If it could be an optimal solution
                     if (s1.getCostToBottomLevel() < minFullPath) {
                         candidate.push(s1);
+
+                        // If it is more optimal, then prune and set new optimal
                         if (s1.allVisited() && s1.getCostToBottomLevel() < minFullPath) {
                             //Prune branches
                             candidate.removeIf( (state) -> aStarComparator.compare(s1,state) < 0);
@@ -62,24 +70,4 @@ public class DFS extends AlgorithmHandler implements Algorithm  {
         return result;
     }
 
-    //Todo implement this class.
-    /*
-    Initialise MinFullPath to integer.Maxint
-    Add the initial State(Empty, VisitedList(root),CandidateList(roots' children),currentCost) to the
-    Priority Queue
-    While the priorityQueue is not empty:
-        Generate the possibilities involving all nodes in the candidate list
-        If we have traversed all nodes and cost is less than the minFullPathCost:
-            Add the possibilities onto the priority queue
-        Else:
-            Add the possibilities onto the priority queue
-        Pop off the priority queue
-        if current is full state and cheaper than minFullPath:
-            replace minFullPath
-            For all states in priority queue:
-                If cost is less than the minFullPathCost:
-                    Remove it from the priority queue
-    done
-    Select the State with cheapest DFS cost
-     */
 }

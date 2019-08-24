@@ -31,4 +31,15 @@ public class AlgorithmBranchDetails {
     public int getDuplicateBranches() {
         return duplicateBranches;
     }
+
+    public void incrementDuplicates() {
+        duplicateBranches++;
+    }
+    public void incrementPruned(int i){
+       branchesPruned += i;
+    }
+
+    public void incrementVisited() {
+        branchesSeen++;
+    }
 }

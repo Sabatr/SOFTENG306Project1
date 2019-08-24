@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 /**
- * Algorithm which deals with using the A star implementation. Here, a priority queue
+ * Algorithm which deals with  the problem using the A star implementation. Here, a priority queue
  * is used to ensure that nodes with least cost are placed with greatest priority followed
  * by their level.
  */

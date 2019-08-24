@@ -4,6 +4,7 @@ import graph.Graph;
 import graph.Vertex;
 import graph.Edge;
 import graph.VertexComparator;
+import visualisation.AlgorithmDataStorage;
 
 import java.util.*;
 
@@ -202,6 +203,8 @@ public class State {
                             checkedProcessors.add(p);
                             copy.addVertex(i, v);
                             possibleStates.add(copy);
+                        }else{
+                            AlgorithmDataStorage.getInstance().incrementDuplicates();
                         }
                     }
 

@@ -146,10 +146,10 @@ public class GUIController {
         // Pruned
         PieChart.Data slice2 = chart.getData().get(1);
         // Duplicate
-        //PieChart.Data slice3 = chart.getData().get(2);
+        PieChart.Data slice3 = chart.getData().get(2);
         slice2.setPieValue(algorithmBranchDetails.getBranchesPruned());
         slice1.setPieValue(algorithmBranchDetails.getBranchesSeen());
-       // slice3.setPieValue(algorithmBranchDetails.getDuplicateBranches());
+        slice3.setPieValue(algorithmBranchDetails.getDuplicateBranches());
         ((Text)nodePane.getChildren().get(1)).setText(label);
     }
 

@@ -127,7 +127,7 @@ public class State {
 
         //TODO fix this
         // Required to check for duplicates later.
-        //Collections.sort(processors);
+        Collections.sort(processors);
         return this;
     }
 
@@ -139,7 +139,7 @@ public class State {
 
     public boolean allVisited() {
         //Checks if any more vertexes exist to expand
-        return toTraverse.isEmpty();
+        return traversed.size() == g.getNumVertices();
     }
 
     public List<Vertex> getToTraverse() {

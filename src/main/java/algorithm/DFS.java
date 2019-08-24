@@ -83,4 +83,3 @@ public class DFS extends AlgorithmHandler implements Algorithm  {
     Select the State with cheapest DFS cost
      */
 }
-

@@ -73,7 +73,6 @@ public class DFSParallel implements Algorithm {
             DFSThread thread =threadList.get(i);
             try {
                 thread.join();
-                System.out.println("thread " + Integer.toString(i));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -82,11 +81,11 @@ public class DFSParallel implements Algorithm {
         return result;
     }
 
-    private synchronized void stackPush(State s) {
+    private void stackPush(State s) {
         candidate.push(s);
     }
 
-    private synchronized void pruneStack(State s) {
+    private void pruneStack(State s) {
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
     }
 
@@ -122,7 +121,6 @@ public class DFSParallel implements Algorithm {
                     if (stackCompare(s1)) {
                         stackPush(s1);
                         if (s1.allVisited()) {
-                            //Prune branches
                             pruneStack(s1);
                             setResult(s1);
                         }

@@ -1,6 +1,7 @@
 package utils;
 
 import algorithm.AStar;
+import algorithm.DFSParallel;
 import files.DotParser;
 import files.OutputCreator;
 import graph.Graph;
@@ -42,7 +43,7 @@ public class CliParser {
                 try { // This is where the calculation is done
                     System.out.println("Calculating, please wait...\n");
                     Graph g1 = new DotParser(new File(result[0])).parseGraph();
-                    OutputCreator out = new OutputCreator(new AStar(Integer.parseInt(result[1]),g1).runAlgorithm());
+                    OutputCreator out = new OutputCreator(new DFSParallel(Integer.parseInt(result[1]),g1, Integer.parseInt(result[3])).runAlgorithm());
                     out.createOutputFile(result[2]);
                     System.out.println("Output file available as: '" + result[2] + "'");
                     if (Boolean.parseBoolean(result[4])) out.displayOutputOnConsole();

@@ -31,9 +31,9 @@ public class OutputTests {
      * This one is tricky to test as there are multiple correct answers.
      * Assume the output will be the same as what the brief says.
      */
-    @Test
-    public void testOutputFile() {
-        try {
+//    @Test
+//    public void testOutputFile() {
+//        try {
 //            DotParser dp = new DotParser(new File("data/" + "input3.dot"));
 //            Graph g = dp.parseGraph();
 //            State s = new State(1, g);
@@ -43,10 +43,8 @@ public class OutputTests {
 //            DotParser dp2 = new DotParser(new File("data/" + "output3.dot"));
 //            Graph g1 = dp2.parseGraph();
 //            Assert.assertEquals(g, g1);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-
-    }
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 }

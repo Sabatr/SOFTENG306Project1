@@ -61,7 +61,7 @@ public class CliParser {
                       AlgorithmFactory factory = new AlgorithmFactory();
                      DotParser.getInstance().parseGraph(new File("data/" + result[0]));
                      Graph g1 = DotParser.getInstance().getGraph();
-                    algorithm = factory.createAlgorithm(AlgorithmChoice.DFS,args,g1);
+                    algorithm = factory.createAlgorithm(AlgorithmChoice.DFS_PARALLEL,args,g1);
                     outputName = result[2];
                     if (Boolean.parseBoolean(result[4])) {
                         isVisualisation = true;
@@ -238,9 +238,6 @@ public class CliParser {
             @Override
             protected Void call() {
                 System.out.println("Output file available as: '" + outputName + "'");
-//                scheduler.State solution = algorithm.runAlgorithm();
-//                OutputCreator out = new OutputCreator(solution);
-//                out.createOutputFile(outputName);
                 createOutputFile();;
                 return null;
             }

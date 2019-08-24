@@ -21,6 +21,9 @@ public class AlgorithmFactory  {
             case ASTAR:
                 algorithm = new AStar(numberOfProcessors,graph);
                 break;
+            case DFS_PARALLEL:
+                algorithm = new DFSParallel(numberOfProcessors,graph);
+                break;
             default:
                 //TODO: Make our own exception
                 throw new Exception("Not a valid algorithm.");
@@ -29,6 +32,7 @@ public class AlgorithmFactory  {
         //Each algorithm needs to have a listener attached.
         // Binds the listener to the storage and the algorithm itself.
         algorithm.addListener(listener);
+        System.out.println("a??");
         AlgorithmDataStorage.getInstance().setListener(listener);
         return algorithm;
     }

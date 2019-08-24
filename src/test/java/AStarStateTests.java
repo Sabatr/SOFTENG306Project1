@@ -24,7 +24,13 @@ public class AStarStateTests {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+<<<<<<< HEAD
         Graph g1 = DotParser.getInstance().getGraph();
+=======
+        //  DotParser dp = new DotParser(new File("data/" + inputURL));
+        Graph g1 = null;
+        g1 = DotParser.getInstance().getGraph();
+>>>>>>> convertAStarToDFS
         return g1;
     }
 

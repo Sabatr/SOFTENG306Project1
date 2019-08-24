@@ -15,7 +15,6 @@ public class GraphTests {
      * @param inputURL
      */
     private Graph createGraph(String inputURL) {
-
         try {
             DotParser.getInstance().parseGraph(new File("data/" + inputURL));
         } catch (FileNotFoundException e) {

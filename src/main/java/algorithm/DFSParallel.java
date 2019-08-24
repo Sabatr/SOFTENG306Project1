@@ -20,6 +20,7 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
     private HashSet<State> visited;
     private Graph graph;
     private int totalBranches = 1;
+    private boolean updateStatistics = false;
 
     private int currentThreads;
     private int MAX_THREADS;
@@ -98,9 +99,7 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
     }
 
     private synchronized void pruneStack(State s) {
-        int sizeBefore = candidate.size();
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
-        AlgorithmDataStorage.getInstance().incrementPruned(sizeBefore - candidate.size());
     }
 
     /*This must be synchronised*/

@@ -121,9 +121,6 @@ public class DFSParallel implements Algorithm {
                     if (stackCompare(s1)) {
                         stackPush(s1);
                         if (s1.allVisited()) {
-                            if(s1.getCostToBottomLevel() != s1.getCurrentCost()){
-                                System.out.println(s1);
-                            }
                             pruneStack(s1);
                             setResult(s1);
                         }

@@ -100,7 +100,6 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
     private synchronized void pruneStack(State s) {
         int sizeBefore = candidate.size();
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
-        System.out.println(sizeBefore - candidate.size());
         AlgorithmDataStorage.getInstance().incrementPruned(sizeBefore - candidate.size());
     }
 
@@ -141,6 +140,8 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
                             pruneStack(s1);
                             setResult(s1);
                         }
+                    }else{
+                        AlgorithmDataStorage.getInstance().incrementPruned(1);
                     }
                     visited.add(s1);
                 }else{

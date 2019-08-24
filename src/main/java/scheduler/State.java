@@ -4,6 +4,7 @@ import graph.Graph;
 import graph.Vertex;
 import graph.Edge;
 import graph.VertexComparator;
+import visualisation.AlgorithmDataStorage;
 
 import java.util.*;
 
@@ -196,12 +197,14 @@ public class State {
                     // Helps to reduce unecessary exploration of already explored places.
                     HashSet<Processor> checkedProcessors = new HashSet<>();
                     for (int i = 0; i < processors.size(); i++) {
-                        State copy = new State(this);
                         Processor p = processors.get(i);
                         if (!checkedProcessors.contains(p)) {
+                            State copy = new State(this);
                             checkedProcessors.add(p);
                             copy.addVertex(i, v);
                             possibleStates.add(copy);
+                        }else{
+                            AlgorithmDataStorage.getInstance().incrementDuplicates();
                         }
                     }
 

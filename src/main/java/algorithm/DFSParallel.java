@@ -70,8 +70,6 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
     public State runAlgorithm() {
         List<DFSThread> threadList = new ArrayList<>();
         while (!candidate.isEmpty()) {
-            AlgorithmDataStorage.getInstance().setTotalBranches(totalBranches);
-            totalBranches++;
             //create as many threads as needed before starting
             if (currentThreads < MAX_THREADS) {
                 currentThreads++;
@@ -99,8 +97,11 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
         candidate.push(s);
     }
 
-    private void pruneStack(State s) {
+    private synchronized void pruneStack(State s) {
+        int sizeBefore = candidate.size();
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
+        System.out.println(sizeBefore - candidate.size());
+        AlgorithmDataStorage.getInstance().incrementPruned(sizeBefore - candidate.size());
     }
 
     /*This must be synchronised*/
@@ -132,6 +133,8 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
         if (s != null) {
             for (State s1 : s.generatePossibilities()) {
                 if (!visited.contains(s1)) {
+                    AlgorithmDataStorage.getInstance().incrementVisited();
+                    totalBranches++;
                     if (stackCompare(s1)) {
                         stackPush(s1);
                         if (s1.allVisited()) {
@@ -140,6 +143,8 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
                         }
                     }
                     visited.add(s1);
+                }else{
+                    AlgorithmDataStorage.getInstance().incrementDuplicates();
                 }
             }
         }

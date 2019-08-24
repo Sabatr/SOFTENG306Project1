@@ -3,26 +3,17 @@ package visualisation.controllers;
 import algorithm.AlgorithmBranchDetails;
 import com.sun.management.OperatingSystemMXBean;
 import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.TileBuilder;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.chart.TilesFXSeries;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
-import javafx.scene.Group;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -30,7 +21,7 @@ import visualisation.controllers.helpers.TreeGenerator;
 import visualisation.controllers.helpers.tile.CustomCounter;
 import visualisation.controllers.helpers.tile.CustomPieChart;
 import visualisation.controllers.helpers.tile.CustomTileBuilder;
-import visualisation.processor.helpers.CustomProgressBar;
+import visualisation.controllers.helpers.tile.CustomProgressBar;
 import visualisation.processor.helpers.ProcessChartHelper;
 
 import java.lang.management.ManagementFactory;
@@ -84,7 +75,6 @@ public class GUIController {
         });
         processPane.getChildren().add(tile);
     }
-
     private void instantiateStatTiles() {
 
         tileHeight = tilesBox.getPrefHeight()/3 + 10;
@@ -101,6 +91,9 @@ public class GUIController {
     }
 
 
+    /**
+     * Creates the label for the left column
+     */
     private void createTileHeader() {
         Text text = new Text("Statistics");
         text.setFont(new Font(30));
@@ -108,6 +101,9 @@ public class GUIController {
         tilesBox.getChildren().add(text);
     }
 
+    /**
+     * Create the branch tile and sets data within it
+     */
     private void createBranchTile() {
         Pane pane = new Pane();
         pane.setPrefHeight(tileHeight);
@@ -145,17 +141,21 @@ public class GUIController {
         Tile tile = ((Tile)tilesBox.getChildren().get(1));
         Pane nodePane = (Pane)tile.getGraphic();
         PieChart chart = (PieChart)nodePane.getChildren().get(0);
+        // Seen
         PieChart.Data slice1 = chart.getData().get(0);
+        // Pruned
         PieChart.Data slice2 = chart.getData().get(1);
+        // Duplicate
+        //PieChart.Data slice3 = chart.getData().get(2);
         slice2.setPieValue(algorithmBranchDetails.getBranchesPruned());
         slice1.setPieValue(algorithmBranchDetails.getBranchesSeen());
+       // slice3.setPieValue(algorithmBranchDetails.getDuplicateBranches());
         ((Text)nodePane.getChildren().get(1)).setText(label);
-//        Platform.runLater(() -> {
-//
-//        }
-        //);
     }
 
+    /**
+     * Creates the tile for timing the algorithm
+     */
     private void createTimeTile() {
         Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.TIMER,tileWidth,tileHeight);
         CustomCounter counter = new CustomCounter(tileWidth,tileHeight);
@@ -168,29 +168,6 @@ public class GUIController {
      * @param time
      */
     public void updateTimer(String time){
-       // System.out.println("updating");
-//        Tile tile =  (Tile)tilesBox.getChildren().get(2);
-//        CustomCounter counter = (CustomCounter) tile.getGraphic();
-//        Text text = counter.getText();
-//        text.setText(time);
-//        counter.setText(text);
-//        Tile tile =  (Tile)tilesBox.getChildren().get(2);
-//        CustomCounter counter = (CustomCounter) tile.getGraphic();
-//        Text text = counter.getText();
-//        text.setText(time);
-//        counter.setText(text);
-//        Task<Void> task = new Task<Void>() {
-//            @Override
-//            protected Void call() throws Exception {
-//                Tile tile =  (Tile)tilesBox.getChildren().get(2);
-//                CustomCounter counter = (CustomCounter) tile.getGraphic();
-//                Text text = counter.getText();
-//                text.setText(time);
-//                counter.setText(text);
-//                return null;
-//            }
-//        };
-//        new Thread(task).start();
         Platform.runLater(() ->{
         Tile tile =  (Tile)tilesBox.getChildren().get(2);
         CustomCounter counter = (CustomCounter) tile.getGraphic();
@@ -231,12 +208,18 @@ public class GUIController {
         });
     }
 
+    /**
+     * Creates the CPU tile
+     */
     private void createCPUTile() {
         Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.CPU,tileWidth,tileHeight);
            tilesBox.getChildren().add(tile);
 
     }
 
+    /**
+     * Initialises the checking of the CPU and memory
+     */
     private void startCPUCheck() {
         long time = System.currentTimeMillis();
         com.sun.management.OperatingSystemMXBean operatingSystemMXBean =
@@ -245,9 +228,9 @@ public class GUIController {
                 new KeyFrame(Duration.millis(500), (ActionEvent ae) -> {
                     Tile tile = (Tile)tilesBox.getChildren().get(3);
                     String xValue = Integer.toString((int)(Math.abs(time-System.currentTimeMillis()))/100);
-                   // ObservableList<ChartData> dataList = tile.getChartData();
                     ObservableList<XYChart.Data<String,Number>> cpuData = tile.getSeries().get(1).getData();
                     ObservableList<XYChart.Data<String,Number>> memoryData = tile.getSeries().get(0).getData();
+                    // Removes the previous data when the maximum has been reached
                     if (cpuData.size() > 10) {
                         cpuData.remove(0);
                     }

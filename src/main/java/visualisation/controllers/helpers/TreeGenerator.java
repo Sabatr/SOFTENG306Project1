@@ -4,10 +4,6 @@ import files.DotParser;
 import graph.Graph;
 import graph.Vertex;
 import javafx.scene.layout.Pane;
-import visualisation.AlgorithmDataStorage;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class TreeGenerator {
@@ -22,7 +18,6 @@ public class TreeGenerator {
     private final int Y_POSITION_INCREASE = 1;
     public TreeGenerator(Pane parentPane) {
         this.graphPane = parentPane;
-       // this.inputGraph = retrieveInputGraph(AlgorithmDataStorage.getInstance().getInputFileName());
         inputGraph = DotParser.getInstance().getGraph();
         layerNode = new HashMap<>();
         size = DEFAULT_NODE_SIZE / inputGraph.getVertexHashMap().size();
@@ -178,6 +173,11 @@ public class TreeGenerator {
 
         }
     }
+
+    /**
+     * Generates the graph
+     * @return
+     */
     public Pane generate() {
         generateNodePositions();
         return graphPane;

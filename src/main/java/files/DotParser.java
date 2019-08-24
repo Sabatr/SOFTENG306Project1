@@ -13,7 +13,7 @@ import graph.Vertex;
 import graph.Edge;
 
 /**
- * Class to help deal with file input, and generating a corresponding graph from this input
+ * A singleton class to help deal with file input, and generating a corresponding graph from this input
  */
 public class DotParser {
     private static DotParser parser = new DotParser();
@@ -24,6 +24,11 @@ public class DotParser {
     private DotParser() {
 
     }
+
+    /**
+     *
+     * @return the instance of the dot parser
+     */
     public static DotParser getInstance() {
         return parser;
     }

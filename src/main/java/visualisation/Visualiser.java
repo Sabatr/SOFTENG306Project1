@@ -51,8 +51,6 @@ public class Visualiser extends Application {
         stage.centerOnScreen();
         stage.setScene(scene);
         stage.show();
-
-
         CliParser.createSolution();
     }
 

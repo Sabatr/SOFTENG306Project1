@@ -1,12 +1,13 @@
 package visualisation.controllers.helpers.tile;
 
-import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-
+/**
+ * A component of the visualisation to show the timer.
+ */
 public class CustomCounter extends Pane {
     private Text text;
     public CustomCounter(double width, double height) {
@@ -19,7 +20,6 @@ public class CustomCounter extends Pane {
         text.setLayoutX(width/2 - text.getBoundsInLocal().getWidth()/2 - 10);
         this.setLayoutY(0);
         this.setLayoutX(0);
-       // this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         this.getChildren().add(text);
 
     }

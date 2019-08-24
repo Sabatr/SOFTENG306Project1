@@ -222,13 +222,17 @@ public class CliParser {
                 .build();
     }
 
-
-
+    /**
+     * Begins the visualisation process
+     * @param args
+     */
     public static void startVisualisation(String[] args) {
         new Visualiser().startVisual(args);
     }
 
-
+    /**
+     * Runs the solution algorithm on another thread.
+     */
     public static void createSolution() {
         ((AlgorithmHandler)algorithm).startTimer();
         Task<Void> task = new Task<Void>() {
@@ -242,6 +246,9 @@ public class CliParser {
         new Thread(task).start();
     }
 
+    /**
+     * Creates the output dot file based on the result of the algorithm
+     */
     private static void createOutputFile() {
         scheduler.State solution = algorithm.runAlgorithm();
         ((AlgorithmHandler)algorithm).fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,solution);

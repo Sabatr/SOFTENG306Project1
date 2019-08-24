@@ -12,7 +12,6 @@ import scheduler.State;
 public class AlgorithmDataStorage {
     private static AlgorithmDataStorage storage;
     private SchedulerListener listener;
-    private String outputName;
     private AlgorithmBranchDetails branchDetails = new AlgorithmBranchDetails();
     private AlgorithmDataStorage() {
     }

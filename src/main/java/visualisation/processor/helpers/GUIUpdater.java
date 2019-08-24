@@ -10,7 +10,6 @@ import visualisation.controllers.GUIController;
 public class GUIUpdater {
     private static GUIUpdater guiUpdater;
     private GUIController controller;
-    private StringBuilder builder;
     private GUIUpdater() {
     }
 

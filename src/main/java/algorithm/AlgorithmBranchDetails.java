@@ -1,5 +1,8 @@
 package algorithm;
 
+/**
+ * A class which represents the statistics needed for the branches
+ */
 public class AlgorithmBranchDetails {
     private int branchesSeen;
     private int branchesPruned;

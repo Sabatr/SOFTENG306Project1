@@ -32,7 +32,6 @@ public class AlgorithmFactory  {
         //Each algorithm needs to have a listener attached.
         // Binds the listener to the storage and the algorithm itself.
         algorithm.addListener(listener);
-        System.out.println("a??");
         AlgorithmDataStorage.getInstance().setListener(listener);
         return algorithm;
     }

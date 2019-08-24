@@ -169,11 +169,11 @@ public class GUIController {
      */
     public void updateTimer(String time){
        // System.out.println("updating");
-        Tile tile =  (Tile)tilesBox.getChildren().get(2);
-        CustomCounter counter = (CustomCounter) tile.getGraphic();
-        Text text = counter.getText();
-        text.setText(time);
-        counter.setText(text);
+//        Tile tile =  (Tile)tilesBox.getChildren().get(2);
+//        CustomCounter counter = (CustomCounter) tile.getGraphic();
+//        Text text = counter.getText();
+//        text.setText(time);
+//        counter.setText(text);
 //        Tile tile =  (Tile)tilesBox.getChildren().get(2);
 //        CustomCounter counter = (CustomCounter) tile.getGraphic();
 //        Text text = counter.getText();
@@ -191,9 +191,13 @@ public class GUIController {
 //            }
 //        };
 //        new Thread(task).start();
-//        Platform.runLater(() ->{
-//
-//        });
+        Platform.runLater(() ->{
+        Tile tile =  (Tile)tilesBox.getChildren().get(2);
+        CustomCounter counter = (CustomCounter) tile.getGraphic();
+        Text text = counter.getText();
+        text.setText(time);
+        counter.setText(text);
+        });
     }
 
 

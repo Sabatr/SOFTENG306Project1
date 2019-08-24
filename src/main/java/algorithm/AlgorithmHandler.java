@@ -107,35 +107,55 @@ public abstract class AlgorithmHandler implements ObservableAlgorithm {
     /**
      * Begins the timer which is used to record the time taken until the algorithm is complete
      */
-    protected void startTimer() {
-        if (!CliParser.isVisualisation()) return;
+    public void startTimer() {
+        if (!CliParser.isVisualisation()) {
+            return;
+        }
         long time = System.currentTimeMillis();
         timeline = new Timeline();
-        Task task = new Task<Void>() {
-            @Override
-            protected Void call() {
-                timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10), (ActionEvent e) -> {
-                    eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
-                    timeTaken = System.currentTimeMillis() - time;
-//                    formattedTime = TimeUnit.MILLISECONDS.toMinutes(timeTaken)
-//                            + ":" + TimeUnit.MILLISECONDS.toSeconds(timeTaken)
-//                            + ":" + timeTaken%1000;
-                    formattedTime = String.format("%02d:%02d:%03d",
-                            TimeUnit.MILLISECONDS.toMinutes(timeTaken),
-                            TimeUnit.MILLISECONDS.toSeconds(timeTaken),
-                            timeTaken%1000);
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10), (ActionEvent e) -> {
+            eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
+            timeTaken = System.currentTimeMillis() - time;
+            long minutes = timeTaken/1000/60;
+            long seconds = timeTaken/1000 - minutes * 60;
+            long milli = timeTaken %1000;
 
-                    if (timerStarted) {
-                        timeline.stop();
-                    }
-                    fire();
-                } ));
-                timeline.setCycleCount(Timeline.INDEFINITE);
-                timeline.play();
-                return null;
+            formattedTime = String.format("%02d:%02d:%03d",
+                    minutes,seconds,milli
+            );
+
+            if (timerStarted) {
+                timeline.stop();
             }
-        };
-        new Thread(task).start();
+            fire();
+        } ));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+//        Task task = new Task<Void>() {
+//            @Override
+//            protected Void call() {
+//                timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10), (ActionEvent e) -> {
+//                    eventType = AlgorithmEvents.UPDATE_TIME_ELAPSED;
+//                    timeTaken = System.currentTimeMillis() - time;
+////                    formattedTime = TimeUnit.MILLISECONDS.toMinutes(timeTaken)
+////                            + ":" + TimeUnit.MILLISECONDS.toSeconds(timeTaken)
+////                            + ":" + timeTaken%1000;
+//                    formattedTime = String.format("%02d:%02d:%03d",
+//                            TimeUnit.MILLISECONDS.toMinutes(timeTaken),
+//                            TimeUnit.MILLISECONDS.toSeconds(timeTaken),
+//                            timeTaken%1000);
+//
+//                    if (timerStarted) {
+//                        timeline.stop();
+//                    }
+//                    fire();
+//                } ));
+//                timeline.setCycleCount(Timeline.INDEFINITE);
+//                timeline.play();
+//                return null;
+//            }
+//        };
+//        new Thread(task).start();
 
     }
 

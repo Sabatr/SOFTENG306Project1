@@ -1,9 +1,6 @@
 package utils;
 
-import algorithm.AStar;
-import algorithm.Algorithm;
-import algorithm.AlgorithmChoice;
-import algorithm.AlgorithmFactory;
+import algorithm.*;
 import application.Main;
 import files.DotParser;
 import files.OutputCreator;
@@ -12,6 +9,7 @@ import javafx.concurrent.Task;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.apache.commons.cli.*;
 import visualisation.Visualiser;
+import visualisation.processor.listeners.ObservableAlgorithm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +31,7 @@ public class CliParser {
     public static void UI(String[] args) {
         args = new String[3];
         args[0] = "Nodes_11_OutTree.dot";
-        args[1] = "4";
+        args[1] = "2";
         args[2] = "-v";
         if (args.length == 0) { System.err.println("Error: No arguments provided. Program terminated. Run program with '-h' for help."); }
         else {
@@ -233,7 +231,7 @@ public class CliParser {
 
 
     public static void createSolution() {
-
+        ((AlgorithmHandler)algorithm).startTimer();
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() {
@@ -247,6 +245,7 @@ public class CliParser {
 
     private static void createOutputFile() {
         scheduler.State solution = algorithm.runAlgorithm();
+        ((AlgorithmHandler)algorithm).fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,solution);
         OutputCreator out = new OutputCreator(solution);
         out.createOutputFile(outputName);
     }

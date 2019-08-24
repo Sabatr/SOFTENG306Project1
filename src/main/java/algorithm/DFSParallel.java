@@ -68,8 +68,6 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
      * @return
      */
     public State runAlgorithm() {
-        //TODO:
-        startTimer();
         List<DFSThread> threadList = new ArrayList<>();
         while (!candidate.isEmpty()) {
             AlgorithmDataStorage.getInstance().setTotalBranches(totalBranches);
@@ -89,7 +87,6 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
             DFSThread thread =threadList.get(i);
             try {
                 thread.join();
-                fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,result);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

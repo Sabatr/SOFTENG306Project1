@@ -127,7 +127,7 @@ public class State {
 
         //TODO fix this
         // Required to check for duplicates later.
-        //Collections.sort(processors);
+        Collections.sort(processors);
 
         return this;
     }

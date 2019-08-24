@@ -33,7 +33,13 @@ public class DFSParallel implements Algorithm {
         traversed = false;
         candidate.add(new State(numProcessors, graph));
         aStarComparator = new AStarComparator();
-        MAX_THREADS = maxThreads;
+        //limit number of threads used to the number of processors since if there are more threads than processors,
+        //the search thing does nothing
+        if (maxThreads < numProcessors) {
+            MAX_THREADS = maxThreads;
+        } else {
+            MAX_THREADS = numProcessors;
+        }
     }
 
 
@@ -44,7 +50,13 @@ public class DFSParallel implements Algorithm {
         traversed = false;
         candidate.add(new State(numProcessors, graph));
         aStarComparator = new AStarComparator();
-        MAX_THREADS = 4;
+        int maxThreads = 2;
+        if (maxThreads < numProcessors) {
+            MAX_THREADS = maxThreads;
+        } else {
+            MAX_THREADS = numProcessors;
+        }
+
     }
 
     /**
@@ -58,6 +70,7 @@ public class DFSParallel implements Algorithm {
 
         while (!candidate.isEmpty()) {
 
+            //create as many threads as needed before starting
             if (currentThreads < MAX_THREADS) {
                 currentThreads++;
                 DFSThread newThread = new DFSThread();
@@ -68,7 +81,7 @@ public class DFSParallel implements Algorithm {
             }
         }
 
-        System.out.println("\n");
+        //wait for threads to finish
         for (int i = 0; i < threadList.size(); i++) {
             DFSThread thread =threadList.get(i);
             try {
@@ -107,8 +120,7 @@ public class DFSParallel implements Algorithm {
         }
     }
 
-    /*This must be synchronised*/
-    private synchronized boolean stackCompare(State s) {
+    private boolean stackCompare(State s) {
         return s.getCostToBottomLevel() < minFullPath;
     }
 

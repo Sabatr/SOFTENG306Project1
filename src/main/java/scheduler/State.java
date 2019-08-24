@@ -15,17 +15,11 @@ public class State {
     int currentCost;
     int currentLevel;
     int costToBottomLevel;
-    HashMap<Vertex, Integer> prevVertexEndTimeHashMap;
-    HashMap<Vertex,Vertex> vertexPrevVertexHashMap;
     Graph g;
-    HashMap<Vertex, Integer> lastProcessorAssignedVertex;
-    Vertex intAssignedVertex;
 
     public List<Processor> getProcessors() {
         return processors;
     }
-
-    public Vertex getInitAssignedVertex() { return intAssignedVertex; }
 
     public int getCurrentCost() {
         return currentCost;
@@ -43,12 +37,8 @@ public class State {
         return g;
     }
 
-    public void setCurrentCost(int cost){
-        currentCost = cost;
-    }
-
     List<Vertex> traversed;
-    PriorityQueue<Vertex> toTraverse;
+    List<Vertex> toTraverse;
     int lastProcessorVertexAddedTo;
     private int prevProcessNum = -1;
 
@@ -64,13 +54,11 @@ public class State {
         for (int i = 0; i < numProcessors; i++) {
             processors.add(new Processor(i + 1));
         }
-        toTraverse = new PriorityQueue<>(new VertexComparator());
+        toTraverse = new ArrayList<>();
         toTraverse.addAll(g.getRoots());
         currentLevel = 0;
         costToBottomLevel = g.calculateBottomLevel();
         currentCost = 0;
-        prevVertexEndTimeHashMap = new HashMap<>();
-        lastProcessorAssignedVertex = new HashMap<>();
     }
 
     /**
@@ -85,16 +73,21 @@ public class State {
         for (int i = 0; i < copyState.processors.size(); i++) {
             processors.add(new Processor(copyState.processors.get(i), i + 1));
         }
-        toTraverse = new PriorityQueue<>(new VertexComparator());
+        toTraverse = new ArrayList<>();
         toTraverse.addAll(copyState.toTraverse);
         currentLevel = copyState.currentLevel;
         costToBottomLevel = copyState.costToBottomLevel;
-        prevVertexEndTimeHashMap = new HashMap<>(copyState.prevVertexEndTimeHashMap);
-        lastProcessorAssignedVertex = new HashMap<>();
     }
-
-    public HashMap<Vertex,Integer> getLastProcessorAssignedVertex(){
-        return lastProcessorAssignedVertex;
+    public HashMap<Vertex, Integer> getPrevVertexEndTimeHashMap() {
+        HashMap<Vertex, Integer> prevVertexEndTimeHashMap = new HashMap<Vertex, Integer>();
+        if (traversed.size() > 0 ){
+            for (Processor processor : processors) {
+                for (ProcessorBlock block : processor.processorBlockList) {
+                    prevVertexEndTimeHashMap.put(block.getV(), block.getEndTime());
+                }
+            }
+        }
+        return prevVertexEndTimeHashMap;
     }
 
     public State addVertex(int processorNum, Vertex v) {
@@ -106,7 +99,7 @@ public class State {
 
         //System.out.println(Arrays.toString(hasBlock.toArray()));
         // Add the vertex to processor x, at the earliest possible time.
-        int boundCost = processors.get(processorNum).addVertex(v, traversed, prevVertexEndTimeHashMap);
+        int boundCost = processors.get(processorNum).addVertex(v, traversed, getPrevVertexEndTimeHashMap());
         costToBottomLevel = Math.max(costToBottomLevel, boundCost);
 
         // Set the new currentCost && current level
@@ -135,8 +128,6 @@ public class State {
         //TODO fix this
         // Required to check for duplicates later.
         //Collections.sort(processors);
-        prevVertexEndTimeHashMap.putIfAbsent(v,currentCost);
-        prevVertexEndTimeHashMap.put(v,Math.max(prevVertexEndTimeHashMap.get(v),currentCost));
 
         return this;
     }
@@ -149,91 +140,11 @@ public class State {
 
     public boolean allVisited() {
         //Checks if any more vertexes exist to expand
-        return toTraverse.isEmpty();
-    }
-
-    public boolean isScheduleEmpty(){
-        return traversed.isEmpty();
-    }
-
-    public State cleanState(State currentState , int newStateIndex){
-        for (int i = 1; i < newStateIndex; i++) {
-            if (processors.get(i).processorBlockList.isEmpty()){
-                return null;
-            }
+        if (toTraverse.isEmpty() && this.currentCost != this.costToBottomLevel){
+            System.out.println(this);
         }
 
-        return currentState;
-    }
-
-    public State getNextPossibleState(){
-        List<Vertex> toTraverseList = new ArrayList<>(toTraverse);
-        State currentState = new State(this);
-          if (toTraverseList.size() > 0) {
-              for (Vertex v : toTraverseList) {
-                  if (canVisit(v)) {
-                          if (!lastProcessorAssignedVertex.containsKey(v)) {
-                              lastProcessorAssignedVertex.put(v, 0);
-                              currentState.addVertex(0, v);
-                              //Collections.sort(currentState.processors);
-                              return currentState;
-
-                          } else if (lastProcessorAssignedVertex.containsKey(v)) {
-                              if (lastProcessorAssignedVertex.get(v) < processors.size() - 1) {
-
-                                  int prevProcessor = lastProcessorAssignedVertex.get(v);
-                                  int newProcessor = prevProcessor + 1;
-                                  lastProcessorAssignedVertex.put(v, newProcessor);
-                                  currentState.addVertex(newProcessor, v);
-
-                                  return cleanState(currentState,newProcessor);
-                              }
-
-
-                          }
-
-                  }
-
-              }
-          }
-
-//        List<Vertex> toTraverseList = new ArrayList<>(toTraverse);
-//            if (toTraverseList.size() > 0) {
-//                for (Vertex v : toTraverseList) {
-//                    if (canVisit(v)) {
-//
-//                        System.out.println("Vertex " + v);
-//
-//                        if (lastProcessorAssignedVertex.containsKey(v)) {
-//                            int lastProcessorNumber = lastProcessorAssignedVertex.get(v);
-//                            System.out.println(lastProcessorNumber);
-//
-//                        }
-//                        if (!lastProcessorAssignedVertex.containsKey(v)) {
-//                            lastProcessorAssignedVertex.put(v, 0);
-//                            currentState = new State(this);
-//                            currentState.addVertex(0, v);
-//                            return currentState;
-//                        }
-//                        if (lastProcessorAssignedVertex.get(v) == processors.size()) {
-//                            toTraverse.remove(v);
-//                            return null;
-//
-//                        } else if (lastProcessorAssignedVertex.get(v) < processors.size()) {
-//                            int lastProcessor = lastProcessorAssignedVertex.get(v);
-//                            lastProcessor = lastProcessor + 1;
-//                            lastProcessorAssignedVertex.put(v, lastProcessor);
-//                            currentState.addVertex(lastProcessor, v);
-//                            return currentState;
-//
-//                        }
-//                    }
-//                }
-//            }
-//
-//
-
-        return null;
+        return traversed.size() == g.getNumVertices();
     }
 
     /**
@@ -255,7 +166,6 @@ public class State {
                         if(!checkedProcessors.contains(p)) {
                             checkedProcessors.add(p);
                             copy.addVertex(i, v);
-                            //lastProcessorAssignedVertex.put(v,i);
                             possibleStates.add(copy);
                         }
                     }
@@ -307,23 +217,68 @@ public class State {
      * @return
      */
     public boolean isValid() {
-        PriorityQueue<ProcessorBlock> pbs = new PriorityQueue<>();
-        HashMap<Vertex,ProcessorBlock> vertexProcessorBlockHashMap = new HashMap<>();
-        for (Processor p : processors) {
-            for(ProcessorBlock pb:p.getProcessorBlockList()){
-                pbs.add(pb);
-                vertexProcessorBlockHashMap.put(pb.getV(),pb);
-            }
+        // Checks to see if there are still vertices to traverse
+        if (toTraverse.size() > 0){
+            return false;
         }
-        for(ProcessorBlock pb: pbs){
-            Vertex v = pb.getV();
-            int starttime = pb.getStartTime();
-            for(Vertex v1: v.getIncomingVerticies()){
-                if(starttime < vertexProcessorBlockHashMap.get(v1).getEndTime()){
+
+        for (Processor processor : processors){
+            // Adds all of the processor blocks to a priority queue
+            List<ProcessorBlock> processorBlockPriorityQueue = new ArrayList<>();
+            for(ProcessorBlock processorBlock : processor.getProcessorBlockList()){
+                processorBlockPriorityQueue.add(processorBlock);
+                // Add processors to priority queue to order them
+            }
+
+            int costOfPrevAssignedVertex = 0;
+
+            for (ProcessorBlock currentProcessorBlock : processorBlockPriorityQueue){
+                Vertex processorBlockV = currentProcessorBlock.getV();
+                int processorBlockStartTime = currentProcessorBlock.getStartTime();
+
+                // Checking to see if there is no overlap between the previously assigned vertex and the current assigned
+                if (costOfPrevAssignedVertex > processorBlockStartTime){
                     return false;
-                };
-            }
+                }
+
+                // Go through all of the vertices v depends on and see if the are scheduled correctly
+                for(Vertex processorBlockV1: processorBlockV.getIncomingVerticies()){
+                    for (Processor processor1 : processors){
+                        if (processor1.processorVertexList.contains(processorBlockV1)){
+                            // Get end time of incoming vertex
+                            int endTimeIncomingV = 0;
+                            for (ProcessorBlock processorBlock  : processor1.processorBlockList){
+                                if (processorBlock.getV() == processorBlockV1){
+                                    endTimeIncomingV = processorBlock.getEndTime();
+                                    break;
+                                }
+                            }
+                            // Check if v1, the vertices v depends on is scheduled in the same processor
+                            if (processor1 == processor){
+                                // Making sure incoming v is before current v
+                                if (currentProcessorBlock.getStartTime() < endTimeIncomingV ){
+                                    return false;
+                                }
+
+                            } else{ // Check if v1, the vertices v depends on is scheduled on a different processor
+                                //  Make sure incoming v with its transferring cost is still less than current vertex
+                                if (currentProcessorBlock.getStartTime() < endTimeIncomingV + processorBlockV.getEdgeWeightFrom(processorBlockV1) ){
+                                    return false;
+                                }
+                            }
+                            }
+                        }
+                    }
+                    costOfPrevAssignedVertex = currentProcessorBlock.getEndTime();
+                }
         }
+
+
+        //Check if cost to bottom level is same as current cost
+        if (costToBottomLevel != currentCost){
+            return false;
+        }
+
         return true;
     }
 }

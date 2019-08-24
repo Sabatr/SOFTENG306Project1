@@ -12,7 +12,7 @@ public class Processor implements Comparable<Processor> {
     List<ProcessorBlock> processorBlockList;
     List<Vertex> processorVertexList;
 
-    HashMap<String,Integer> processorBlockHashMap;
+    HashMap<String, Integer> processorBlockHashMap;
     HashSet<Vertex> visited;
     Vertex startVertex;
     Graph g;
@@ -20,10 +20,6 @@ public class Processor implements Comparable<Processor> {
     int processorNumber;
     int boundCost;
     int startCost;
-
-    public int getProcessorNumber(){
-        return processorNumber;
-    }
 
     /**
      * Setting up the fields of the Processor with initial values
@@ -56,87 +52,27 @@ public class Processor implements Comparable<Processor> {
     }
 
     /**
-     * This method is used to check if the new vertex that is being assigned is in this processor
-     * @param vertex
-     * @return
-     */
-    public Boolean isVertexInProcessor(Vertex vertex){
-        return visited.contains(vertex);
-    }
-
-    /**
-     * Out of all of the vertices the new vertex relies on has the latest finish time
-     * @param prevVertices
-     * @param prevVertexEndTimeHashMap
-     * @return
-     */
-    public Vertex getLatestPreVertices(List<Vertex> prevVertices, HashMap<Vertex, Integer> prevVertexEndTimeHashMap) {
-        Vertex latestPrevVertex = prevVertices.get(prevVertices.size() - 1);
-        int latestPrevVertexEndTime = prevVertexEndTimeHashMap.get(latestPrevVertex);
-        for (Vertex vertex : prevVertices){
-            if (latestPrevVertexEndTime < prevVertexEndTimeHashMap.get(vertex)){
-                latestPrevVertex = vertex;
-                latestPrevVertexEndTime = prevVertexEndTimeHashMap.get(vertex);
-            }
-        }
-
-        return latestPrevVertex;
-    }
-
-    /**
-     * Gets all of the vertices the new vertex depends on.
-     * @param v
-     * @param traversed
-     * @return
-     */
-    public List<Vertex> getVerticesVIsDependedOn(Vertex v, List<Vertex> traversed){
-        List<Vertex> verticesVIsDependedOn = new ArrayList<>();
-
-        for (Vertex v1 : traversed) {
-            if (v.containsIncomingVertex(v1)) {
-                verticesVIsDependedOn.add(v1);
-            }
-        }
-        return verticesVIsDependedOn;
-    }
-
-    /**
-     * Out of all of the vertices the new vertex depends on, which ones aren't in this processor
-     * @param verticesVIsDependedOn
-     * @return
-     */
-    private List<Vertex> getDependedVerticesNotInProc(List<Vertex> verticesVIsDependedOn) {
-        List<Vertex> dependedVerticesNotInProc = new ArrayList<Vertex>();
-
-        for (Vertex vertixVIsDependedOn : verticesVIsDependedOn){
-            if (!processorVertexList.contains(vertixVIsDependedOn)){
-                dependedVerticesNotInProc.add(vertixVIsDependedOn);
-            }
-        }
-
-        return dependedVerticesNotInProc;
-
-    }
-
-    /**
      * Gets start time by comparing all of the vertices the new vertex depends on but are not in this processor and
      * see which one out of them has the highest end time plus communication cost to the new vertex. The vertex
      * with highest will be assigned as the start time for the new vertex
+     *
      * @param v
-     * @param dependedVerticesNotInProc
      * @param prevVertexEndTimeHashMap
      * @return
      */
-    private int getStartTime(Vertex v, List<Vertex> dependedVerticesNotInProc, HashMap<Vertex,Integer> prevVertexEndTimeHashMap) {
+    private int getStartTime(Vertex v,
+                             HashMap<Vertex, Integer> prevVertexEndTimeHashMap) {
         int maxStartTime = 0;
 
-        for (Vertex dependedVertex : dependedVerticesNotInProc){
-            int finishTimeOfDependedVertex = prevVertexEndTimeHashMap.get(dependedVertex);
-            int communicationCost = v.getEdgeWeightFrom(dependedVertex);
-            int possibleStartTime = communicationCost + finishTimeOfDependedVertex;
+        for (Vertex dependedVertex : v.getIncomingVerticies()) {
+            if (!visited.contains(dependedVertex)) {
+                int finishTimeOfDependedVertex = prevVertexEndTimeHashMap.get(dependedVertex);
+                int communicationCost = v.getEdgeWeightFrom(dependedVertex);
+                int possibleStartTime = communicationCost + finishTimeOfDependedVertex;
 
-            if (possibleStartTime > maxStartTime){
-                maxStartTime = possibleStartTime;
+                if (possibleStartTime > maxStartTime) {
+                    maxStartTime = possibleStartTime;
+                }
             }
         }
 
@@ -151,39 +87,26 @@ public class Processor implements Comparable<Processor> {
      * if this processors finish time is greater than the new start time, the processors finish time is assigned as
      * the start time. If all dependent vertices are in this processor, than the finish time of this processor is
      * assigned as start time.
+     *
      * @param v
      * @param traversed
      * @param prevVertexEndTimeHashMap
      * @return
      */
     public int addVertex(Vertex v, List<Vertex> traversed, HashMap<Vertex, Integer> prevVertexEndTimeHashMap) {
+        visited.add(v);
+
         //Set start time init value
-        int startTime = 0;
-        if (processorBlockList.size() != 0) {
-            ProcessorBlock lastProcessorBlock = processorBlockList.get(processorBlockList.size() - 1);
-            startTime = lastProcessorBlock.getEndTime();
-        }
-
-        List<Vertex> verticesVIsDependedOn = getVerticesVIsDependedOn(v, traversed);
-
-        List<Vertex> dependedVerticesNotInProc = getDependedVerticesNotInProc(verticesVIsDependedOn);
 
         //Check vertex v depends on not in this processor
-        if (dependedVerticesNotInProc.size() > 0) {
-            int potentialTimeOfStart = getStartTime(v, dependedVerticesNotInProc, prevVertexEndTimeHashMap);
-            if (processorBlockList.size() != 0) {
-                ProcessorBlock lastProcessorBlock = processorBlockList.get(processorBlockList.size() - 1);
-                //Check if this processor end time is greater than potentialTimeOfStart
-                if (lastProcessorBlock.getEndTime() > potentialTimeOfStart){
-                    startTime = lastProcessorBlock.getEndTime();
-                } else {
-                    startTime = potentialTimeOfStart;
-                }
-            } else{
-                startTime = potentialTimeOfStart;
-            }
+        int startTime = getStartTime(v, prevVertexEndTimeHashMap);
 
+        if (processorBlockList.size() != 0) {
+            ProcessorBlock lastProcessorBlock = processorBlockList.get(processorBlockList.size() - 1);
+            //Check if this processor end time is greater than potentialTimeOfStart
+            startTime = Math.max(lastProcessorBlock.getEndTime(), startTime);
         }
+
         ProcessorBlock newProcBlock = new ProcessorBlock(v, startTime);
         processorBlockList.add(newProcBlock);
         processorVertexList.add(v);
@@ -209,8 +132,8 @@ public class Processor implements Comparable<Processor> {
         return result;
     }
 
-    public int getEndTime(){
-        if (processorBlockList.size() > 0){
+    public int getEndTime() {
+        if (processorBlockList.size() > 0) {
             return processorBlockList.get(processorBlockList.size() - 1).getEndTime();
         }
         return 0;
@@ -236,7 +159,7 @@ public class Processor implements Comparable<Processor> {
     }
 
     public void outputFormat() {
-        for (int i =0; i < processorBlockList.size(); i++){
+        for (int i = 0; i < processorBlockList.size(); i++) {
             ProcessorBlock currentProcessorBlock = processorBlockList.get(i);
             Vertex currentVertex = currentProcessorBlock.getV();
             currentVertex.setStartTime(currentProcessorBlock.getStartTime());

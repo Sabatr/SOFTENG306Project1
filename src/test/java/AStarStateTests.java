@@ -36,7 +36,7 @@ public class AStarStateTests {
     public void testNodes8double() {
         Graph createdGraph = createGraph("Nodes_8_Random.dot");
         State optimalState = new AStar(2, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 581);
+        Assert.assertEquals(581, optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -49,12 +49,6 @@ public class AStarStateTests {
         Assert.assertEquals(15, new AStar(2, createdGraph).runAlgorithm().getCurrentCost());
     }
 
-    @Test
-    public void testInput() {
-        Graph createdGraph = createGraph("input.dot");
-        new AStar(2, createdGraph).runAlgorithm().getCurrentCost();
-    }
-
     /**
      * This tests if the output is correct given a graph with large communication costs on two processors.
      */
@@ -62,7 +56,7 @@ public class AStarStateTests {
     public void testNodes9double() {
         Graph createdGraph = createGraph("Nodes_9_SeriesParallel.dot");
         State optimalState = new AStar(2, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 55);
+        Assert.assertEquals(55, optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -74,7 +68,7 @@ public class AStarStateTests {
     public void testNodes10double() {
         Graph createdGraph = createGraph("Nodes_10_Random.dot");
         State optimalState = new AStar(2, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 50);
+        Assert.assertEquals(50, optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -85,7 +79,7 @@ public class AStarStateTests {
     public void testNodes11double() {
         Graph createdGraph = createGraph("Nodes_11_OutTree.dot");
         State optimalState = new AStar(2, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 350);
+        Assert.assertEquals(350, optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -96,7 +90,7 @@ public class AStarStateTests {
     public void testNodes7double() {
         Graph createdGraph = createGraph("Nodes_7_OutTree.dot");
         State optimalState = new AStar(2, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 28);
+        Assert.assertEquals(28, optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -107,7 +101,7 @@ public class AStarStateTests {
     public void testNodes11Quad() {
         Graph createdGraph = createGraph("Nodes_11_OutTree.dot");
         State optimalState = new AStar(4, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 227);
+        Assert.assertEquals(227,optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -118,7 +112,7 @@ public class AStarStateTests {
     public void testNodes8Quad() {
         Graph createdGraph = createGraph("Nodes_8_Random.dot");
         State optimalState = new AStar(4, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 581);
+        Assert.assertEquals(581, optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -130,7 +124,7 @@ public class AStarStateTests {
     public void testNodes10Quad() {
         Graph createdGraph = createGraph("Nodes_10_Random.dot");
         State optimalState = new AStar(4, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 50);
+        Assert.assertEquals(50, optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -141,7 +135,7 @@ public class AStarStateTests {
     public void testNodes9Quad() {
         Graph createdGraph = createGraph("Nodes_9_SeriesParallel.dot");
         State optimalState = new AStar(4, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 55);
+        Assert.assertEquals(55,optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -152,7 +146,7 @@ public class AStarStateTests {
     public void testNodes7Quad() {
         Graph createdGraph = createGraph("Nodes_7_OutTree.dot");
         State optimalState = new AStar(4, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 22);
+        Assert.assertEquals(22, optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -163,7 +157,7 @@ public class AStarStateTests {
     public void testNodes11() {
         Graph createdGraph = createGraph("Nodes_11_OutTree.dot");
         State optimalState = new AStar(1, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 640);
+        Assert.assertEquals(640, optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -174,7 +168,7 @@ public class AStarStateTests {
     public void testNodes8() {
         Graph createdGraph = createGraph("Nodes_8_Random.dot");
         State optimalState = new AStar(1, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 969);
+        Assert.assertEquals(969, optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -186,7 +180,7 @@ public class AStarStateTests {
     public void testNodes10() {
         Graph createdGraph = createGraph("Nodes_10_Random.dot");
         State optimalState = new AStar(1, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 63);
+        Assert.assertEquals(63,optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -197,7 +191,7 @@ public class AStarStateTests {
     public void testNodes9() {
         Graph createdGraph = createGraph("Nodes_9_SeriesParallel.dot");
         State optimalState = new AStar(1, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 55);
+        Assert.assertEquals(55,optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 
@@ -208,7 +202,7 @@ public class AStarStateTests {
     public void testNodes7() {
         Graph createdGraph = createGraph("Nodes_7_OutTree.dot");
         State optimalState = new AStar(1, createdGraph).runAlgorithm();
-        Assert.assertEquals(optimalState.getCurrentCost(), 40);
+        Assert.assertEquals(40,optimalState.getCurrentCost());
         Assert.assertTrue(optimalState.isValid());
     }
 }

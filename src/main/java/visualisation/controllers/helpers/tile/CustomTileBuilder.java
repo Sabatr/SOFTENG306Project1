@@ -78,30 +78,39 @@ public class CustomTileBuilder {
         return tile;
     }
 
+    /**
+     * The CPU tile is different as it needs to
+     * @return
+     */
     private Tile createCPUTile() {
-        // Initialises the data
         XYChart.Series<String, Number> cpu = new XYChart.Series();
         XYChart.Series<String, Number> memory = new XYChart.Series();
-        tile.setSkinType(SkinType.SMOOTHED_CHART);
-        tile.setChartType(Tile.ChartType.AREA);
-        tile.setTitle("CPU AND MEMORY USAGE");
-        tile.setPrefSize(width,height);
-        tile.setMaxValue(100);
-        tile.setMinValue(100);
-        tile.setSmoothing(true);
-        tile.setValueVisible(true);
-        tile.setBackgroundColor(Color.rgb(25, 34, 38));
-        tile.setTilesFXSeries(new TilesFXSeries<>(memory,Color.rgb(54,66,137),
+        Tile tile2 = TileBuilder.create()
+                .skinType(SkinType.SMOOTHED_CHART)
+                .chartType(Tile.ChartType.AREA)
+                .title("CPU USAGE")
+                .prefSize(width,height)
+                .maxValue(100)
+                .minValue(0)
+                .chartGridColor(Color.TRANSPARENT)
+                //.animated(true)
+                .smoothing(true)
+                .valueVisible(false)
+
+                .tilesFxSeries(new TilesFXSeries<>(memory,Color.rgb(54,66,137),
                         new LinearGradient(0, 0, 0, 1,
                                 true, CycleMethod.NO_CYCLE,
                                 new Stop(0, Color.rgb(74,86,157)),
                                 new Stop(1, Color.TRANSPARENT))),
-                new TilesFXSeries<>(cpu, Color.rgb(93,18,13),
+                        new TilesFXSeries<>(cpu, Color.rgb(93,18,13),
                         new LinearGradient(0, 0, 0, 1,
                                 true, CycleMethod.NO_CYCLE,
                                 new Stop(0, Color.rgb(93,18,13,0.5)),
-                                new Stop(1, Color.TRANSPARENT))));
-        return tile;
+                                new Stop(1, Color.TRANSPARENT)))
+                )
+                .build();
+       tile2.setBackgroundColor(Color.rgb(25, 34, 38));
+        return tile2;
     }
 
 }

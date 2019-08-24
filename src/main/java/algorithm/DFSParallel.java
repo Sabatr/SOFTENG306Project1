@@ -3,6 +3,7 @@ package algorithm;
 import graph.Graph;
 import scheduler.AStarComparator;
 import scheduler.State;
+import visualisation.AlgorithmDataStorage;
 import visualisation.processor.listeners.SchedulerListener;
 
 import java.util.*;
@@ -12,12 +13,13 @@ import java.util.*;
  * is used to ensure that nodes with least cost are placed with greatest priority followed
  * by their level.
  */
-public class DFSParallel implements Algorithm {
+public class DFSParallel extends AlgorithmHandler implements Algorithm {
     private int minFullPath = Integer.MAX_VALUE;
     private boolean traversed;
     private Stack<State> candidate;
     private HashSet<State> visited;
     private Graph graph;
+    private int totalBranches = 1;
 
     private int currentThreads;
     private int MAX_THREADS;
@@ -48,22 +50,17 @@ public class DFSParallel implements Algorithm {
         MAX_THREADS = 4;
     }
 
-    @Override
-    public void addListener(SchedulerListener listener) {
-
-    }
-
     /**
      * Runs the algorithm
      *
      * @return
      */
     public State runAlgorithm() {
-
+        startTimer();
         List<DFSThread> threadList = new ArrayList<>();
-
         while (!candidate.isEmpty()) {
-
+            AlgorithmDataStorage.getInstance().setTotalBranches(totalBranches);
+            totalBranches++;
             if (currentThreads < MAX_THREADS) {
                 currentThreads++;
                 DFSThread newThread = new DFSThread();
@@ -73,10 +70,12 @@ public class DFSParallel implements Algorithm {
                 iterate();
             }
         }
-
-        for (DFSThread thread : threadList) {
+        System.out.println("\n");
+        for (int i = 0; i < threadList.size(); i++) {
+            DFSThread thread =threadList.get(i);
             try {
                 thread.join();
+                fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,result);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -93,7 +92,8 @@ public class DFSParallel implements Algorithm {
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
     }
 
-    private State stackPop() {
+    /*This must be synchronised*/
+    private synchronized State stackPop() {
         if (!candidate.empty()) {
             State s = candidate.pop();
             return s;
@@ -102,15 +102,17 @@ public class DFSParallel implements Algorithm {
         }
     }
 
+    /*This must be synchronised*/
     private synchronized void setResult(State s) {
         if (s.allVisited() && s.getCostToBottomLevel() < minFullPath) {
-            System.out.println(s.getCostToBottomLevel());
             result = s;
             minFullPath = s.getCostToBottomLevel();
         }
+
     }
 
-    private boolean stackCompare(State s) {
+    /*This must be synchronised*/
+    private synchronized boolean stackCompare(State s) {
         return s.getCostToBottomLevel() < minFullPath;
     }
 
@@ -123,7 +125,6 @@ public class DFSParallel implements Algorithm {
                     if (stackCompare(s1)) {
                         stackPush(s1);
                         if (s1.allVisited()) {
-                            //Prune branches
                             pruneStack(s1);
                             setResult(s1);
                         }

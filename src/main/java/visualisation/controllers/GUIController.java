@@ -168,6 +168,7 @@ public class GUIController {
      * @param time
      */
     public void updateTimer(String time){
+       // System.out.println("updating");
         Tile tile =  (Tile)tilesBox.getChildren().get(2);
         CustomCounter counter = (CustomCounter) tile.getGraphic();
         Text text = counter.getText();
@@ -219,7 +220,6 @@ public class GUIController {
     public void createChart() {
         Platform.runLater(()-> {
             Tile tile = (Tile)processPane.getChildren().get(0);
-
             if (helper == null) {
                 helper = new ProcessChartHelper(processPane);
             }

@@ -30,10 +30,11 @@ public class Vertex {
 
     /**
      * gets all the vertices that are in both the given list and incoming vertices list
+     *
      * @param vList
      * @return
      */
-   public List<Vertex> getCommonVertices(List<Vertex> vList){
+    public List<Vertex> getCommonVertices(List<Vertex> vList) {
         List<Vertex> common = new ArrayList<>(incomingVerticies);
         common.retainAll(vList);
         return common;
@@ -41,6 +42,7 @@ public class Vertex {
 
     /**
      * set the finalised processor number that this vertex is processed on
+     *
      * @param processorNo
      */
     public void setProcessorNo(int processorNo) {
@@ -51,7 +53,7 @@ public class Vertex {
         return level;
     }
 
-   public  boolean isRoot() {
+    public boolean isRoot() {
         return incomingEdges.size() == 0;
     }
 
@@ -85,13 +87,14 @@ public class Vertex {
 
     /**
      * Get the edge weight for the incoming edges from vertex v to this vertex
+     *
      * @param v the vertex the edge originates from
      * @return the edge weight of the edge
      */
     public int getEdgeWeightFrom(Vertex v) {
-        int cost =-1;
-        for(Edge e:incomingEdges){
-            if(e.getFromVertex() == v){
+        int cost = -1;
+        for (Edge e : incomingEdges) {
+            if (e.getFromVertex() == v) {
                 cost = e.getSwitchCost();
             }
         }
@@ -105,21 +108,24 @@ public class Vertex {
 
     /**
      * calculates the longest vertex-cost path from this vertex
+     *
      * @return
      */
     public int calculateBottomLevel() {
-
-        dfs(this);
+        if (bottomLevel == -1) {
+            dfs(this);
+        }
         return bottomLevel;
     }
 
     /**
      * uses depth first search to find the longest vertex cost from this vertex
+     *
      * @param currentVertex
      */
     private void dfs(Vertex currentVertex) {
         // if the bottom level of the current vertex cannot be used to calculate the bottom level
-        if (currentVertex.outgoingEdges.size() == 0){
+        if (currentVertex.outgoingEdges.size() == 0) {
             currentVertex.bottomLevel = currentVertex.cost;
         } else {
 
@@ -147,6 +153,7 @@ public class Vertex {
 
     /**
      * adds an edge which comes into this vertex
+     *
      * @param edge
      */
     public void addIncomingEdge(Edge edge) {
@@ -156,6 +163,7 @@ public class Vertex {
 
     /**
      * checks if a given list of vertices can visit this vertex
+     *
      * @param vList
      * @return
      */
@@ -165,6 +173,7 @@ public class Vertex {
 
     /**
      * adds an edge to the outgoing edge list
+     *
      * @param edge
      */
     public void addOutgoingEdge(Edge edge) {
@@ -186,10 +195,11 @@ public class Vertex {
 
     /**
      * a toString() implementation used only when a processor and start time is associated with the vertex
+     *
      * @return
      */
     public String toStringSolution() {
-        String output = id + "\t[Weight=" + cost + ",Start=" + startTime + ",Processor=" + processorNo +"];";
+        String output = id + "\t[Weight=" + cost + ",Start=" + startTime + ",Processor=" + processorNo + "];";
         return output;
     }
 

@@ -12,6 +12,7 @@ public class Graph {
 
     private int greatestCost;
     private String name;
+    private int numVertices = -1;
     private HashMap<String, Vertex> vertexHashMap;
     private HashMap<String, Edge> edgeHashMap;
 
@@ -57,6 +58,7 @@ public class Graph {
 
     /**
      * Get the vertices with no incoming edges
+     *
      * @return the list of vertices with no incoming edges
      */
     public List<Vertex> getRoots() {
@@ -70,14 +72,13 @@ public class Graph {
     }
 
 
-
     //Get the bottom level of a graph
     public int calculateBottomLevel() {
-        Map.Entry<String,Vertex> entry = vertexHashMap.entrySet().iterator().next();
+        Map.Entry<String, Vertex> entry = vertexHashMap.entrySet().iterator().next();
         // Get root vertex
         String key = entry.getKey();
-        int bottomLevel =  vertexHashMap.get(key).calculateBottomLevel();
-        if(bottomLevel > greatestCost){
+        int bottomLevel = vertexHashMap.get(key).calculateBottomLevel();
+        if (bottomLevel > greatestCost) {
             greatestCost = bottomLevel;
         }
         return greatestCost;
@@ -90,9 +91,18 @@ public class Graph {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         Graph g = (Graph) o;
-        return  g.hashCode() == this.hashCode();
+        return g.hashCode() == this.hashCode();
+    }
+
+    public int getNumVertices() {
+        if(numVertices == -1){
+            numVertices = vertexHashMap.size();
+        }
+        return numVertices;
+
+
     }
 
     @Override

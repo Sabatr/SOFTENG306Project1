@@ -257,28 +257,71 @@ public class State {
     /**
      * Ensures that a given schedule is valid by ensuring all end time for all vertices of a given
      * vertex are lower than the scheduled start time of that vertex
-     *
      * @return
      */
     public boolean isValid() {
-        PriorityQueue<ProcessorBlock> pbs = new PriorityQueue<>();
-        HashMap<Vertex, ProcessorBlock> vertexProcessorBlockHashMap = new HashMap<>();
-        for (Processor p : processors) {
-            for (ProcessorBlock pb : p.getProcessorBlockList()) {
-                pbs.add(pb);
-                vertexProcessorBlockHashMap.put(pb.getV(), pb);
-            }
+        // Checks to see if there are still vertices to traverse
+        if (toTraverse.size() > 0){
+            return false;
         }
-        for (ProcessorBlock pb : pbs) {
-            Vertex v = pb.getV();
-            int starttime = pb.getStartTime();
-            for (Vertex v1 : v.getIncomingVerticies()) {
-                if (starttime < vertexProcessorBlockHashMap.get(v1).getEndTime()) {
+
+        for (Processor processor : processors){
+            // Adds all of the processor blocks to a priority queue
+            List<ProcessorBlock> processorBlockPriorityQueue = new ArrayList<>();
+            for(ProcessorBlock processorBlock : processor.getProcessorBlockList()){
+                processorBlockPriorityQueue.add(processorBlock);
+                // Add processors to priority queue to order them
+            }
+
+            int costOfPrevAssignedVertex = 0;
+
+            for (ProcessorBlock currentProcessorBlock : processorBlockPriorityQueue){
+                Vertex processorBlockV = currentProcessorBlock.getV();
+                int processorBlockStartTime = currentProcessorBlock.getStartTime();
+
+                // Checking to see if there is no overlap between the previously assigned vertex and the current assigned
+                if (costOfPrevAssignedVertex > processorBlockStartTime){
                     return false;
                 }
-                ;
+
+                // Go through all of the vertices v depends on and see if the are scheduled correctly
+                for(Vertex processorBlockV1: processorBlockV.getIncomingVerticies()){
+                    for (Processor processor1 : processors){
+                        if (processor1.processorVertexList.contains(processorBlockV1)){
+                            // Get end time of incoming vertex
+                            int endTimeIncomingV = 0;
+                            for (ProcessorBlock processorBlock  : processor1.processorBlockList){
+                                if (processorBlock.getV() == processorBlockV1){
+                                    endTimeIncomingV = processorBlock.getEndTime();
+                                    break;
+                                }
+                            }
+                            // Check if v1, the vertices v depends on is scheduled in the same processor
+                            if (processor1 == processor){
+                                // Making sure incoming v is before current v
+                                if (currentProcessorBlock.getStartTime() < endTimeIncomingV ){
+                                    return false;
+                                }
+
+                            } else{ // Check if v1, the vertices v depends on is scheduled on a different processor
+                                //  Make sure incoming v with its transferring cost is still less than current vertex
+                                if (currentProcessorBlock.getStartTime() < endTimeIncomingV + processorBlockV.getEdgeWeightFrom(processorBlockV1) ){
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+                costOfPrevAssignedVertex = currentProcessorBlock.getEndTime();
             }
         }
+
+
+        //Check if cost to bottom level is same as current cost
+        if (costToBottomLevel != currentCost){
+            return false;
+        }
+
         return true;
     }
 }

@@ -1,3 +1,4 @@
+
 import algorithm.AStar;
 import files.DotParser;
 import graph.Graph;
@@ -14,14 +15,12 @@ public class GraphTests {
      * @param inputURL
      */
     private Graph createGraph(String inputURL) {
-
-        DotParser dp = new DotParser(new File("data/" + inputURL));
-        Graph g1 = null;
         try {
-            g1 = dp.parseGraph();
+            DotParser.getInstance().parseGraph(new File("data/" + inputURL));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        Graph g1 = DotParser.getInstance().getGraph();
         return g1;
     }
 

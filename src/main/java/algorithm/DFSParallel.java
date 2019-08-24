@@ -3,6 +3,8 @@ package algorithm;
 import graph.Graph;
 import scheduler.AStarComparator;
 import scheduler.State;
+import visualisation.AlgorithmDataStorage;
+import visualisation.processor.listeners.SchedulerListener;
 
 import java.util.*;
 
@@ -11,12 +13,13 @@ import java.util.*;
  * is used to ensure that nodes with least cost are placed with greatest priority followed
  * by their level.
  */
-public class DFSParallel implements Algorithm {
+public class DFSParallel extends AlgorithmHandler implements Algorithm {
     private int minFullPath = Integer.MAX_VALUE;
     private boolean traversed;
     private Stack<State> candidate;
     private HashSet<State> visited;
     private Graph graph;
+    private int totalBranches = 1;
 
     private int currentThreads;
     private int MAX_THREADS;
@@ -65,11 +68,10 @@ public class DFSParallel implements Algorithm {
      * @return
      */
     public State runAlgorithm() {
-
         List<DFSThread> threadList = new ArrayList<>();
-
         while (!candidate.isEmpty()) {
-
+            AlgorithmDataStorage.getInstance().setTotalBranches(totalBranches);
+            totalBranches++;
             //create as many threads as needed before starting
             if (currentThreads < MAX_THREADS) {
                 currentThreads++;
@@ -80,8 +82,7 @@ public class DFSParallel implements Algorithm {
                 iterate();
             }
         }
-
-        //wait for threads to finish
+        System.out.println("\n");
         for (int i = 0; i < threadList.size(); i++) {
             DFSThread thread =threadList.get(i);
             try {
@@ -118,6 +119,7 @@ public class DFSParallel implements Algorithm {
             result = s;
             minFullPath = s.getCostToBottomLevel();
         }
+
     }
 
     private boolean stackCompare(State s) {

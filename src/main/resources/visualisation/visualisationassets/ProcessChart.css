@@ -1,0 +1,44 @@
+.red {
+    -fx-background-color: #d32f2f;
+    -fx-border-width: 1px;
+    -fx-border-color: #2a2a2a;
+}
+.green {
+    -fx-background-color: #8bc34a;
+    -fx-border-width: 1px;
+    -fx-border-color: #2a2a2a;
+}
+.blue {
+    -fx-background-color: #00acc1;
+    -fx-border-width: 1px;
+    -fx-border-color: #2a2a2a;
+}
+
+.purple {
+    -fx-background-color: #673ab7;
+    -fx-border-width: 1px;
+    -fx-border-color: #2a2a2a;
+}
+
+.chart-title{
+    -fx-text-fill: #000000;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: rgba(0,0,0,0.2);
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: rgba(0,0,0,0.2);
+}
+
+.axis{
+    -fx-tick-label-fill: rgb(0, 0, 0);
+}
+
+.axis-label {
+    -fx-text-fill: #000000;
+}
+
+.chart-content {
+    -fx-grid-lines-visible: false;
+}

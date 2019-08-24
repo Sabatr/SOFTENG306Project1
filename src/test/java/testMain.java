@@ -1,3 +1,4 @@
+import application.Main;
 import org.junit.Test;
 
 public class testMain {

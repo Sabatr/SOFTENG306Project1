@@ -1,0 +1,17 @@
+
+graph {
+    fill-color: rgb(255,255,255);
+}
+
+edge {
+    text-size: 30px;
+    size: 2px;
+}
+
+node {
+    text-size: 30px;
+    size: 40px;
+    shape:circle;
+    fill-color: rgb(255,255,255);
+    text-alignment: center;
+}

@@ -35,7 +35,7 @@ public class OutputCreator {
     }
 
     private void createOutputDirectory(){
-        String path = "data/";
+        String path = "/data";
 
         File newFolder = new File(path);
         if (!newFolder.exists()) {

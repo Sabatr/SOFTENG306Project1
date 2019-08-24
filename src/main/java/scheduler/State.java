@@ -67,7 +67,7 @@ public class State {
      *
      * @param copyState
      */
-    private State(State copyState) {
+    public State (State copyState) {
         traversed = new ArrayList<>();
         traversed.addAll(copyState.traversed);
         processors = new ArrayList<>();
@@ -143,7 +143,6 @@ public class State {
             }
         }
     }
-
     /**
      * Method to update the current cost of this class.
      */
@@ -169,6 +168,10 @@ public class State {
     public boolean allVisited() {
         //Checks if any more vertexes exist to expand
         return traversed.size() == g.getNumVertices();
+    }
+
+    public List<Vertex> getToTraverse() {
+        return toTraverse;
     }
 
     /**

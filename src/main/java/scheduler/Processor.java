@@ -111,7 +111,7 @@ public class Processor implements Comparable<Processor> {
         processorBlockList.add(newProcBlock);
         processorVertexList.add(v);
 
-        boundCost = startTime + v.getBottomLevel();
+        boundCost = startTime + v.calculateBottomLevel();
         return boundCost;
     }
 

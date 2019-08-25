@@ -9,8 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * This class is used for creating the output file in the same structure outlined within the brief
@@ -66,7 +64,6 @@ public class OutputCreator {
     private String constructOutputLine() {
         HashMap<String, Vertex> vertices = graph.getVertexHashMap();
         HashMap<String, Edge> edges = graph.getEdgeHashMap();
-        Iterator it = vertices.entrySet().iterator();
 
         StringBuilder output = new StringBuilder("digraph " + graph.getName() + " {");
 

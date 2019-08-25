@@ -68,8 +68,8 @@ public class AlgorithmDataStorage {
         branchDetails.incrementDuplicates();
     }
 
-    public void incrementPruned(int i) {
-        branchDetails.incrementPruned(i);
+    public void incrementPruned() {
+        branchDetails.incrementPruned();
     }
 
     public void incrementVisited() {

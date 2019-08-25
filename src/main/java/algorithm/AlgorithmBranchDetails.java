@@ -35,8 +35,8 @@ public class AlgorithmBranchDetails {
     public void incrementDuplicates() {
         duplicateBranches++;
     }
-    public void incrementPruned(int i){
-       branchesPruned += i;
+    public void incrementPruned(){
+       branchesPruned ++;
     }
 
     public void incrementVisited() {

@@ -30,7 +30,7 @@ public class CliParser {
     public static void UI(String[] args) {
         args = new String[3];
         args[0] = "Nodes_11_OutTree.dot";
-        args[1] = "2";
+        args[1] = "4";
         args[2] = "-v";
         if (args.length == 0) { System.err.println("Error: No arguments provided. Program terminated. Run program with '-h' for help."); }
         else {

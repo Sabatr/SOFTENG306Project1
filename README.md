@@ -31,6 +31,9 @@ The optional arguments are as follows:
 |  `-p` &lt;number of cores> |  Determines the number of cores used for execution |
 |  `-o` &lt;output file> |  Name the output file |
   
+ Visualisatoin
+ [Visualisation](visualisation.png)
+  
 ## Build  
 This project should be built with Gradle.  
 Build this project as a runnable jar, include all dependencies within the jar.  

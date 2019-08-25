@@ -80,7 +80,6 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
                 iterate();
             }
         }
-        System.out.println("\n");
         for (int i = 0; i < threadList.size(); i++) {
             DFSThread thread =threadList.get(i);
             try {

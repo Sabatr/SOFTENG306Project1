@@ -44,15 +44,6 @@ public class GUIController {
     private double tileWidth;
 
     private CustomPieChart pieChart;
-
-    /**
-     * Dummy method to check for GUI responsiveness
-     */
-    @FXML
-    private void onClick() {
-        System.out.println("clicked");
-    }
-
     /**
      * When the application starts, run this.
      */

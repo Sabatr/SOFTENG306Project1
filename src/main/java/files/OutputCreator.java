@@ -35,10 +35,10 @@ public class OutputCreator {
     }
 
     private void createOutputDirectory(){
-        String path = "/data";
-
+        String path = "/output";
         File newFolder = new File(path);
         if (!newFolder.exists()) {
+
             newFolder.mkdir();
         }
     }
@@ -49,7 +49,7 @@ public class OutputCreator {
      */
 
     public void createOutputFile(String name) {
-        String filePath = "data/" + name;
+        String filePath =  name;
         String output = constructOutputLine();
         try (PrintWriter out = new PrintWriter(filePath)) {
             out.println(output);

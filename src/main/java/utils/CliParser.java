@@ -28,10 +28,6 @@ public class CliParser {
     private static String outputName;
     private static boolean isVisualisation;
     public static void UI(String[] args) {
-        args = new String[3];
-        args[0] = "Nodes_11_OutTree.dot";
-        args[1] = "2";
-        args[2] = "-v";
         if (args.length == 0) { System.err.println("Error: No arguments provided. Program terminated. Run program with '-h' for help."); }
         else {
             if(!args[0].equals("-h")) {
@@ -56,7 +52,7 @@ public class CliParser {
                 try { // This is where the calculation is done
                     System.out.println("Calculating, please wait...\n");
                       AlgorithmFactory factory = new AlgorithmFactory();
-                     DotParser.getInstance().parseGraph(new File("data/" + result[0]));
+                     DotParser.getInstance().parseGraph(new File( result[0]));
                      Graph g1 = DotParser.getInstance().getGraph();
                     algorithm = factory.createAlgorithm(AlgorithmChoice.DFS_PARALLEL,args,g1);
                     outputName = result[2];
@@ -238,7 +234,6 @@ public class CliParser {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() {
-                System.out.println("Output file available as: '" + outputName + "'");
                 createOutputFile();;
                 return null;
             }
@@ -254,6 +249,7 @@ public class CliParser {
         ((AlgorithmHandler)algorithm).fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,solution);
         OutputCreator out = new OutputCreator(solution);
         out.createOutputFile(outputName);
+        System.out.println("Output file available as: '" + outputName + "'");
     }
 }
 

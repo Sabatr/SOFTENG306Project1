@@ -38,20 +38,28 @@ public class Visualiser extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader=new FXMLLoader();
-        loader.setLocation(Visualiser.class.getResource(SCENE_PATH));
-        Parent root=loader.load();
-        Scene scene = new Scene(root);
-        controller = loader.getController();
-        GUIUpdater.getInstance().setController(controller);
-        stage.setHeight(SCENE_HEIGHT);
-        stage.setWidth(SCENE_WIDTH);
-        stage.setResizable(false);
-        stage.setTitle(VISUALISATION_TITLE);
-        stage.centerOnScreen();
-        stage.setScene(scene);
-        stage.show();
-        CliParser.createSolution();
+            try {
+                FXMLLoader loader=new FXMLLoader();
+                loader.setLocation(Visualiser.class.getResource(SCENE_PATH));
+                System.out.println(Visualiser.class.getResource(SCENE_PATH));
+                Parent root=loader.load();
+                Scene scene = new Scene(root);
+                controller = loader.getController();
+                GUIUpdater.getInstance().setController(controller);
+                stage.setHeight(SCENE_HEIGHT);
+                stage.setWidth(SCENE_WIDTH);
+                stage.setResizable(false);
+                stage.setTitle(VISUALISATION_TITLE);
+                stage.centerOnScreen();
+                stage.setScene(scene);
+                stage.show();
+
+                CliParser.createSolution();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
     }
 
     /**

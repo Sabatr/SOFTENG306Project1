@@ -1,12 +1,5 @@
 package visualisation;
-
-import algorithm.Algorithm;
 import algorithm.AlgorithmBranchDetails;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.concurrent.Task;
-import javafx.util.Duration;
 import scheduler.State;
 import visualisation.processor.helpers.GUIUpdater;
 import visualisation.processor.listeners.SchedulerListener;
@@ -69,32 +62,7 @@ public class AlgorithmListener implements SchedulerListener {
 
     @Override
     public void updateBranchCounter() {
-        //details.setBranchesSeen(AlgorithmDataStorage);
         GUIUpdater.getInstance().updateBranchLabel(AlgorithmDataStorage.getInstance().getDetails());
-//        Timeline timeline = new Timeline(
-//                new KeyFrame(
-//                        Duration.millis( 1000 ),
-//                        event -> {
-//
-//
-//                        }
-//                )
-//        );
-//        timeline.setCycleCount( Animation.INDEFINITE );
-//        timeline.play();
-
-
-//        Task<Void> task = new Task<Void>() {
-//            @Override
-//            protected Void call() {
-//                branchCounter++;
-//                details.setBranchesSeen(branchCounter);
-//                GUIUpdater.getInstance().updateBranchLabel(details);
-//                return null;
-//            }
-//        };
-//        new Thread(task).start();
-
     }
 
     @Override

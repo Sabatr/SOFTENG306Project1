@@ -47,7 +47,6 @@ public class VisualNode extends Circle{
      */
     private Text buildText(String inputText, int fontSize, int y) {
         Text text = this.buildText(inputText,fontSize);
-       // text.setFont(new Font(25));
         text.setY(y);
         return text;
     }

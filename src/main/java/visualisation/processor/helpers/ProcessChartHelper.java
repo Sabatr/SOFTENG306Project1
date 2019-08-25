@@ -42,6 +42,9 @@ public class ProcessChartHelper {
 
     }
 
+    /**
+     * Removes data from the series
+     */
     private void clear(){
         chart.getData().forEach(series->{
             series.getData().forEach(item-> {
@@ -51,7 +54,6 @@ public class ProcessChartHelper {
     }
     /**
      * Retrieves the data set by the algorithm and adds it to the chart
-     * TODO: Make it so that theres a loading screen before the algo finishes
      */
     private void setData() {
         clear();
@@ -70,6 +72,10 @@ public class ProcessChartHelper {
        chart.getData().add(series1);;
     }
 
+    /**
+     * Designates a random colour to the tiles of the process chart
+     * @return
+     */
     private String getRandomColour() {
         int rand = (int)Math.round(Math.random() * 3);
         List<String> colours = new ArrayList<>();
@@ -77,7 +83,6 @@ public class ProcessChartHelper {
         colours.add("blue");
         colours.add("purple");
         colours.add("green");
-
         return colours.get(rand);
     }
     private void setUpInitialData() {
@@ -126,7 +131,6 @@ public class ProcessChartHelper {
     private void initialiseSettings() {
         chart.setTitle(CHART_NAME);
         chart.setLegendVisible(false);
-        //chart.setVerticalGridLinesVisible(false);
         chart.setPrefHeight(processPane.getPrefHeight());
         chart.setPrefWidth(processPane.getPrefWidth());
         chart.getStylesheets().add(PROCESS_CHART_STYLESHEET);

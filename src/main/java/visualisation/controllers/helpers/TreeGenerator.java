@@ -4,10 +4,6 @@ import files.DotParser;
 import graph.Graph;
 import graph.Vertex;
 import javafx.scene.layout.Pane;
-import visualisation.AlgorithmDataStorage;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class TreeGenerator {
@@ -177,6 +173,11 @@ public class TreeGenerator {
 
         }
     }
+
+    /**
+     * Generates the graph
+     * @return
+     */
     public Pane generate() {
         generateNodePositions();
         return graphPane;

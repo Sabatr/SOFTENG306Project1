@@ -2,34 +2,37 @@ package visualisation.controllers.helpers.tile;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
-import eu.hansolo.tilesfx.chart.ChartData;
 import eu.hansolo.tilesfx.chart.TilesFXSeries;
-import javafx.geometry.Insets;
 import javafx.scene.chart.XYChart;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
-import javafx.scene.text.Text;
-
-import java.util.Random;
 
 import static eu.hansolo.tilesfx.Tile.SkinType;
 
+/**
+ * A factory method to build custom tiles
+ */
 public class CustomTileBuilder {
-    private final String DEFAULT_BRANCH_TEXT = "0";
     private double height;
     private double width;
     private Tile tile;
 
-
+    /**
+     * An enunm to represent which tile to build
+     */
     public enum MyTileType  {
             BRANCHES, TIMER, CPU, MEMORY, PROCESS_CHART, INPUT_GRAPH
     }
+
+    /**
+     * The builder method which creates a Tile depending on user specification
+     * @param tileType
+     * @param width
+     * @param height
+     * @return
+     */
     public Tile build(MyTileType tileType, double width, double height) {
         this.width = width;
         this.height = height;
@@ -52,6 +55,7 @@ public class CustomTileBuilder {
                 return null;
         }
     }
+
     private Tile createInputGraphTile() {
 
         tile.setBackgroundColor(Color.rgb(238, 238, 238));
@@ -74,6 +78,10 @@ public class CustomTileBuilder {
         return tile;
     }
 
+    /**
+     * The CPU tile is different as it needs to
+     * @return
+     */
     private Tile createCPUTile() {
         XYChart.Series<String, Number> cpu = new XYChart.Series();
         XYChart.Series<String, Number> memory = new XYChart.Series();
@@ -88,7 +96,6 @@ public class CustomTileBuilder {
                 //.animated(true)
                 .smoothing(true)
                 .valueVisible(false)
-               // .chartData(smoothChartData1,smoothChartData2,smoothChartData3,smoothChartData4)
 
                 .tilesFxSeries(new TilesFXSeries<>(memory,Color.rgb(54,66,137),
                         new LinearGradient(0, 0, 0, 1,
@@ -103,7 +110,6 @@ public class CustomTileBuilder {
                 )
                 .build();
        tile2.setBackgroundColor(Color.rgb(25, 34, 38));
-      //  tile2.setBackgroundColor(Color.rgb(80, 20, 80));
         return tile2;
     }
 

@@ -12,8 +12,8 @@ import scheduler.State;
 public class AlgorithmDataStorage {
     private static AlgorithmDataStorage storage;
     private SchedulerListener listener;
-    private String outputName;
     private AlgorithmBranchDetails branchDetails = new AlgorithmBranchDetails();
+
     private AlgorithmDataStorage() {
     }
 
@@ -44,7 +44,9 @@ public class AlgorithmDataStorage {
         return listener.getFileName();
     }
 
-    public long getTimeElapsed() { return listener.getTimeElapsed();}
+    public long getTimeElapsed() {
+        return listener.getTimeElapsed();
+    }
 
     public void setTotalBranches(int counter) {
         branchDetails.setBranchesSeen(counter);
@@ -60,5 +62,17 @@ public class AlgorithmDataStorage {
 
     public AlgorithmBranchDetails getDetails() {
         return branchDetails;
+    }
+
+    public void incrementDuplicates() {
+        branchDetails.incrementDuplicates();
+    }
+
+    public void incrementPruned(int i) {
+        branchDetails.incrementPruned(i);
+    }
+
+    public void incrementVisited() {
+        branchDetails.incrementVisited();
     }
 }

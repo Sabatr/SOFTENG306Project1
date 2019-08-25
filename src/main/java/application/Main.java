@@ -1,17 +1,5 @@
 package application;
 
-import algorithm.Algorithm;
-import algorithm.AlgorithmChoice;
-import algorithm.AlgorithmFactory;
-import files.DotParser;
-import graph.Graph;
-import files.OutputCreator;
-import javafx.concurrent.Task;
-import visualisation.Visualiser;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import static utils.CliParser.UI;
 
 public class Main {

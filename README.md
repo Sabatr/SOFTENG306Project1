@@ -16,10 +16,6 @@ NOTE 2: The .dot file has to be a valid DAG graph.
 ```
 java -jar scheduler.jar <INPUT.dot> <NUMBER OF PROCESSORS> <OPTIONAL ARGS>
 ```
-or, to start a continous version of the program, just type:
-```
-java -jar scheduler.jar
-```
 
 An example:
 ```
@@ -31,7 +27,6 @@ The optional arguments are as follows:
 
 |  Argument | Description  |
 |---|---|
-|  -v | Visualises the output  |
-|  -p|  Determines the number of cores used for execution |
-|  -o|  Name the output file |
-
+|  `-v` | Visualises the output  |
+|  `-p` <number of cores> |  Determines the number of cores used for execution |
+|  `-o` <output file> |  Name the output file |

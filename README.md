@@ -42,3 +42,5 @@ The optional arguments are as follows:
 ## Build  
 This project should be built with Gradle.  
 Build this project as a runnable jar, include all dependencies within the jar.  
+
+Additional information can be found in our wiki.

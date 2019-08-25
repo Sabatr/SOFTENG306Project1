@@ -41,7 +41,6 @@ public class Visualiser extends Application {
             try {
                 FXMLLoader loader=new FXMLLoader();
                 loader.setLocation(Visualiser.class.getResource(SCENE_PATH));
-                System.out.println(Visualiser.class.getResource(SCENE_PATH));
                 Parent root=loader.load();
                 Scene scene = new Scene(root);
                 controller = loader.getController();

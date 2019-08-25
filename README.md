@@ -1,11 +1,13 @@
 # SOFTENG306Project1 - Team 6
 Using AI and parallel processing power to solve difficult scheduling problems
   
-saddboys = Chuyang Chen (cche381)  
-raghavgarg32 = Raghav Garg (rgar969)  
-magnusrand = Magnus Rand (cran263)  
-daltonlim = Dalton Lim (dlim779)  
-bugn877 = Brian Nguyen (bugn877)
+| Github username | University user name |
+|---|---|
+| daltonlim | Dalton Lim (dlim779) | 
+| magnusrand | Magnus Rand (cran263) |
+| raghavgarg32 | Raghav Garg (rgar969) |
+| sabatr | Brian Nguyen (bugn877) |
+| saddboys | Chuyang Chen (cche381) |
 
 
 ## Running the code

@@ -1,6 +1,5 @@
 package utils;
 import algorithm.*;
-import application.Main;
 import files.DotParser;
 import files.OutputCreator;
 import graph.Graph;
@@ -8,14 +7,12 @@ import javafx.concurrent.Task;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.apache.commons.cli.*;
 import visualisation.Visualiser;
-import visualisation.processor.listeners.ObservableAlgorithm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import static utils.HelpFunctions.*;
 
-//TODO: Get rid of unnecessary static. Just make it a singleton.
 public class CliParser {
 
     private static final String DEFAULT_OUTPUT = "output.dot";
@@ -27,11 +24,8 @@ public class CliParser {
     private static Algorithm algorithm;
     private static String outputName;
     private static boolean isVisualisation;
+
     public static void UI(String[] args) {
-        args = new String[3];
-        args[0] = "Nodes_11_OutTree.dot";
-        args[1] = "2";
-        args[2] = "-v";
         if (args.length == 0) { System.err.println("Error: No arguments provided. Program terminated. Run program with '-h' for help."); }
         else {
             if(!args[0].equals("-h")) {
@@ -44,10 +38,6 @@ public class CliParser {
         }
     }
 
-    public static boolean isVisualisation() {
-        return isVisualisation;
-    }
-
     private static void handleInput(String[] args) {
         if (args[0].equals("-h")) { printHelp(); } // Checks for help command
         else {
@@ -55,8 +45,8 @@ public class CliParser {
             if (result != null) {
                 try { // This is where the calculation is done
                     System.out.println("Calculating, please wait...\n");
-                      AlgorithmFactory factory = new AlgorithmFactory();
-                     DotParser.getInstance().parseGraph(new File("data/" + result[0]));
+                    AlgorithmFactory factory = new AlgorithmFactory();
+                    DotParser.getInstance().parseGraph(new File(result[0]));
                      Graph g1 = DotParser.getInstance().getGraph();
                     algorithm = factory.createAlgorithm(AlgorithmChoice.DFS_PARALLEL,args,g1);
                     outputName = result[2];
@@ -64,14 +54,9 @@ public class CliParser {
                         isVisualisation = true;
                         startVisualisation(args);
                     } else {
-                       // createSolution();
                         isVisualisation = false;
                         createOutputFile();
                     }
-                  //  OutputCreator out = new OutputCreator(new AStar(Integer.parseInt(result[1]),g1).runAlgorithm());
-                   // out.createOutputFile(result[2]);
-
-                   // if (Boolean.parseBoolean(result[4])) out.displayOutputOnConsole();
                 } catch (FileNotFoundException e) { // If the file is not found, the error will be caught here
                     System.err.println("Error: The file was not found. Run program with '-h' parameter for help");
                 } catch (Exception e) {
@@ -230,6 +215,10 @@ public class CliParser {
         new Visualiser().startVisual(args);
     }
 
+    public static boolean isVisualisation() {
+        return isVisualisation;
+    }
+
     /**
      * Runs the solution algorithm on another thread.
      */
@@ -238,8 +227,7 @@ public class CliParser {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() {
-                System.out.println("Output file available as: '" + outputName + "'");
-                createOutputFile();;
+                createOutputFile();
                 return null;
             }
         };
@@ -254,6 +242,7 @@ public class CliParser {
         ((AlgorithmHandler)algorithm).fireEvent(AlgorithmEvents.ALGORITHM_FINISHED,solution);
         OutputCreator out = new OutputCreator(solution);
         out.createOutputFile(outputName);
+        System.out.println("Output file available as: '" + outputName + "'");
     }
 }
 

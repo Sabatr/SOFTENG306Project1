@@ -1,7 +1,6 @@
 package utils;
 
 import algorithm.*;
-import application.Main;
 import files.DotParser;
 import files.OutputCreator;
 import graph.Graph;
@@ -9,7 +8,6 @@ import javafx.concurrent.Task;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.apache.commons.cli.*;
 import visualisation.Visualiser;
-import visualisation.processor.listeners.ObservableAlgorithm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,10 +27,6 @@ public class CliParser {
     private static String outputName;
     private static boolean isVisualisation;
     public static void UI(String[] args) {
-        args = new String[3];
-        args[0] = "Nodes_11_OutTree.dot";
-        args[1] = "2";
-        args[2] = "-v";
         if (args.length == 0) { System.err.println("Error: No arguments provided. Program terminated. Run program with '-h' for help."); }
         else {
             if(!args[0].equals("-h")) {
@@ -236,7 +230,7 @@ public class CliParser {
             @Override
             protected Void call() {
                 System.out.println("Output file available as: '" + outputName + "'");
-                createOutputFile();;
+                createOutputFile();
                 return null;
             }
         };

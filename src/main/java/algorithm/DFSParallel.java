@@ -4,13 +4,16 @@ import graph.Graph;
 import scheduler.AStarComparator;
 import scheduler.State;
 import visualisation.AlgorithmDataStorage;
-import visualisation.processor.listeners.SchedulerListener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Stack;
 
 /**
  *  Algorithm which uses dfs to solve the problem at hand.
- *  This code is adapted from the DFS algorithm
+ *  This code is adapted from the DFS algorithm.
+ *  This algorithm runs on multiple cores.
  */
 public class DFSParallel extends AlgorithmHandler implements Algorithm {
     private int minFullPath = Integer.MAX_VALUE;
@@ -119,16 +122,15 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
 
     }
 
-    /**
-     * Checks to see if a state could more optimal than the one provided.
-     * If it is, then the algorithm can be run on that state.
-     * @param s
-     * @return
-     */
+
     private boolean stackCompare(State s) {
         return s.getCostToBottomLevel() < minFullPath;
     }
 
+    /**
+     * Checks to see if a state could more optimal than the one provided.
+     * If it is, then the algorithm can be run on that state.
+     */
     public void iterate() {
         //each thread gets a unique 's'
         State s = stackPop();
@@ -161,6 +163,9 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
         }
     }
 
+    /**
+     * Object representing this class on a new thread
+     */
     private class DFSThread extends Thread {
         @Override
         public void run() {

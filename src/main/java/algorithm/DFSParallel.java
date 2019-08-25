@@ -96,7 +96,7 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
         candidate.push(s);
     }
 
-    private synchronized void pruneStack(State s) {
+    private  void pruneStack(State s) {
         candidate.removeIf((state) -> aStarComparator.compare(s, state) < 0);
     }
 
@@ -138,11 +138,11 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
 
                 //Only check unique states which haven't been visited before
                 if (!visited.contains(s1)) {
-                    AlgorithmDataStorage.getInstance().incrementVisited();
                     totalBranches++;
 
                     //Ensure that it could create a better than optimal solution
                     if (stackCompare(s1)) {
+                        AlgorithmDataStorage.getInstance().incrementVisited();
                         stackPush(s1);
 
                         // If it is better than the optimal state, update.
@@ -151,7 +151,7 @@ public class DFSParallel extends AlgorithmHandler implements Algorithm {
                             setResult(s1);
                         }
                     }else{
-                        AlgorithmDataStorage.getInstance().incrementPruned(1);
+                        AlgorithmDataStorage.getInstance().incrementPruned();
                     }
                     visited.add(s1);
                 }else{

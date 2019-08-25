@@ -4,14 +4,15 @@ import javafx.scene.Group;
 import javafx.scene.shape.Polygon;
 
 /**
- * WORK IN PROGRESS: Adding arrows to graph
+ * A class for making arrow heads on the end of the directed edges
+ * Takes an edge and an arrow head size as input
  */
 public class DirectedArrow extends Group{
     private VisualEdge edge;
     private int size;
 
     public DirectedArrow(VisualEdge edge, int size) {
-        this.size = size;
+        this.size = 7*size/12;
         this.edge = edge;
         Polygon triangle = createArrowHead();
         this.getChildren().add(triangle);
@@ -22,52 +23,40 @@ public class DirectedArrow extends Group{
         Polygon polygon = new Polygon();
         double headPointX = edge.getEndingX();
         double headPointY = edge.getEndingY();
+
         double leftPointX;
         double leftPointY;
 
         double rightPointX;
         double rightPointY;
 
-        int xWidth = Math.abs(edge.getStartingX() - edge.getEndingX());
-        int yWidth = Math.abs(edge.getStartingY() - edge.getEndingY());
+        double xWidth = Math.abs(edge.getStartingX() - edge.getEndingX());
+        double yWidth = Math.abs(edge.getStartingY() - edge.getEndingY());
 
-        double angle = Math.atan(xWidth/yWidth);
-        if (angle == 0) {
-            angle = 90.0;
-            xWidth = 1;
+        double arrowScale = 8;
+
+        double angle;
+        if (xWidth != 0) { angle = Math.atan(yWidth/xWidth); }
+        else { angle = Math.PI/2; }
+
+        if (edge.getStartingX() < edge.getEndingX()) { // For edges pointing to the right
+            leftPointX = edge.getEndingX() - (size * Math.cos(angle + Math.PI/arrowScale));
+            leftPointY = edge.getEndingY() - (size * Math.sin(Math.PI - angle - Math.PI/arrowScale));
+            rightPointX = edge.getEndingX() - (size * Math.cos(angle - Math.PI/arrowScale));
+            rightPointY = edge.getEndingY() - (size * Math.sin(Math.PI - angle + Math.PI/arrowScale));
+        } else { // For edges pointing to the left
+            leftPointX = edge.getEndingX() + (size * Math.cos(angle + Math.PI/arrowScale));
+            leftPointY = edge.getEndingY() - (size * Math.sin(Math.PI - angle - Math.PI/arrowScale));
+            rightPointX = edge.getEndingX() + (size * Math.cos(angle - Math.PI/arrowScale));
+            rightPointY = edge.getEndingY() - (size * Math.sin(Math.PI - angle + Math.PI/arrowScale));
         }
-        double xBuffer = (xWidth * Math.tan(angle/2))/2;
 
-        double yBuffer =  (xBuffer / Math.tan(angle/2))/4;
-
-
-        if (edge.getStartingX() > edge.getEndingX()) {
-            leftPointX = edge.getEndingX() + xBuffer/2;
-            leftPointY = edge.getEndingY() - yBuffer;
-            rightPointX = edge.getEndingX()  + xBuffer/1.5;
-            rightPointY = edge.getEndingY() ;
-        } else if (edge.getStartingX() < edge.getEndingX()) {
-            leftPointX = edge.getEndingX() - xBuffer/2;
-            leftPointY = edge.getEndingY() - yBuffer;
-            rightPointX = edge.getEndingX() - xBuffer/1.5;
-            rightPointY = edge.getEndingY();
-        } else {
-            leftPointX = edge.getEndingX() - xBuffer/2;
-            leftPointY = edge.getEndingY() - yBuffer/2;
-            rightPointX = edge.getEndingX() + xBuffer/2;
-            rightPointY = edge.getEndingY() - yBuffer/2;
-            System.out.println(yBuffer);
-            System.out.println(leftPointY);
-        }
         polygon.getPoints().addAll(
-                new Double[] {
                         headPointX,headPointY,
                         leftPointX,leftPointY,
                         rightPointX,rightPointY
-                }
         );
 
         return polygon;
     }
-
 }

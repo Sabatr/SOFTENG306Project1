@@ -28,5 +28,5 @@ The optional arguments are as follows:
 |  Argument | Description  |
 |---|---|
 |  `-v` | Visualises the output  |
-|  `-p` <number of cores> |  Determines the number of cores used for execution |
-|  `-o` <output file> |  Name the output file |
+|  `-p` &lt;number of cores> |  Determines the number of cores used for execution |
+|  `-o` &lt;output file> |  Name the output file |

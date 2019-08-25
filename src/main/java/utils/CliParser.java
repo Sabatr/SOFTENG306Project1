@@ -153,11 +153,11 @@ public class CliParser {
     private static void printHelp() {
         System.out.println("--------------- Help ---------------");
         System.out.println("Java -jar scheduler.jar INPUT.dot P [OPTION]");
-        System.out.println("INPUT.dot	\t a task graph with integer weights in .dot format");
+        System.out.println("INPUT.dot\t a task graph with integer weights in .dot format");
         System.out.println("P\t\t number of processors to schedule the INPUT graph on");
 
-        System.out.println("Optional:");
-        System.out.println("-p N\t use N cores for execution in parallel. Default is sequential");
+        System.out.println("\nOptional:");
+        System.out.println("-p N\t\t use N cores for execution in parallel. Default is sequential");
         System.out.println("-v\t\t visualise the search");
         System.out.println("-o OUTPUT\t output file is named OUTPUT (default is INPUT-output.dot)");
         System.out.println();

@@ -6,7 +6,7 @@ import javafx.scene.chart.PieChart;
  * A custom piechart which allows for
  */
 public class CustomPieChart extends PieChart {
-    private final String PIECHART_STYLESHEET = "visualisation/visualisationassets/ProcessChart.css";
+    private final String PIECHART_STYLESHEET = "visualisation/visualisationassets/PieChart.css";
     public CustomPieChart(double width, double height) {
         super();
         this.setPrefSize(width,height);

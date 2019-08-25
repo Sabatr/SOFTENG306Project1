@@ -1,10 +1,10 @@
 .chart-pie-label-line {
-    -fx-stroke: #8b4513;
-    -fx-fill: #8b4513;
+    -fx-stroke: #e6d73f;
+    -fx-fill: #e6d73f;
 }
 
 .chart-pie-label { /*this is what you need for labels*/
-    -fx-fill: #8b4513;
+    -fx-fill: #e6d73f;
     -fx-font-size: 1em;
 }
 .chart-legend {

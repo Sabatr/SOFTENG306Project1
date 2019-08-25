@@ -12,7 +12,7 @@ public class TreeGenerator {
     private HashMap<Integer,List<Vertex>> layerNode;
     private HashMap<Vertex,VisualNode> vertexToNode = new HashMap<>();
     private int size;
-    private final int DEFAULT_NODE_SIZE = 200;
+    private final int DEFAULT_NODE_SIZE = 100;
     private final int PANE_CENTER_DIVIDER = 2;
     private final int INCREASED_AMOUNT_MULTIPLIER = 2;
     private final int Y_POSITION_INCREASE = 1;
@@ -20,7 +20,6 @@ public class TreeGenerator {
         this.graphPane = parentPane;
         inputGraph = DotParser.getInstance().getGraph();
         layerNode = new HashMap<>();
-        size = DEFAULT_NODE_SIZE / inputGraph.getVertexHashMap().size();
     }
 
     /**
@@ -32,6 +31,7 @@ public class TreeGenerator {
         int current = 0;
         double paneWidth = graphPane.getPrefWidth();
         double paneHeight = graphPane.getPrefHeight();
+        size = DEFAULT_NODE_SIZE / layerNode.size();
         for (Vertex vertex : vertices) {
             // Guarantees the positioning of the nodes
             int x = (int) Math.ceil(paneWidth/vertices.size()/PANE_CENTER_DIVIDER +
@@ -76,9 +76,9 @@ public class TreeGenerator {
                 getToX = toNode.getX();
                 getToY = toNode.getY() - size;
 
-
                 VisualEdge edge = new VisualEdge(getFromX,getFromY,getToX,getToY);
-                //DirectedArrow dArrow = new DirectedArrow(edge,size);
+                DirectedArrow dArrow = new DirectedArrow(edge,size);
+                graphPane.getChildren().add(dArrow);
                 graphPane.getChildren().add(edge);
                 graphPane.getChildren().add(edge.getEdgeText(fromVertex,vertex, size));
             }

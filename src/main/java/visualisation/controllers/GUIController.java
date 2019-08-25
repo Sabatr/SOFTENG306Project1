@@ -113,7 +113,7 @@ public class GUIController {
         Tile tile = tileBuilder.build(CustomTileBuilder.MyTileType.BRANCHES,tileWidth,tileHeight);
 
         pieChart = new CustomPieChart(tileWidth,tileHeight);
-        PieChart.Data slice1 = new PieChart.Data("Seen", 1);
+        PieChart.Data slice1 = new PieChart.Data("Explored", 1);
         PieChart.Data slice2 = new PieChart.Data("Pruned"  , 10);
         PieChart.Data slice3 = new PieChart.Data("Duplicate" , 10);
         pieChart.getData().add(slice1);

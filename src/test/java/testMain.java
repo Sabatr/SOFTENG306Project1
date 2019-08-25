@@ -35,7 +35,7 @@ public class testMain {
 
     @Test
     public void testOutput() {
-        Main.main("data/input.dot 4 -v -o 2.dot ".split(" "));
+        Main.main("data/input.dot 2 -v -o 2.dot ".split(" "));
     }
     @Test
     public void testTwoCore() {

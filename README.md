@@ -32,7 +32,7 @@ The optional arguments are as follows:
 |  `-o` &lt;output file> |  Name the output file |
   
  Visualisatoin
- [Visualisation](visualisation.png)
+ ![Visualisation](visualisation.png)
   
 ## Build  
 This project should be built with Gradle.  
